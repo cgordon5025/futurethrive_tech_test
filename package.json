@@ -1,0 +1,29 @@
+{
+  "name": "futurethrive_tech_test",
+  "version": "1.0.0",
+  "description": "## Description",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/server.js",
+    "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
+    "install": "cd server && npm i && cd ../client && npm i",
+    "seed": "cd server && npm run seed",
+    "build": "cd client && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cgordon5025/futurethrive_tech_test.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cgordon5025/futurethrive_tech_test/issues"
+  },
+  "homepage": "https://github.com/cgordon5025/futurethrive_tech_test#readme",
+  "dependencies": {
+    "bootstrap": "^5.2.3",
+    "concurrently": "^7.6.0"
+  }
+}

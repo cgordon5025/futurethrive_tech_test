@@ -1,6 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
 import { RecordWebcam, useRecordWebcam } from 'react-record-webcam'
+
+//import the pages
+import Assessment from './pages/Assessment';
+
 function App() {
   const recordWebcam = useRecordWebcam({ frameRate: 60 })
   const saveFile = async () => {
@@ -8,7 +12,8 @@ function App() {
   }
   return (
     <div className="App">
-      <header className="App-header">
+      <Assessment />
+      {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -32,7 +37,7 @@ function App() {
         <button onClick={saveFile}>Save file to server</button>
         <video ref={recordWebcam.webcamRef} autoPlay muted />
         <video ref={recordWebcam.previewRef} autoPlay muted loop />
-      </div>
+      </div> */}
     </div>
   );
 }

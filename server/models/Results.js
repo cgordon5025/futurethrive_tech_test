@@ -66,7 +66,7 @@ const ResultsSchema = new Schema({
     hobbies: {
         type: String
     },
-    hoobiesStop: {
+    hobbiesStop: {
         type: Boolean
     },
     areWorried: {

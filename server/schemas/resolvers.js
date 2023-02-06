@@ -1,12 +1,14 @@
 const { User, Results, Video } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
-
+const generateCSV = require('../template/generateCSV');
+const writeToFile = require('../utils/writeToFile')
+// const { json2csv } = require('json2csv')
 const resolvers = {
     Query: {
         getUsers: async () => {
             try {
-                return await User.find().populate({ path: 'Results' }).populate({ path: 'Video' })
+                return await User.find().populate('Results').populate({ path: 'Video' })
             }
             catch (e) {
                 console.log(e)
@@ -19,17 +21,28 @@ const resolvers = {
     },
     Mutation: {
         saveAnswers: async (parent, args) => {
+            const rawResults =
+            {
+                age: args.age,
+                grade: args.grade
+            }
+            if (args.liveWith) {
+                rawResults.liveWith = args.liveWith
+            }
+            if(args)
             const newResults = await Results.create({ ...args })
             const updatedUser = await User.findOneAndUpdate(
-                { _id: args.userID },
+                { _id: args.userId },
                 { $push: { results: newResults._id } },
                 { new: true })
+
+            await writeToFile(`./data/${args.userId}.csv`, generateCSV({ ...args }))
             return newResults
         },
         saveVideo: async (parents, args) => {
             const newVideo = await Video.create({ videofile: args.videofile })
             const updatedUser = await User.findOneAndUpdate(
-                { _id: args.userID },
+                { _id: args.userId },
                 { $push: { video: newVideo._id } },
                 { new: true }
             )

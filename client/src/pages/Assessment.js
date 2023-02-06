@@ -69,7 +69,7 @@ const questions = [
     },
     {
         index: 13,
-        question: "WHat makes you happy?",
+        question: "What makes you happy?",
         hint: ""
     },
     {

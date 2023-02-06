@@ -11,3 +11,44 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.assessmentContainer {
+  background-image: url(../public/images/BG_enter_park_1.png);
+  width: 100%;
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  /* background-color: red; */
+}
+
+div.questionContainer {
+  background-color: rgb(255, 255, 255, .5);
+  /* background-color: white;
+  opacity: 50%; */
+  height: 50%;
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#helper {
+  height: 20vh;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+}
+
+.questionContainer button {
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
+
+/* .questionContainer p,
+.questionContainer button {
+  opacity: 100%;
+} */

@@ -1,4 +1,4 @@
-
+// need to make exceptions for answers with commans so it does not mess up the csv formatting, for now go on ahead but will need to take this into consideration
 var ageField
 var gradeField
 var liveWithField
@@ -25,10 +25,10 @@ function popFields(data) {
         ageField = `${data.userId},Age,${data.age}`
     }
     if (data.grade) {
-        gradeField = `${data, userId},Grade,${data.grade}`
+        gradeField = `${data.userId},Grade,${data.grade}`
     }
     if (data.liveWith) {
-        liveWithField = `${data, userId},Live With who,${data.liveWith}`
+        liveWithField = `${data.userId},Live With who,${data.liveWith}`
     }
     if (data.familyHelp) {
         familyField = `${data.userId},Family they can rely on,${data.familyHelpDetails}`;
@@ -40,10 +40,10 @@ function popFields(data) {
         recentDeathField = `${data.userId},Recent Death,${data.whoDeath}`;
     }
     if (data.sickFamily) {
-        familySickField = `${data.userId},Serious illness in family,${data, whoSick}`;
+        familySickField = `${data.userId},Serious illness in family,${data.whoSick}`;
     }
     if (data.happyOrSad) {
-        happySadField = `${data.userId},Are they more happy, sad, or somehwere in between,${data.happyOrSad}`;
+        happySadField = `${data.userId},Are they more happy sad or somehwere in between,${data.happyOrSad}`;
     }
     if (data.whySad) {
         whySadField = `${data.userId},What makes you sad,${data.whySad}`;
@@ -91,28 +91,28 @@ function generateCSV(data) {
     console.log(data)
     popFields(data)
     const myCSV = `
-    userId,question,response/n
-    ${ageField}/n
-    ${gradeField}/n
-    ${liveWithField}/n
-    ${familyField}/n
-    ${outsideHelpField}/n
-    ${recentDeathField}/n
-    ${familySickField}/n
-    ${happySadField}/n
-    ${whySadField}/n
-    ${whyHappyField}/n
-    ${beHappierField}/n
-    ${academicField}/n
-    ${schoolTroubleField}/n
-    ${friendsField}/n
-    ${madeFunOfField}/n
-    ${hobbyField}/n
-    ${stopHobbyField}/n
-    ${worriedField}/n
-    ${lessWorriedField}/n
-    ${greatestWorryField}/n
-    ${talentField}/n
+    userId,question,response
+    ${ageField}
+    ${gradeField}
+    ${liveWithField}
+    ${familyField}
+    ${outsideHelpField}
+    ${recentDeathField}
+    ${familySickField}
+    ${happySadField}
+    ${whySadField}
+    ${whyHappyField}
+    ${beHappierField}
+    ${academicField}
+    ${schoolTroubleField}
+    ${friendsField}
+    ${madeFunOfField}
+    ${hobbyField}
+    ${stopHobbyField}
+    ${worriedField}
+    ${lessWorriedField}
+    ${greatestWorryField}
+    ${talentField}
 
     `;
     return myCSV

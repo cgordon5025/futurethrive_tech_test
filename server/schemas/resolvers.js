@@ -2,7 +2,8 @@ const { User, Results, Video } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 const generateCSV = require('../template/generateCSV');
-const writeToFile = require('../utils/writeToFile')
+const writeToFile = require('../utils/writeToFile');
+const { raw } = require('express');
 // const { json2csv } = require('json2csv')
 const resolvers = {
     Query: {
@@ -21,15 +22,6 @@ const resolvers = {
     },
     Mutation: {
         saveAnswers: async (parent, args) => {
-            const rawResults =
-            {
-                age: args.age,
-                grade: args.grade
-            }
-            if (args.liveWith) {
-                rawResults.liveWith = args.liveWith
-            }
-            if(args)
             const newResults = await Results.create({ ...args })
             const updatedUser = await User.findOneAndUpdate(
                 { _id: args.userId },

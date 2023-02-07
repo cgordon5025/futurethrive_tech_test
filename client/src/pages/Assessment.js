@@ -1,9 +1,10 @@
 import React, { useState } from "react"
-
+import { RecordWebcam, useRecordWebcam } from 'react-record-webcam';
 
 
 
 function Assessment() {
+
     const [currentQuestion, setCurrentQuestion] = useState(0)
     //these states will be used to trigger the contigency, if they respond yes it will flip to true and show the corresponding questions, if false it will skip it
     const [deathInFamily, setDeathInFamily] = useState(false)
@@ -161,7 +162,7 @@ function Assessment() {
         },
         {
             index: 23,
-            question: "WHat is your greatest worry?",
+            question: "What is your greatest worry?",
             hint: ""
         },
         {
@@ -192,6 +193,12 @@ function Assessment() {
     utterThis.rate = rate;
     utterThis.voice = daniel;
 
+    //web cam set up
+    const recordWebcam = useRecordWebcam({ frameRate: 60 })
+
+    const saveFile = async () => {
+        const blob = await recordWebcam.getRecording();
+    }
     const handleProgression = (event) => {
         switch (currentQuestion) {
             case 4:
@@ -266,13 +273,24 @@ function Assessment() {
                             <input
                                 name={questions[currentQuestion].name}
                                 type="text"
-                                // value={formState.{currentQuestion}}
+                            // value={formState.{currentQuestion}}
                             />
                         )}
                 </form>
                 {/* <input></input> */}
                 <button onClick={handleProgression}>Next </button>
                 <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
+            </div>
+            <div>
+                <p>Camera status: {recordWebcam.status}</p>
+                <button onClick={recordWebcam.open}>Open camera</button>
+                <button onClick={recordWebcam.start}>Start recording</button>
+                <button onClick={recordWebcam.stop}>Stop recording</button>
+                <button onClick={recordWebcam.retake}>Retake recording</button>
+                <button onClick={recordWebcam.download}>Download recording</button>
+                <button onClick={saveFile}>Save file to server</button>
+                <video ref={recordWebcam.webcamRef} autoPlay muted />
+                <video ref={recordWebcam.previewRef} autoPlay muted loop />
             </div>
         </div >
     )

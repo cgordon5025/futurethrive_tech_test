@@ -6,7 +6,7 @@
 
 ## Usage
 ## License
-This is protectedusing an MIT License
+This is protected using an MIT License
 
 ## Credits
 

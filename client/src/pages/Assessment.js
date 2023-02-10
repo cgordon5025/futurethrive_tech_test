@@ -70,110 +70,135 @@ function Assessment() {
         {
             index: 4,
             question: `Are there people outside your family you "talk to" when you need help?`,
-            hint: ""
+            hint: "",
+            name: "outsideHelp"
         },
         {
             index: 5,
             question: "Great who is it?",
-            hint: ""
+            hint: "",
+            name: "outsideDetails"
         },
         {
             index: 6,
             question: "How do you know them?",
-            hint: ""
+            hint: "",
+            name: "outsideDetails"
         },
         {
             index: 7,
             question: "Has anyone you love died?",
-            hint: ""
+            hint: "",
+            name: "recentDeath"
         },
         {
             index: 8,
             question: "Who?",
-            hint: ""
+            hint: "",
+            name: "whoDeath"
         },
         {
             index: 9,
             question: "Is anyone living in your house really sick?",
-            hint: ""
+            hint: "",
+            name: "sickFamily"
         },
         {
             index: 10,
             question: "Who?",
-            hint: ""
+            hint: "",
+            name: "whoSick"
         },
         {
             index: 11,
             question: "Are you sad most of the time, happy most of the time, or in between?",
-            hint: ""
+            hint: "",
+            name: "happyOrSad"
         },
         {
             index: 12,
             question: "What makes you sad?",
-            hint: ""
+            hint: "",
+            name: "whySad"
         },
         {
             index: 13,
             question: "What makes you happy?",
-            hint: ""
+            hint: "",
+            name: "whyHappy"
         },
         {
             index: 14,
-            question: "Are you making good grades in school?",
-            hint: ""
+            question: "What could make you even happier?",
+            hint: "",
+            name: "beHappier"
         },
         {
             index: 15,
-            question: "Are you getting in trouble in school?",
-            hint: ""
+            question: "Are you making good grades in school?",
+            hint: "",
+            name: "academics"
         },
         {
             index: 16,
-            question: "Do you have friends at school?",
-            hint: ""
+            question: "Are you getting in trouble in school?",
+            hint: "",
+            name: "schoolTrouble"
         },
         {
             index: 17,
-            question: "Have any of your friends or classmates ever said or done anything that hurt your or make you feel bad?",
-            hint: ""
+            question: "Do you have friends at school?",
+            hint: "",
+            name: "schoolFriends"
         },
         {
             index: 18,
-            question: "What do you really like to do?",
-            hint: ""
+            question: "Have any of your friends or classmates ever said or done anything that hurt your or make you feel bad?",
+            hint: "",
+            name: "madeFunOf"
         },
         {
             index: 19,
-            question: "What stops you from doing that?",
-            hint: ""
+            question: "What do you really like to do?",
+            hint: "",
+            name: "hobbies"
         },
         {
             index: 20,
-            question: "Do you get worried?",
-            hint: ""
+            question: "What stops you from doing that?",
+            hint: "",
+            name: "hobbiesStop"
         },
         {
             index: 21,
-            question: "What makes you feel worried?",
-            hint: ""
+            question: "Do you get worried?",
+            hint: "",
+            name: "areWorried"
         },
         {
             index: 22,
-            question: "If there was one thing in your life that you could change to make you feel less worried, what would it be?",
-            hint: ""
+            question: "What makes you feel worried?",
+            hint: "",
+            name: "whyWorried"
         },
         {
             index: 23,
-            question: "What is your greatest worry?",
-            hint: ""
+            question: "If there was one thing in your life that you could change to make you feel less worried, what would it be?",
+            hint: "",
+            name: "makeLessWorry"
         },
         {
             index: 24,
+            question: "What is your greatest worry?",
+            hint: "",
+            name: "greatestWorry"
+        },
+        {
+            index: 25,
             question: "What are you really good at?",
-            hint: ""
+            hint: "",
+            name: "talents"
         }
-
-
     ]
     //setting up the voice reader
     const rate = .8;
@@ -195,24 +220,25 @@ function Assessment() {
     utterThis.rate = rate;
     utterThis.voice = daniel;
 
-    //web cam set up
-    // const recordWebcam = useRecordWebcam({ frameRate: 60 })
-
-    // const saveFile = async () => {
-    //     const blob = await recordWebcam.getRecording();
-    // }
     function toObject(arr) {
         var rv = {};
         for (const index in arr) {
             var key = Object.keys(arr[index])
-            var value = arr[index].value
-            rv = { ...rv, [key]: value }
-            // console.log("listing the keys")
-            // console.log(formState.index)
+            var value = Object.values(arr[index])
+            // var value = arr[index].value
+            console.log(key)
+            console.log(value)
+
+            rv = { ...rv, [key]: value[0] }
+
         }
         return rv
     }
+
     const handleProgression = (event) => {
+        console.log()
+
+
         switch (currentQuestion) {
             case 4:
                 if (outsideHelp == true) {
@@ -252,16 +278,13 @@ function Assessment() {
         }
     }
     const handleChange = (event) => {
-        // const { name, value } = event.target
         console.log("hey i be triggered")
         const index = currentQuestion
         const name = event.target.name
         const value = event.target.value
-        console.log(name)
-        console.log(value)
         setFormState({
             ...formState,
-            [index]: { name: value }
+            [index]: { [name]: value }
         })
         console.log(formState)
     }
@@ -269,6 +292,7 @@ function Assessment() {
         var finalFormState = toObject(formState)
         console.log(finalFormState)
     }
+
     return (
         <div className="assessmentContainer">
 
@@ -277,7 +301,7 @@ function Assessment() {
             <div className="questionContainer">
                 <h2> {questions[currentQuestion].question}</h2>
                 <form>
-                    {currentQuestion == 4 || currentQuestion == 7 || currentQuestion == 9 || currentQuestion == 14 || currentQuestion == 15 || currentQuestion == 16 || currentQuestion == 17 || currentQuestion == 20 ?
+                    {currentQuestion == 4 || currentQuestion == 7 || currentQuestion == 9 || currentQuestion == 15 || currentQuestion == 16 || currentQuestion == 17 || currentQuestion == 18 || currentQuestion == 21 ?
                         (
                             <div>
                                 <label>
@@ -298,8 +322,7 @@ function Assessment() {
                             <input
                                 name={questions[currentQuestion].name}
                                 type="text"
-                                // value={formState}
-                                value={formState[currentQuestion].value}
+                                value={[Object.values(formState[currentQuestion])]}
                                 onChange={handleChange}
                             />
                         )}

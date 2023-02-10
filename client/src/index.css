@@ -42,7 +42,7 @@ div.questionContainer {
   left: 0px;
 }
 
-.questionContainer button {
+.questionContainer .progressBtn {
   position: absolute;
   bottom: 8px;
   right: 16px;

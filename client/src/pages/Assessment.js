@@ -11,34 +11,36 @@ function Assessment() {
     const [sickInFamily, setSickInFamily] = useState(false)
     const [outsideHelp, setOutsideHelp] = useState(false)
     // console.log(questions.length)
-    const [formState, setFormState] = useState({
-        age: "",
-        grade: "",
-        liveWith: "",
-        familyHelp: "",
-        familyHelpDetails: "",
-        outsideHelp: "",
-        outsideDetails: "",
-        recentDeath: "",
-        whoDeath: "",
-        sickFamily: "",
-        whoSick: "",
-        happyOrSad: "",
-        whySad: "",
-        whyHappy: "",
-        beHappier: "",
-        academics: "",
-        schoolTrouble: "",
-        schoolFriends: "",
-        madeFunOf: "",
-        hobbies: "",
-        hobbiesStop: "",
-        areWorried: "",
-        whyWorried: "",
-        makeLessWorry: "",
-        greatestWorry: "",
-        talents: ""
-    });
+    // const [formState, setFormState] = useState()
+    var finalFormState = {};
+    const [formState, setFormState] = useState([
+        { age: "" },
+        { grade: "" },
+        { liveWith: "" },
+        { familyHelp: "" },
+        { familyHelpDetails: "" },
+        { outsideHelp: "" },
+        { outsideDetails: "" },
+        { recentDeath: "" },
+        { whoDeath: "" },
+        { sickFamily: "" },
+        { whoSick: "" },
+        { happyOrSad: "" },
+        { whySad: "" },
+        { whyHappy: "" },
+        { beHappier: "" },
+        { academics: "" },
+        { schoolTrouble: "" },
+        { schoolFriends: "" },
+        { madeFunOf: "" },
+        { hobbies: "" },
+        { hobbiesStop: "" },
+        { areWorried: "" },
+        { whyWorried: "" },
+        { makeLessWorry: "" },
+        { greatestWorry: "" },
+        { talents: "" }
+    ]);
     //here are the questions and data associated with it
     const questions = [
         {
@@ -194,10 +196,21 @@ function Assessment() {
     utterThis.voice = daniel;
 
     //web cam set up
-    const recordWebcam = useRecordWebcam({ frameRate: 60 })
+    // const recordWebcam = useRecordWebcam({ frameRate: 60 })
 
-    const saveFile = async () => {
-        const blob = await recordWebcam.getRecording();
+    // const saveFile = async () => {
+    //     const blob = await recordWebcam.getRecording();
+    // }
+    function toObject(arr) {
+        var rv = {};
+        for (const index in arr) {
+            var key = Object.keys(arr[index])
+            var value = arr[index].value
+            rv = { ...rv, [key]: value }
+            // console.log("listing the keys")
+            // console.log(formState.index)
+        }
+        return rv
     }
     const handleProgression = (event) => {
         switch (currentQuestion) {
@@ -236,14 +249,26 @@ function Assessment() {
             default:
                 const nextQuestion = currentQuestion + 1
                 setCurrentQuestion(nextQuestion)
-                // synth.speak(utterThis)
-                console.log(`moving onto question ${nextQuestion}`)
-                console.log(`${questions[currentQuestion].question}`)
-
         }
     }
-
-
+    const handleChange = (event) => {
+        // const { name, value } = event.target
+        console.log("hey i be triggered")
+        const index = currentQuestion
+        const name = event.target.name
+        const value = event.target.value
+        console.log(name)
+        console.log(value)
+        setFormState({
+            ...formState,
+            [index]: { name: value }
+        })
+        console.log(formState)
+    }
+    const handleSubmit = (event) => {
+        var finalFormState = toObject(formState)
+        console.log(finalFormState)
+    }
     return (
         <div className="assessmentContainer">
 
@@ -273,12 +298,15 @@ function Assessment() {
                             <input
                                 name={questions[currentQuestion].name}
                                 type="text"
-                            // value={formState.{currentQuestion}}
+                                // value={formState}
+                                value={formState[currentQuestion].value}
+                                onChange={handleChange}
                             />
                         )}
                 </form>
                 {/* <input></input> */}
-                <button onClick={handleProgression}>Next </button>
+                <button className="progressBtn" onClick={handleProgression}>Next </button>
+                <button onClick={handleSubmit}>Submit</button>
                 <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
             </div>
         </div >

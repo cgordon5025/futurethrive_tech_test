@@ -3,7 +3,6 @@ const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 const generateCSV = require('../template/generateCSV');
 const writeToFile = require('../utils/writeToFile');
-const { raw } = require('express');
 // const { json2csv } = require('json2csv')
 const resolvers = {
     Query: {

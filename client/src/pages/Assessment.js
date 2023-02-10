@@ -10,9 +10,8 @@ function Assessment() {
     const [deathInFamily, setDeathInFamily] = useState(false)
     const [sickInFamily, setSickInFamily] = useState(false)
     const [outsideHelp, setOutsideHelp] = useState(false)
-    // console.log(questions.length)
-    // const [formState, setFormState] = useState()
-    var finalFormState = {};
+    const [isWorried, setIsWorried] = useState(false)
+
     const [formState, setFormState] = useState([
         { age: "" },
         { grade: "" },
@@ -219,29 +218,88 @@ function Assessment() {
     const utterThis = new SpeechSynthesisUtterance(questions[currentQuestion].question);
     utterThis.rate = rate;
     utterThis.voice = daniel;
-
+    console.log(formState)
     function toObject(arr) {
         var rv = {};
         for (const index in arr) {
             var key = Object.keys(arr[index])
             var value = Object.values(arr[index])
-            // var value = arr[index].value
-            console.log(key)
-            console.log(value)
-
             rv = { ...rv, [key]: value[0] }
-
         }
         return rv
     }
-
+    const handleYes = (event) => {
+        var value
+        if (event.target.value == "on") {
+            value = true
+        }
+        // const value = event.target.value
+        console.log(value)
+        var name;
+        console.log(currentQuestion)
+        switch (currentQuestion) {
+            case 4:
+                name = "outsideHelp"
+                break;
+            case 7:
+                name = "recentDeath"
+                break;
+            case 9:
+                name = "familySick"
+                break;
+            case 15:
+                name = "academics"
+                break;
+            case 16:
+                name = "schoolTrouble"
+                break;
+            case 17:
+                name = "schoolFriends"
+                break;
+            case 18:
+                name = "madeFunOf"
+                break;
+            case 21:
+                name = "areWorried"
+                break;
+        }
+        setFormState({
+            ...formState, [currentQuestion]: { [name]: value }
+        })
+    }
+    const handleNo = (event) => {
+        const value = event.target.value
+        var name;
+        switch (currentQuestion) {
+            case 4:
+                name = "outsideHelp"
+            case 7:
+                name = "recentDeath"
+            case 9:
+                name = "familySick"
+            case 15:
+                name = "academics"
+            case 16:
+                name = "schoolTrouble"
+            case 17:
+                name = "schoolFriends"
+            case 18:
+                name = "madeFunOf"
+            case 21:
+                name = "areWorried"
+        }
+        setFormState({
+            ...formState, [name]: value
+        })
+    }
     const handleProgression = (event) => {
         console.log()
-
-
         switch (currentQuestion) {
             case 4:
                 if (outsideHelp == true) {
+                    const tempObj = { "outsideHelp": true }
+                    setFormState({ ...formState }, ...tempObj)
+                    console.log(formState)
                     console.log("on the outside help questions")
                     const nextQuestion = currentQuestion + 1
                     setCurrentQuestion(nextQuestion)
@@ -272,6 +330,16 @@ function Assessment() {
                     setCurrentQuestion(nextQuestion)
                     break;
                 }
+            case 21:
+                if (isWorried) {
+                    const nextQuestion = currentQuestion + 1
+                    setCurrentQuestion(nextQuestion)
+                    break;
+                } else {
+                    const nextQuestion = currentQuestion + 3
+                    setCurrentQuestion(nextQuestion)
+                    break;
+                }
             default:
                 const nextQuestion = currentQuestion + 1
                 setCurrentQuestion(nextQuestion)
@@ -292,7 +360,7 @@ function Assessment() {
         var finalFormState = toObject(formState)
         console.log(finalFormState)
     }
-
+    const trueFalseName = questions
     return (
         <div className="assessmentContainer">
 
@@ -307,11 +375,16 @@ function Assessment() {
                                 <label>
                                     <input
                                         type="radio"
+                                        name={questions[currentQuestion].name}
+                                        onChange={handleYes}
                                     />Yes
                                 </label>
                                 <label>
                                     <input
                                         type="radio"
+                                        name={questions[currentQuestion].name}
+
+                                        onChange={handleNo}
                                     />No
                                 </label>
                             </div>

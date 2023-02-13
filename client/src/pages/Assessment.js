@@ -218,7 +218,7 @@ function Assessment() {
     const utterThis = new SpeechSynthesisUtterance(questions[currentQuestion].question);
     utterThis.rate = rate;
     utterThis.voice = daniel;
-    console.log(formState)
+    // console.log(formState)
     function toObject(arr) {
         var rv = {};
         for (const index in arr) {
@@ -237,6 +237,46 @@ function Assessment() {
         console.log(value)
         var name;
         console.log(currentQuestion)
+        switch (currentQuestion) {
+            case 4:
+                name = "outsideHelp"
+                setOutsideHelp(true)
+                break;
+            case 7:
+                name = "recentDeath"
+                setDeathInFamily(true)
+                break;
+            case 9:
+                name = "familySick"
+                setSickInFamily(true)
+                break;
+            case 15:
+                name = "academics"
+                break;
+            case 16:
+                name = "schoolTrouble"
+                break;
+            case 17:
+                name = "schoolFriends"
+                break;
+            case 18:
+                name = "madeFunOf"
+                break;
+            case 21:
+                name = "areWorried"
+                setIsWorried(true)
+                break;
+        }
+        setFormState({
+            ...formState, [currentQuestion]: { [name]: value }
+        })
+    }
+    const handleNo = (event) => {
+        var value
+        if (event.target.value == "on") {
+            value = false
+        }
+        var name;
         switch (currentQuestion) {
             case 4:
                 name = "outsideHelp"
@@ -267,39 +307,14 @@ function Assessment() {
             ...formState, [currentQuestion]: { [name]: value }
         })
     }
-    const handleNo = (event) => {
-        const value = event.target.value
-        var name;
-        switch (currentQuestion) {
-            case 4:
-                name = "outsideHelp"
-            case 7:
-                name = "recentDeath"
-            case 9:
-                name = "familySick"
-            case 15:
-                name = "academics"
-            case 16:
-                name = "schoolTrouble"
-            case 17:
-                name = "schoolFriends"
-            case 18:
-                name = "madeFunOf"
-            case 21:
-                name = "areWorried"
-        }
-        setFormState({
-            ...formState, [name]: value
-        })
-    }
     const handleProgression = (event) => {
         console.log()
         switch (currentQuestion) {
             case 4:
                 if (outsideHelp == true) {
-                    const tempObj = { "outsideHelp": true }
-                    setFormState({ ...formState }, ...tempObj)
-                    console.log(formState)
+                    // const tempObj = { "outsideHelp": true }
+                    // setFormState({ ...formState, "outsideHelp": true })
+                    // console.log(formState)
                     console.log("on the outside help questions")
                     const nextQuestion = currentQuestion + 1
                     setCurrentQuestion(nextQuestion)
@@ -346,7 +361,7 @@ function Assessment() {
         }
     }
     const handleChange = (event) => {
-        console.log("hey i be triggered")
+        // console.log("hey i be triggered")
         const index = currentQuestion
         const name = event.target.name
         const value = event.target.value
@@ -360,7 +375,7 @@ function Assessment() {
         var finalFormState = toObject(formState)
         console.log(finalFormState)
     }
-    const trueFalseName = questions
+
     return (
         <div className="assessmentContainer">
 

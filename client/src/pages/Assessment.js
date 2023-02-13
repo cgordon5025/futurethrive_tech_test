@@ -3,7 +3,7 @@ import { RecordWebcam, useRecordWebcam } from 'react-record-webcam';
 import { SAVE_ANSWERS } from "../utils/mutations";
 import { useMutation } from "@apollo/client";
 
-function Assessment() {
+function Assessment({ setCamStatus, camStatus }) {
 
     const [currentQuestion, setCurrentQuestion] = useState(0)
     //these states will be used to trigger the contigency, if they respond yes it will flip to true and show the corresponding questions, if false it will skip it
@@ -388,6 +388,7 @@ function Assessment() {
         } catch (error) {
             console.log(error)
         };
+        setCamStatus(true)
         // setFormState([
         //     { age: "" },
         //     { grade: "" },
@@ -462,11 +463,11 @@ function Assessment() {
                     (
                         <>
                             <button className="progressBtn" onClick={handleProgression}>Next </button>
-                            <button onClick={handleSubmit}>Submit</button>
+                            <button style={{ marginTop: "10%" }} onClick={handleSubmit}>Submit</button>
                         </>
 
                     ) : (
-                        <button onClick={handleSubmit}>Submit</button>
+                        <button style={{ marginTop: "10%" }} onClick={handleSubmit}>Submit</button>
                     )}
                 <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
             </div>

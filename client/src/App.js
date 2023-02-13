@@ -32,20 +32,32 @@ const client = new ApolloClient({
 })
 
 function App() {
-  const [welcomeDisplay, setWelcomeDisplay] = useState("block")
+  const [welcomeDisplay, setWelcomeDisplay] = useState("flex-root")
   const [assessmentDisplay, setAssessmentDisplay] = useState("none")
+  const [camButton, setcamButton] = useState("block")
+  const [startButton, setStartButton] = useState("none")
+  const [camStatus, setCamStatus] = useState(false)
   const recordWebcam = useRecordWebcam({ frameRate: 60 })
   const saveFile = async () => {
     const blob = await recordWebcam.getRecording();
   };
   console.log(recordWebcam.status)
-  // recordWebcam.open()
-  // useEffect(() => {
-  //   recordWebcam.open()
-  // }, [])
+  useEffect(() => {
+    recordWebcam.open()
+  }, [])
+  useEffect(() => {
+    if (camStatus == true) {
+      recordWebcam.stop()
+    }
+  })
+
+  const confirmView = async () => {
+    setcamButton("none")
+    setStartButton("block")
+  }
   const startSession = async () => {
     // await recordWebcam.open()
-    // await recordWebcam.start()
+    await recordWebcam.start()
     setWelcomeDisplay("none")
     setAssessmentDisplay("block")
     // window.location.replace('/Assessment')
@@ -55,19 +67,18 @@ function App() {
     <ApolloProvider client={client}>
       <div className="App">
         <div className='WelcomeContainer' style={{ display: welcomeDisplay }}>
-          <p>Welcome statement about confidentiality and such</p>
-          <Button onClick={startSession}>Lets begin</Button>
-          {/* <div>
-            <p>Camera status: {recordWebcam.status}</p>
-            <button onClick={recordWebcam.open}>Open camera</button>
-            <button onClick={recordWebcam.start}>Start recording</button>
-            <button onClick={recordWebcam.stop}>Stop recording</button>
-            <button onClick={recordWebcam.retake}>Retake recording</button>
-            <button onClick={recordWebcam.download}>Download recording</button>
-            <button onClick={saveFile}>Save file to server</button>
-            <video ref={recordWebcam.webcamRef} autoPlay muted />
-            <video ref={recordWebcam.previewRef} autoPlay muted loop />
-          </div> */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <p>Welcome statement about confidentiality and such</p>
+            <p>Before we being please make sure you can see your whole head in the display.</p>
+            <div style={{ display: camButton }}>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <video style={{ width: "50vw", marginBottom: "2.5%" }} ref={recordWebcam.webcamRef} autoPlay muted />
+
+                <Button onClick={confirmView}>I can see myself</Button>
+              </div>
+            </div>
+            <Button style={{ display: startButton }} onClick={startSession}>Lets begin</Button>
+          </div>
         </div>
         <div>
           <p>Camera status: {recordWebcam.status}</p>
@@ -77,11 +88,11 @@ function App() {
           <button onClick={recordWebcam.retake}>Retake recording</button>
           <button onClick={recordWebcam.download}>Download recording</button>
           <button onClick={saveFile}>Save file to server</button>
-          <video ref={recordWebcam.webcamRef} autoPlay muted />
-          <video ref={recordWebcam.previewRef} autoPlay muted loop />
+          {/* <video ref={recordWebcam.webcamRef} autoPlay muted /> */}
+          {/* <video ref={recordWebcam.previewRef} autoPlay muted loop /> */}
         </div>
         <div style={{ display: assessmentDisplay }}>
-          <Assessment />
+          <Assessment camStatus={camStatus} setCamStatus={setCamStatus} />
         </div>
         {/* <Routes>
           <Route path="/Assessment" element={<Assessment />} />

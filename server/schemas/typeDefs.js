@@ -19,6 +19,7 @@ type Results{
     familyHelpDetails: String
     outsideHelp: Boolean
     outsideDetails: String
+    outsideDetails2:String
     recentDeath: Boolean
     whoDeath: String
     sickFamily: Boolean
@@ -32,7 +33,7 @@ type Results{
     schoolFriends: Boolean
     madeFunOf: Boolean
     hobbies: String
-    hobbiesStop: Boolean
+    hobbiesStop: String
     areWorried: Boolean
     whyWorried: String
     makeLessWorry: String
@@ -56,7 +57,7 @@ type Query{
 }
 
 type Mutation{
-    saveAnswers(userId:ID!,age:String!,grade: String!,liveWith: String,familyHelp: Boolean, familyHelpDetails: String,outsideHelp: Boolean,outsideDetails: String,recentDeath: Boolean,whoDeath: String,sickFamily: Boolean,whoSick: String,happyOrSad: String,whySad: String,whyHappy: String,beHappier: String,academics:Boolean,schoolTrouble: Boolean,schoolFriends: Boolean,madeFunOf: Boolean,hobbies: String,hobbiesStop: Boolean,areWorried: Boolean,whyWorried: String,makeLessWorry: String,greatestWorry:String,talents: String):Results
+    saveAnswers(userId:ID!,age:String!,grade: String!,liveWith: String,familyHelp: Boolean, familyHelpDetails: String,outsideHelp: Boolean,outsideDetails: String,outsideDetails2:String,recentDeath: Boolean,whoDeath: String,sickFamily: Boolean,whoSick: String,happyOrSad: String,whySad: String,whyHappy: String,beHappier: String,academics:Boolean,schoolTrouble: Boolean,schoolFriends: Boolean,madeFunOf: Boolean,hobbies: String,hobbiesStop: String,areWorried: Boolean,whyWorried: String,makeLessWorry: String,greatestWorry:String,talents: String):Results
     login(username:String,password:String!):Auth
     saveVideo(userId:ID!,videofile:String):Video
 }

@@ -45,7 +45,7 @@ function App() {
   // }, [])
   const startSession = async () => {
     // await recordWebcam.open()
-    await recordWebcam.start()
+    // await recordWebcam.start()
     setWelcomeDisplay("none")
     setAssessmentDisplay("block")
     // window.location.replace('/Assessment')

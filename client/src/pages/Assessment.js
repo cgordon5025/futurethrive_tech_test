@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { RecordWebcam, useRecordWebcam } from 'react-record-webcam';
-
-
+import { SAVE_ANSWERS } from "../utils/mutations";
+import { useMutation } from "@apollo/client";
 
 function Assessment() {
 
@@ -11,34 +11,35 @@ function Assessment() {
     const [sickInFamily, setSickInFamily] = useState(false)
     const [outsideHelp, setOutsideHelp] = useState(false)
     const [isWorried, setIsWorried] = useState(false)
-
+    const [saveAns, { error, data }] = useMutation(SAVE_ANSWERS)
+    // take this out later, this is for testing purposes
     const [formState, setFormState] = useState([
-        { age: "" },
-        { grade: "" },
-        { liveWith: "" },
-        { familyHelp: "" },
-        { familyHelpDetails: "" },
-        { outsideHelp: "" },
-        { outsideDetails: "" },
-        { recentDeath: "" },
-        { whoDeath: "" },
-        { sickFamily: "" },
-        { whoSick: "" },
-        { happyOrSad: "" },
-        { whySad: "" },
-        { whyHappy: "" },
-        { beHappier: "" },
-        { academics: "" },
-        { schoolTrouble: "" },
-        { schoolFriends: "" },
-        { madeFunOf: "" },
-        { hobbies: "" },
-        { hobbiesStop: "" },
-        { areWorried: "" },
-        { whyWorried: "" },
-        { makeLessWorry: "" },
-        { greatestWorry: "" },
-        { talents: "" }
+        { age: null },
+        { grade: null },
+        { liveWith: null },
+        { familyHelpDetails: null },
+        { outsideHelp: null },
+        { outsideDetails: null },
+        { outsideDetails2: null },
+        { recentDeath: null },
+        { whoDeath: null },
+        { sickFamily: null },
+        { whoSick: null },
+        { happyOrSad: null },
+        { whySad: null },
+        { whyHappy: null },
+        { beHappier: null },
+        { academics: null },
+        { schoolTrouble: null },
+        { schoolFriends: null },
+        { madeFunOf: null },
+        { hobbies: null },
+        { hobbiesStop: null },
+        { areWorried: null },
+        { whyWorried: null },
+        { makeLessWorry: null },
+        { greatestWorry: null },
+        { talents: null }
     ]);
     //here are the questions and data associated with it
     const questions = [
@@ -62,9 +63,9 @@ function Assessment() {
         },
         {
             index: 3,
-            question: "Is there someone in your family you can talk to if you need help? Yes or no?",
+            question: "Is there someone in your family you can talk to if you need help? If so who?",
             hint: "Mom? Dad? Grandmother? Grandfather? Brother? Sister?",
-            name: "familyHelp",
+            name: "familyHelpDetails",
         },
         {
             index: 4,
@@ -82,7 +83,7 @@ function Assessment() {
             index: 6,
             question: "How do you know them?",
             hint: "",
-            name: "outsideDetails"
+            name: "outsideDetails2"
         },
         {
             index: 7,
@@ -308,7 +309,7 @@ function Assessment() {
         })
     }
     const handleProgression = (event) => {
-        console.log()
+        console.log("hey hey you clicked me")
         switch (currentQuestion) {
             case 4:
                 if (outsideHelp == true) {
@@ -371,9 +372,50 @@ function Assessment() {
         })
         console.log(formState)
     }
-    const handleSubmit = (event) => {
-        var finalFormState = toObject(formState)
-        console.log(finalFormState)
+    const handleSubmit = async (event) => {
+        console.log("submitting")
+        const finalFormState = toObject(formState)
+        // finalFormState.userId = "63e1645e690cc9d7fcf52bd0"
+        console.log({ ...finalFormState })
+        try {
+            const { data } = await saveAns({
+                variables: {
+                    userId: "63ea86c4fd9ddbf82469e45e",
+                    ...finalFormState
+                }
+            });
+            console.log(data)
+        } catch (error) {
+            console.log(error)
+        };
+        // setFormState([
+        //     { age: "" },
+        //     { grade: "" },
+        //     { liveWith: "" },
+        //     { familyHelp: "" },
+        //     { familyHelpDetails: "" },
+        //     { outsideHelp: "" },
+        //     { outsideDetails: "" },
+        //     { recentDeath: "" },
+        //     { whoDeath: "" },
+        //     { sickFamily: "" },
+        //     { whoSick: "" },
+        //     { happyOrSad: "" },
+        //     { whySad: "" },
+        //     { whyHappy: "" },
+        //     { beHappier: "" },
+        //     { academics: "" },
+        //     { schoolTrouble: "" },
+        //     { schoolFriends: "" },
+        //     { madeFunOf: "" },
+        //     { hobbies: "" },
+        //     { hobbiesStop: "" },
+        //     { areWorried: "" },
+        //     { whyWorried: "" },
+        //     { makeLessWorry: "" },
+        //     { greatestWorry: "" },
+        //     { talents: "" }
+        // ]);
     }
 
     return (
@@ -416,8 +458,16 @@ function Assessment() {
                         )}
                 </form>
                 {/* <input></input> */}
-                <button className="progressBtn" onClick={handleProgression}>Next </button>
-                <button onClick={handleSubmit}>Submit</button>
+                {currentQuestion < 25 ?
+                    (
+                        <>
+                            <button className="progressBtn" onClick={handleProgression}>Next </button>
+                            <button onClick={handleSubmit}>Submit</button>
+                        </>
+
+                    ) : (
+                        <button onClick={handleSubmit}>Submit</button>
+                    )}
                 <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
             </div>
         </div >

@@ -20,7 +20,11 @@ const resolvers = {
         }
     },
     Mutation: {
+        //to add back in if we want this, might be causing the issue?
+        // familyHelp:args.familyHelp
+
         saveAnswers: async (parent, args) => {
+
             const newResults = await Results.create({ ...args })
             const updatedUser = await User.findOneAndUpdate(
                 { _id: args.userId },

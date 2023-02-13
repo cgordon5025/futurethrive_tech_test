@@ -27,6 +27,9 @@ const ResultsSchema = new Schema({
     outsideDetails: {
         type: String
     },
+    outsideDetails2: {
+        type: String
+    },
     recentDeath: {
         type: Boolean
     },

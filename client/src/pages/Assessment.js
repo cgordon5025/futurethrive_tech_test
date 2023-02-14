@@ -3,7 +3,7 @@ import { RecordWebcam, useRecordWebcam } from 'react-record-webcam';
 import { SAVE_ANSWERS } from "../utils/mutations";
 import { useMutation } from "@apollo/client";
 
-function Assessment({ setCamStatus, camStatus }) {
+function Assessment({ setCamStatus, camStatus, setEndDisplay, setAssessmentDisplay }) {
 
     const [currentQuestion, setCurrentQuestion] = useState(0)
     //these states will be used to trigger the contigency, if they respond yes it will flip to true and show the corresponding questions, if false it will skip it
@@ -62,7 +62,7 @@ function Assessment({ setCamStatus, camStatus }) {
             name: "liveWith",
         },
         {
-            index: 3,
+            index: 3,//make this have choices so they can select mom dad brother sister
             question: "Is there someone in your family you can talk to if you need help? If so who?",
             hint: "Mom? Dad? Grandmother? Grandfather? Brother? Sister?",
             name: "familyHelpDetails",
@@ -388,6 +388,8 @@ function Assessment({ setCamStatus, camStatus }) {
         } catch (error) {
             console.log(error)
         };
+        setAssessmentDisplay("none")
+        setEndDisplay("block")
         setCamStatus(true)
         // setFormState([
         //     { age: "" },

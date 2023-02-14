@@ -34,6 +34,7 @@ const client = new ApolloClient({
 function App() {
   const [welcomeDisplay, setWelcomeDisplay] = useState("flex-root")
   const [assessmentDisplay, setAssessmentDisplay] = useState("none")
+  const [endDisplay, setEndDisplay] = useState("none")
   const [camButton, setcamButton] = useState("block")
   const [startButton, setStartButton] = useState("none")
   const [camStatus, setCamStatus] = useState(false)
@@ -92,7 +93,13 @@ function App() {
           {/* <video ref={recordWebcam.previewRef} autoPlay muted loop /> */}
         </div>
         <div style={{ display: assessmentDisplay }}>
-          <Assessment camStatus={camStatus} setCamStatus={setCamStatus} />
+          <Assessment camStatus={camStatus} setCamStatus={setCamStatus} setAssessmentDisplay={setAssessmentDisplay} setEndDisplay={setEndDisplay} />
+        </div>
+        <div style={{ display: endDisplay }}>
+          <div className='WelcomeContainer'>
+            <p>You have completed this</p>
+            <p>More instructions to follow, include a timeout portion such that it'll log them out, restart the app etc</p>
+          </div>
         </div>
         {/* <Routes>
           <Route path="/Assessment" element={<Assessment />} />

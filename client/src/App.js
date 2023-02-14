@@ -38,30 +38,37 @@ function App() {
   const [camButton, setcamButton] = useState("block")
   const [startButton, setStartButton] = useState("none")
   const [camStatus, setCamStatus] = useState(false)
-  const recordWebcam = useRecordWebcam({ frameRate: 60 })
+  // const recordWebcam = useRecordWebcam({ frameRate: 60 })
+  const Options = {
+    fileName: "test-filename",
+    mimeType: "video/mp4",
+  }
+  const recordWebcam = useRecordWebcam({ frameRate: 60, mimeType: 'video/mp4', fileName: "test" })
   const saveFile = async () => {
     const blob = await recordWebcam.getRecording();
+    console.log(blob)
+    console.log(recordWebcam.download)
   };
+  // console.log(recordWebcam.)
   console.log(recordWebcam.status)
-  useEffect(() => {
-    recordWebcam.open()
-  }, [])
-  useEffect(() => {
-    if (camStatus == true) {
-      recordWebcam.stop()
-    }
-  })
+
+  // useEffect(() => {
+  //   recordWebcam.open()
+  // }, [])
+  // useEffect(() => {
+  //   if (camStatus == true) {
+  //     recordWebcam.stop()
+  //   }
+  // })
 
   const confirmView = async () => {
     setcamButton("none")
     setStartButton("block")
   }
   const startSession = async () => {
-    // await recordWebcam.open()
     await recordWebcam.start()
     setWelcomeDisplay("none")
     setAssessmentDisplay("block")
-    // window.location.replace('/Assessment')
   }
 
   return (
@@ -82,6 +89,8 @@ function App() {
           </div>
         </div>
         <div>
+          {/* this renders an open/close/start/stop and download button look into ways to get a save to server/autosave to server */}
+          <RecordWebcam options={Options} />
           <p>Camera status: {recordWebcam.status}</p>
           <button onClick={recordWebcam.open}>Open camera</button>
           <button onClick={recordWebcam.start}>Start recording</button>

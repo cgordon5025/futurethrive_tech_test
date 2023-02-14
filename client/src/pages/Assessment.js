@@ -63,8 +63,8 @@ function Assessment({ setCamStatus, camStatus, setEndDisplay, setAssessmentDispl
         },
         {
             index: 3,//make this have choices so they can select mom dad brother sister
-            question: "Is there someone in your family you can talk to if you need help? If so who?",
-            hint: "Mom? Dad? Grandmother? Grandfather? Brother? Sister?",
+            question: "Who can you talk to in your family if you need help?",
+            hint: ["Mom", "Dad", "Grandmother", "Grandfather", "Brother", "Sister"],
             name: "familyHelpDetails",
         },
         {
@@ -451,7 +451,6 @@ function Assessment({ setCamStatus, camStatus, setEndDisplay, setAssessmentDispl
 
                         ) :
                         (
-
                             <input
                                 name={questions[currentQuestion].name}
                                 type="text"

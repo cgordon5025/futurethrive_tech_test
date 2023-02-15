@@ -34,10 +34,6 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
 
     const [currentQuestion, setCurrentQuestion] = useState(0)
     //these states will be used to trigger the contigency, if they respond yes it will flip to true and show the corresponding questions, if false it will skip it
-    const [deathInFamily, setDeathInFamily] = useState(false)
-    const [sickInFamily, setSickInFamily] = useState(false)
-    const [outsideHelp, setOutsideHelp] = useState(false)
-    const [isWorried, setIsWorried] = useState(false)
     const [saveAns, { error, data }] = useMutation(SAVE_ANSWERS)
     // take this out later, this is for testing purposes
     const [formState, setFormState] = useState(
@@ -268,36 +264,36 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
         console.log(value)
         var name;
         console.log(currentQuestion)
-        switch (currentQuestion) {
-            case 4:
-                name = "outsideHelp"
-                setOutsideHelp(true)
-                break;
-            case 7:
-                name = "recentDeath"
-                setDeathInFamily(true)
-                break;
-            case 9:
-                name = "familySick"
-                setSickInFamily(true)
-                break;
-            case 15:
-                name = "academics"
-                break;
-            case 16:
-                name = "schoolTrouble"
-                break;
-            case 17:
-                name = "schoolFriends"
-                break;
-            case 18:
-                name = "madeFunOf"
-                break;
-            case 21:
-                name = "areWorried"
-                setIsWorried(true)
-                break;
-        }
+        // switch (currentQuestion) {
+        //     case 4:
+        //         name = "outsideHelp"
+        //         setOutsideHelp(true)
+        //         break;
+        //     case 7:
+        //         name = "recentDeath"
+        //         setDeathInFamily(true)
+        //         break;
+        //     case 9:
+        //         name = "familySick"
+        //         setSickInFamily(true)
+        //         break;
+        //     case 15:
+        //         name = "academics"
+        //         break;
+        //     case 16:
+        //         name = "schoolTrouble"
+        //         break;
+        //     case 17:
+        //         name = "schoolFriends"
+        //         break;
+        //     case 18:
+        //         name = "madeFunOf"
+        //         break;
+        //     case 21:
+        //         name = "areWorried"
+        //         setIsWorried(true)
+        //         break;
+        // }
         setFormState({
             ...formState, [currentQuestion]: { [name]: value }
         })
@@ -340,56 +336,56 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
     }
     const handleProgression = (event) => {
         console.log("hey hey you clicked me")
-        switch (currentQuestion) {
-            case 4:
-                if (outsideHelp == true) {
-                    // const tempObj = { "outsideHelp": true }
-                    // setFormState({ ...formState, "outsideHelp": true })
-                    // console.log(formState)
-                    console.log("on the outside help questions")
-                    const nextQuestion = currentQuestion + 1
-                    setCurrentQuestion(nextQuestion)
-                    break;
-                } else {
-                    //skip the next two questions to continue onwards
-                    const nextQuestion = currentQuestion + 3
-                    setCurrentQuestion(nextQuestion)
-                    break;
-                }
-            case 7:
-                if (deathInFamily) {
-                    const nextQuestion = currentQuestion + 1
-                    setCurrentQuestion(nextQuestion)
-                    break;
-                } else {
-                    const nextQuestion = currentQuestion + 2
-                    setCurrentQuestion(nextQuestion)
-                    break;
-                }
-            case 9:
-                if (sickInFamily) {
-                    const nextQuestion = currentQuestion + 1
-                    setCurrentQuestion(nextQuestion)
-                    break;
-                } else {
-                    const nextQuestion = currentQuestion + 2
-                    setCurrentQuestion(nextQuestion)
-                    break;
-                }
-            case 21:
-                if (isWorried) {
-                    const nextQuestion = currentQuestion + 1
-                    setCurrentQuestion(nextQuestion)
-                    break;
-                } else {
-                    const nextQuestion = currentQuestion + 3
-                    setCurrentQuestion(nextQuestion)
-                    break;
-                }
-            default:
-                const nextQuestion = currentQuestion + 1
-                setCurrentQuestion(nextQuestion)
-        }
+        // switch (currentQuestion) {
+        //     case 4:
+        //         if (outsideHelp == true) {
+        //             // const tempObj = { "outsideHelp": true }
+        //             // setFormState({ ...formState, "outsideHelp": true })
+        //             // console.log(formState)
+        //             console.log("on the outside help questions")
+        //             const nextQuestion = currentQuestion + 1
+        //             setCurrentQuestion(nextQuestion)
+        //             break;
+        //         } else {
+        //             //skip the next two questions to continue onwards
+        //             const nextQuestion = currentQuestion + 3
+        //             setCurrentQuestion(nextQuestion)
+        //             break;
+        //         }
+        //     case 7:
+        //         if (deathInFamily) {
+        //             const nextQuestion = currentQuestion + 1
+        //             setCurrentQuestion(nextQuestion)
+        //             break;
+        //         } else {
+        //             const nextQuestion = currentQuestion + 2
+        //             setCurrentQuestion(nextQuestion)
+        //             break;
+        //         }
+        //     case 9:
+        //         if (sickInFamily) {
+        //             const nextQuestion = currentQuestion + 1
+        //             setCurrentQuestion(nextQuestion)
+        //             break;
+        //         } else {
+        //             const nextQuestion = currentQuestion + 2
+        //             setCurrentQuestion(nextQuestion)
+        //             break;
+        //         }
+        //     case 21:
+        //         if (isWorried) {
+        //             const nextQuestion = currentQuestion + 1
+        //             setCurrentQuestion(nextQuestion)
+        //             break;
+        //         } else {
+        //             const nextQuestion = currentQuestion + 3
+        //             setCurrentQuestion(nextQuestion)
+        //             break;
+        //         }
+        //     default:
+        //         const nextQuestion = currentQuestion + 1
+        //         setCurrentQuestion(nextQuestion)
+        // }
     }
     const handleChange = (event) => {
         // console.log("hey i be triggered")

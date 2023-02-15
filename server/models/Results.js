@@ -12,15 +12,15 @@ const ResultsSchema = new Schema({
     grade: {
         type: String
     },
-    liveWith: {
+    liveWith: [{
         type: String
-    },
+    }],
     familyHelp: {
         type: Boolean
     },
-    familyHelpDetails: {
+    familyHelpDetails: [{
         type: String
-    },
+    }],
     outsideHelp: {
         type: Boolean
     },

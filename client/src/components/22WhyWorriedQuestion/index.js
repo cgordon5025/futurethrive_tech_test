@@ -16,12 +16,14 @@ const WhyWorriedQuestion = ({ formState, setFormState, setCurrentQuestion, curre
 
     return (
         <div className='questionContainer'>
-            <p>What makes you feel worried?</p>
-            <input
-                name='whyWorried'
-                value={formState.whyWorried}
-                onChange={handleChange}
-            />
+            <div className='formContainer'>
+                <p>What makes you feel worried?</p>
+                <input
+                    name='whyWorried'
+                    value={formState.whyWorried}
+                    onChange={handleChange}
+                />
+            </div>
             <button className='progressBtn' onClick={handleProgression}>Next</button>
         </div>
     )

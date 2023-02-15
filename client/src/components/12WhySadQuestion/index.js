@@ -16,12 +16,14 @@ const WhySadQuestion = ({ formState, setFormState, setCurrentQuestion, currentQu
 
     return (
         <div className='questionContainer'>
-            <p>What makes you sad?</p>
-            <input
-                name='whySad'
-                value={formState.whySad}
-                onChange={handleChange}
-            />
+            <div className='formContainer'>
+                <p>What makes you sad?</p>
+                <input
+                    name='whySad'
+                    value={formState.whySad}
+                    onChange={handleChange}
+                />
+            </div>
             <button className='progressBtn' onClick={handleProgression}>Next</button>
         </div>
     )

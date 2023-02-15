@@ -16,12 +16,14 @@ const OutsideHelpWhoQuestion = ({ formState, setFormState, setCurrentQuestion, c
 
     return (
         <div className='questionContainer'>
-            <p>Great, who is it?</p>
-            <input
-                name='outsideDetails'
-                value={formState.outsideDetails}
-                onChange={handleChange}
-            />
+            <div className='formContainer'>
+                <p>Great, who is it?</p>
+                <input
+                    name='outsideDetails'
+                    value={formState.outsideDetails}
+                    onChange={handleChange}
+                />
+            </div>
             <button className='progressBtn' onClick={handleProgression}>Next</button>
         </div>
     )

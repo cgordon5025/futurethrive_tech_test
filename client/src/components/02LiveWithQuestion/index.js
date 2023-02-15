@@ -26,62 +26,60 @@ const LiveWithQuestion = ({ formState, setFormState, setCurrentQuestion, current
     //maybe make this a clicking option
     return (
         <div className='questionContainer'>
-            <p>Who do you live with?</p>
-            <form style={{ display: "flex", flexDirection: "column" }}>
-                <div>
-                    <label for="mother">Mother</label>
-                    <input
-                        type="checkbox"
-                        name="mother"
-                        value="mother"
-                        onChange={handleChange} />
-                </div>
-                <div>
-                    <label for="father">Father</label>
-                    <input
-                        type="checkbox"
-                        name="father"
-                        value="father"
-                        onChange={handleChange} />
-                </div>
-                <div>
-                    <label for="grandmother">Grandmother</label>
-                    <input
-                        type="checkbox"
-                        name="grandmother"
-                        value="grandmother"
-                        onChange={handleChange} />
-                </div>
-                <div>
-                    <label for="grandfather">Grandfather</label>
-                    <input
-                        type="checkbox"
-                        name="grandfather"
-                        value="grandfather"
-                        onChange={handleChange} />
-                </div>
-                <div>
-                    <label for="brother">Brother</label>
-                    <input
-                        type="checkbox"
-                        name="brother"
-                        value="brother"
-                        onChange={handleChange} />
-                </div>
-                <div>
-                    <label for="sister">Sister</label>
-                    <input
-                        type="checkbox"
-                        name="sister"
-                        value="sister"
-                        onChange={handleChange} />
-                </div>
-            </form>
-            {/* <input
-                name='liveWith'
-                value={formState.liveWith}
-                onChange={handleChange}
-            /> */}
+            <div className='formContainer'>
+                <p>Who do you live with?</p>
+                <form style={{ display: "flex", flexDirection: "column" }}>
+                    <div>
+                        <label htmlFor='mother'>Mother</label>
+                        <input
+                            type="checkbox"
+                            name="mother"
+                            value="mother"
+                            onChange={handleChange} />
+                    </div>
+                    <div>
+                        <label htmlFor='father'>Father</label>
+                        <input
+                            type="checkbox"
+                            name="father"
+                            value="father"
+                            onChange={handleChange} />
+                    </div>
+                    <div>
+                        <label htmlFor="grandmother">Grandmother</label>
+                        <input
+                            type="checkbox"
+                            name="grandmother"
+                            value="grandmother"
+                            onChange={handleChange} />
+                    </div>
+                    <div>
+                        <label htmlFor='grandfather'>Grandfather</label>
+                        <input
+                            type="checkbox"
+                            name="grandfather"
+                            value="grandfather"
+                            onChange={handleChange} />
+                    </div>
+                    <div>
+                        <label htmlFor='brother'>Brother</label>
+                        <input
+                            type="checkbox"
+                            name="brother"
+                            value="brother"
+                            onChange={handleChange} />
+                    </div>
+                    <div>
+                        <label htmlFor='sister'>Sister</label>
+                        <input
+                            type="checkbox"
+                            name="sister"
+                            value="sister"
+                            onChange={handleChange} />
+                    </div>
+                </form>
+            </div>
+
             <button className='progressBtn' onClick={handleProgression}>Next</button>
         </div>
     )

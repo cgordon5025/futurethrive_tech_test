@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 
 const SchoolSocialQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
     const handleChange = (event) => {
-        const name = event.target.name
-        const value = event.target.value
-        setFormState({
-            ...formState,
-            [name]: value
-        })
+        console.log(event.target.name)
+        console.log(event.target.value)
+        if (event.target.value == "yes") {
+            setFormState({ ...formState, schoolFriends: true })
+        } else {
+            setFormState({ ...formState, schoolFriends: false })
+        }
     }
     const handleProgression = () => {
         const nextQuestion = currentQuestion + 1
@@ -16,12 +17,27 @@ const SchoolSocialQuestion = ({ formState, setFormState, setCurrentQuestion, cur
 
     return (
         <div className='questionContainer'>
-            <p>Do you have friends at school?</p>
-            <input
-                name='schoolFriends'
-                value={formState.schoolFriends}
-                onChange={handleChange}
-            />
+            <div className='formContainer'>
+                <p>Do you have friends at school?</p>
+                <form>
+                    <label htmlFor="yes">Yes</label>
+                    <input
+                        type="radio"
+                        id="yes"
+                        name="schoolFriends"
+                        value="yes"
+                        onChange={handleChange}
+                    />
+                    <label htmlFor="no">No</label>
+                    <input
+                        type="radio"
+                        id="no"
+                        name="schoolFriends"
+                        value="no"
+                        onChange={handleChange}
+                    />
+                </form>
+            </div>
             <button className='progressBtn' onClick={handleProgression}>Next</button>
         </div>
     )

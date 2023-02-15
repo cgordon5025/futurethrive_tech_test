@@ -16,12 +16,14 @@ const HobbiesStopQuestion = ({ formState, setFormState, setCurrentQuestion, curr
 
     return (
         <div className='questionContainer'>
+            <div className='formContainer'>
             <p>What stops you from doing that?</p>
             <input
                 name='hobbiesStop'
                 value={formState.hobbiesStop}
                 onChange={handleChange}
             />
+            </div>
             <button className='progressBtn' onClick={handleProgression}>Next</button>
         </div>
     )

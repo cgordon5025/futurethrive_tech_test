@@ -16,12 +16,14 @@ const TalentsQuestion = ({ formState, setFormState, setCurrentQuestion, currentQ
 
     return (
         <div className='questionContainer'>
-            <p>What are you really good at?</p>
-            <input
-                name='talents'
-                value={formState.talents}
-                onChange={handleChange}
-            />
+            <div className='formContainer'>
+                <p>What are you really good at?</p>
+                <input
+                    name='talents'
+                    value={formState.talents}
+                    onChange={handleChange}
+                />
+            </div>
             <button className='progressBtn' onClick={handleProgression}>Next</button>
         </div>
     )

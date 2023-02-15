@@ -16,12 +16,14 @@ const AgeQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuest
 
     return (
         <div className='questionContainer'>
-            <p>How old are you?</p>
-            <input
-                name='age'
-                value={formState.age}
-                onChange={handleChange}
-            />
+            <div className="formContainer">
+                <p>How old are you?</p>
+                <input
+                    name='age'
+                    value={formState.age}
+                    onChange={handleChange}
+                />
+            </div>
             <button className='progressBtn' onClick={handleProgression}>Next</button>
         </div>
     )

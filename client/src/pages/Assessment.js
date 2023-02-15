@@ -40,8 +40,8 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
         {
             age: null,
             grade: null,
-            liveWith: null,
-            familyHelpDetails: null,
+            liveWith: [],
+            familyHelpDetails: [],
             outsideHelp: null,
             outsideDetails: null,
             outsideDetails2: null,
@@ -264,39 +264,7 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
         console.log(value)
         var name;
         console.log(currentQuestion)
-        // switch (currentQuestion) {
-        //     case 4:
-        //         name = "outsideHelp"
-        //         setOutsideHelp(true)
-        //         break;
-        //     case 7:
-        //         name = "recentDeath"
-        //         setDeathInFamily(true)
-        //         break;
-        //     case 9:
-        //         name = "familySick"
-        //         setSickInFamily(true)
-        //         break;
-        //     case 15:
-        //         name = "academics"
-        //         break;
-        //     case 16:
-        //         name = "schoolTrouble"
-        //         break;
-        //     case 17:
-        //         name = "schoolFriends"
-        //         break;
-        //     case 18:
-        //         name = "madeFunOf"
-        //         break;
-        //     case 21:
-        //         name = "areWorried"
-        //         setIsWorried(true)
-        //         break;
-        // }
-        setFormState({
-            ...formState, [currentQuestion]: { [name]: value }
-        })
+
     }
     const handleNo = (event) => {
         var value
@@ -417,34 +385,6 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
         setAssessmentDisplay("none")
         setEndDisplay("block")
         setCamStatus(true)
-        // setFormState([
-        //     { age: "" },
-        //     { grade: "" },
-        //     { liveWith: "" },
-        //     { familyHelp: "" },
-        //     { familyHelpDetails: "" },
-        //     { outsideHelp: "" },
-        //     { outsideDetails: "" },
-        //     { recentDeath: "" },
-        //     { whoDeath: "" },
-        //     { sickFamily: "" },
-        //     { whoSick: "" },
-        //     { happyOrSad: "" },
-        //     { whySad: "" },
-        //     { whyHappy: "" },
-        //     { beHappier: "" },
-        //     { academics: "" },
-        //     { schoolTrouble: "" },
-        //     { schoolFriends: "" },
-        //     { madeFunOf: "" },
-        //     { hobbies: "" },
-        //     { hobbiesStop: "" },
-        //     { areWorried: "" },
-        //     { whyWorried: "" },
-        //     { makeLessWorry: "" },
-        //     { greatestWorry: "" },
-        //     { talents: "" }
-        // ]);
     }
     switch (currentQuestion) {
         case 0:

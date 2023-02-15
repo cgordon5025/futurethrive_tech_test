@@ -16,12 +16,14 @@ const WhoDeathQuestion = ({ formState, setFormState, setCurrentQuestion, current
 
     return (
         <div className='questionContainer'>
-            <p>Who?</p>
-            <input
-                name='whoDeath'
-                value={formState.whoDeath}
-                onChange={handleChange}
-            />
+            <div className='formContainer'>
+                <p>Who?</p>
+                <input
+                    name='whoDeath'
+                    value={formState.whoDeath}
+                    onChange={handleChange}
+                />
+            </div>
             <button className='progressBtn' onClick={handleProgression}>Next</button>
         </div>
     )

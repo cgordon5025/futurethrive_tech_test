@@ -16,12 +16,14 @@ const GradeQuestion = ({ formState, setFormState, setCurrentQuestion, currentQue
 
     return (
         <div className='questionContainer'>
-            <p>What grade are you in?</p>
-            <input
-                name='grade'
-                value={formState.grade}
-                onChange={handleChange}
-            />
+            <div className='formContainer'>
+                <p>What grade are you in?</p>
+                <input
+                    name='grade'
+                    value={formState.grade}
+                    onChange={handleChange}
+                />
+            </div>
             <button className='progressBtn' onClick={handleProgression}>Next</button>
         </div>
     )

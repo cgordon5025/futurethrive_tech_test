@@ -24,7 +24,7 @@ code {
 }
 
 .questionContainer {
-  background-color: rgb(255, 255, 255, .5);
+  background-color: rgb(255, 255, 255, .75);
   height: 50%;
   width: 50%;
 }
@@ -42,6 +42,10 @@ div.WelcomeContainer {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+div.formContainer {
+  margin-top: 25%;
 }
 
 #helper {

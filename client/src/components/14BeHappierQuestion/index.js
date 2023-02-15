@@ -16,12 +16,14 @@ const BeHappierQuestion = ({ formState, setFormState, setCurrentQuestion, curren
 
     return (
         <div className='questionContainer'>
-            <p>What could make you even happier?</p>
-            <input
-                name='beHappier'
-                value={formState.beHappier}
-                onChange={handleChange}
-            />
+            <div className='formContainer'>
+                <p>What could make you even happier?</p>
+                <input
+                    name='beHappier'
+                    value={formState.beHappier}
+                    onChange={handleChange}
+                />
+            </div>
             <button className='progressBtn' onClick={handleProgression}>Next</button>
         </div>
     )

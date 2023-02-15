@@ -16,12 +16,14 @@ const GreatestWorryQuestion = ({ formState, setFormState, setCurrentQuestion, cu
 
     return (
         <div className='questionContainer'>
-            <p>What is your greatest worry?</p>
-            <input
-                name='greatestWorry'
-                value={formState.greatestWorry}
-                onChange={handleChange}
-            />
+            <div className='formContainer'>
+                <p>What is your greatest worry?</p>
+                <input
+                    name='greatestWorry'
+                    value={formState.greatestWorry}
+                    onChange={handleChange}
+                />
+            </div>
             <button className='progressBtn' onClick={handleProgression}>Next</button>
         </div>
     )

@@ -42,12 +42,13 @@ function App() {
   const Options = {
     fileName: "test-filename",
     mimeType: "video/mp4",
+    frames: 60
   }
-  const recordWebcam = useRecordWebcam({ frameRate: 60, mimeType: 'video/mp4', fileName: "test" })
+  const recordWebcam = useRecordWebcam(Options)
   const saveFile = async () => {
     const blob = await recordWebcam.getRecording();
-    console.log(blob)
-    console.log(recordWebcam.download)
+    console.log({ blob })
+    // console.log(recordWebcam.download)
   };
   // console.log(recordWebcam.)
   console.log(recordWebcam.status)
@@ -90,7 +91,7 @@ function App() {
         </div>
         <div>
           {/* this renders an open/close/start/stop and download button look into ways to get a save to server/autosave to server */}
-          <RecordWebcam options={Options} />
+          {/* <RecordWebcam options={Options} /> */}
           <p>Camera status: {recordWebcam.status}</p>
           <button onClick={recordWebcam.open}>Open camera</button>
           <button onClick={recordWebcam.start}>Start recording</button>
@@ -102,7 +103,7 @@ function App() {
           {/* <video ref={recordWebcam.previewRef} autoPlay muted loop /> */}
         </div>
         <div style={{ display: assessmentDisplay }}>
-          <Assessment camStatus={camStatus} setCamStatus={setCamStatus} setAssessmentDisplay={setAssessmentDisplay} setEndDisplay={setEndDisplay} />
+          <Assessment setCamStatus={setCamStatus} setAssessmentDisplay={setAssessmentDisplay} setEndDisplay={setEndDisplay} />
         </div>
         <div style={{ display: endDisplay }}>
           <div className='WelcomeContainer'>

@@ -2,8 +2,35 @@ import React, { useState } from "react"
 import { RecordWebcam, useRecordWebcam } from 'react-record-webcam';
 import { SAVE_ANSWERS } from "../utils/mutations";
 import { useMutation } from "@apollo/client";
+//lets import all of the components for the questions
+import AgeQuestion from "../components/00AgeQuestion";
+import GradeQuestion from "../components/01GradeQuestion";
+import LiveWithQuestion from "../components/02LiveWithQuestion";
+import FamilyHelpQuestion from "../components/03FamilyHelpQuestion";
+import OutsideHelpQuestion from "../components/04OutsideHelpQuestion";
+import OutsideHelpWhoQuestion from "../components/05OutsideHelpWhoQuestion";
+import OutsideHelpHowQuestion from "../components/06OutsideHelpHowQuestion";
+import RecentDeathQuestion from "../components/07RecentDeathQuestion";
+import WhoDeathQuestion from "../components/08WhoDeathQuestion";
+import SickFamilyQuestion from "../components/09SickFamilyQuestion";
+import WhoSickQuestion from "../components/10WhoSickQuestion";
+import HappyOrSadQuestion from "../components/11HappyOrSadQuestion";
+import WhySadQuestion from "../components/12WhySadQuestion";
+import WhyHappyQuestion from "../components/13WhyHappyQuestion";
+import BeHappierQuestion from "../components/14BeHappierQuestion";
+import AcademicsQuestion from "../components/15AcadmicsQuestion";
+import SchoolTroubleQuestion from "../components/16SchoolTroubleQuestion";
+import SchoolSocialQuestion from "../components/17SchoolSocialQuestion";
+import MadeFunOfQuestion from "../components/18MadeFunOfQuestion";
+import HobbiesQuestion from "../components/19HobbiesQuestion";
+import HobbiesStopQuestion from "../components/20HobbiesStopQuestion";
+import AreWorriedQuestion from "../components/21AreWorriedQuestion";
+import WhyWorriedQuestion from "../components/22WhyWorriedQuestion";
+import MakeLessWorriedQuestion from "../components/23MakeLessWorriedQuestion";
+import GreatestWorryQuestion from "../components/24GreatestWorryQuestion";
+import TalentsQuestion from "../components/25TalentQuestion";
 
-function Assessment({ setCamStatus, camStatus, setEndDisplay, setAssessmentDisplay }) {
+function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
 
     const [currentQuestion, setCurrentQuestion] = useState(0)
     //these states will be used to trigger the contigency, if they respond yes it will flip to true and show the corresponding questions, if false it will skip it
@@ -13,34 +40,37 @@ function Assessment({ setCamStatus, camStatus, setEndDisplay, setAssessmentDispl
     const [isWorried, setIsWorried] = useState(false)
     const [saveAns, { error, data }] = useMutation(SAVE_ANSWERS)
     // take this out later, this is for testing purposes
-    const [formState, setFormState] = useState([
-        { age: null },
-        { grade: null },
-        { liveWith: null },
-        { familyHelpDetails: null },
-        { outsideHelp: null },
-        { outsideDetails: null },
-        { outsideDetails2: null },
-        { recentDeath: null },
-        { whoDeath: null },
-        { sickFamily: null },
-        { whoSick: null },
-        { happyOrSad: null },
-        { whySad: null },
-        { whyHappy: null },
-        { beHappier: null },
-        { academics: null },
-        { schoolTrouble: null },
-        { schoolFriends: null },
-        { madeFunOf: null },
-        { hobbies: null },
-        { hobbiesStop: null },
-        { areWorried: null },
-        { whyWorried: null },
-        { makeLessWorry: null },
-        { greatestWorry: null },
-        { talents: null }
-    ]);
+    const [formState, setFormState] = useState(
+        {
+            age: null,
+            grade: null,
+            liveWith: null,
+            familyHelpDetails: null,
+            outsideHelp: null,
+            outsideDetails: null,
+            outsideDetails2: null,
+            recentDeath: null,
+            whoDeath: null,
+            sickFamily: null,
+            whoSick: null,
+            happyOrSad: null,
+            whySad: null,
+            whyHappy: null,
+            beHappier: null,
+            academics: null,
+            schoolTrouble: null,
+            schoolFriends: null,
+            madeFunOf: null,
+            hobbies: null,
+            hobbiesStop: null,
+            areWorried: null,
+            whyWorried: null,
+            makeLessWorry: null,
+            greatestWorry: null,
+            talents: null
+        }
+    );
+    console.log(formState)
     //here are the questions and data associated with it
     const questions = [
         {
@@ -201,24 +231,24 @@ function Assessment({ setCamStatus, camStatus, setEndDisplay, setAssessmentDispl
         }
     ]
     //setting up the voice reader
-    const rate = .8;
-    const synth = window.speechSynthesis;
-    const voices = synth.getVoices().sort(function (a, b) {
-        const aname = a.name.toUpperCase();
-        const bname = b.name.toUpperCase();
+    // const rate = .8;
+    // const synth = window.speechSynthesis;
+    // const voices = synth.getVoices().sort(function (a, b) {
+    //     const aname = a.name.toUpperCase();
+    //     const bname = b.name.toUpperCase();
 
-        if (aname < bname) {
-            return -1;
-        } else if (aname == bname) {
-            return 0;
-        } else {
-            return +1;
-        }
-    });
-    const daniel = voices[14];
-    const utterThis = new SpeechSynthesisUtterance(questions[currentQuestion].question);
-    utterThis.rate = rate;
-    utterThis.voice = daniel;
+    //     if (aname < bname) {
+    //         return -1;
+    //     } else if (aname == bname) {
+    //         return 0;
+    //     } else {
+    //         return +1;
+    //     }
+    // });
+    // const daniel = voices[14];
+    // const utterThis = new SpeechSynthesisUtterance(questions[currentQuestion].question);
+    // utterThis.rate = rate;
+    // utterThis.voice = daniel;
     // console.log(formState)
     function toObject(arr) {
         var rv = {};
@@ -420,60 +450,166 @@ function Assessment({ setCamStatus, camStatus, setEndDisplay, setAssessmentDispl
         //     { talents: "" }
         // ]);
     }
+    switch (currentQuestion) {
+        case 0:
+            return (
+                <AgeQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 1:
+            return (
+                <GradeQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 2:
+            return (
+                <LiveWithQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 3:
+            return (
+                <FamilyHelpQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 4:
+            return (
+                <OutsideHelpQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 5:
+            return (
+                <OutsideHelpWhoQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 6:
+            return (
+                <OutsideHelpHowQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 7:
+            return (
+                <RecentDeathQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 8:
+            return (
+                <WhoDeathQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 9:
+            return (
+                <SickFamilyQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 10:
+            return (
+                <WhoSickQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 11:
+            return (
+                <HappyOrSadQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 12:
+            return (
+                <WhySadQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 13:
+            return (
+                <WhyHappyQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 14:
+            return (
+                <BeHappierQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 15:
+            return (
+                <AcademicsQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 16:
+            return (
+                <SchoolTroubleQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 17:
+            return (
+                <SchoolSocialQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 18:
+            return (
+                <MadeFunOfQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 19:
+            return (
+                <HobbiesQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 20:
+            return (
+                <HobbiesStopQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 21:
+            return (
+                <AreWorriedQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 22:
+            return (
+                <WhyWorriedQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 23:
+            return (
+                <MakeLessWorriedQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 24:
+            return (
+                <GreatestWorryQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+            )
+        case 25:
+            return (
+                <TalentsQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} setAssessmentDisplay={setAssessmentDisplay} setEndDisplay={setEndDisplay} setCamStatus={setCamStatus} />
+            )
 
-    return (
-        <div className="assessmentContainer">
+    }
+    // return (
+    //     <div className="assessmentContainer">
 
-            {/* need a plan b if the launched version does repeat twice, seems like it wont as its a dev tool */}
-            {/* {synth.speak(utterThis)} */}
-            <div className="questionContainer">
-                <h2> {questions[currentQuestion].question}</h2>
-                <form>
-                    {currentQuestion == 4 || currentQuestion == 7 || currentQuestion == 9 || currentQuestion == 15 || currentQuestion == 16 || currentQuestion == 17 || currentQuestion == 18 || currentQuestion == 21 ?
-                        (
-                            <div>
-                                <label>
-                                    <input
-                                        type="radio"
-                                        name={questions[currentQuestion].name}
-                                        onChange={handleYes}
-                                    />Yes
-                                </label>
-                                <label>
-                                    <input
-                                        type="radio"
-                                        name={questions[currentQuestion].name}
+    //         {/* need a plan b if the launched version does repeat twice, seems like it wont as its a dev tool */}
+    //         {/* {synth.speak(utterThis)} */}
+    //         <div className="questionContainer">
+    //             <h2> {questions[currentQuestion].question}</h2>
+    //             <form>
+    //                 {currentQuestion == 4 || currentQuestion == 7 || currentQuestion == 9 || currentQuestion == 15 || currentQuestion == 16 || currentQuestion == 17 || currentQuestion == 18 || currentQuestion == 21 ?
+    //                     (
+    //                         <div>
+    //                             <label>
+    //                                 <input
+    //                                     type="radio"
+    //                                     name={questions[currentQuestion].name}
+    //                                     onChange={handleYes}
+    //                                 />Yes
+    //                             </label>
+    //                             <label>
+    //                                 <input
+    //                                     type="radio"
+    //                                     name={questions[currentQuestion].name}
 
-                                        onChange={handleNo}
-                                    />No
-                                </label>
-                            </div>
+    //                                     onChange={handleNo}
+    //                                 />No
+    //                             </label>
+    //                         </div>
 
-                        ) :
-                        (
-                            <input
-                                name={questions[currentQuestion].name}
-                                type="text"
-                                value={[Object.values(formState[currentQuestion])]}
-                                onChange={handleChange}
-                            />
-                        )}
-                </form>
-                {/* <input></input> */}
-                {currentQuestion < 25 ?
-                    (
-                        <>
-                            <button className="progressBtn" onClick={handleProgression}>Next </button>
-                            <button style={{ marginTop: "10%" }} onClick={handleSubmit}>Submit</button>
-                        </>
+    //                     ) :
+    //                     (
+    //                         <input
+    //                             name={questions[currentQuestion].name}
+    //                             type="text"
+    //                             value={[Object.values(formState[currentQuestion])]}
+    //                             onChange={handleChange}
+    //                         />
+    //                     )}
+    //             </form>
+    //             {/* <input></input> */}
+    //             {currentQuestion < 25 ?
+    //                 (
+    //                     <>
+    //                         <button className="progressBtn" onClick={handleProgression}>Next </button>
+    //                         <button style={{ marginTop: "10%" }} onClick={handleSubmit}>Submit</button>
+    //                     </>
 
-                    ) : (
-                        <button style={{ marginTop: "10%" }} onClick={handleSubmit}>Submit</button>
-                    )}
-                <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
-            </div>
-        </div >
-    )
+    //                 ) : (
+    //                     <button style={{ marginTop: "10%" }} onClick={handleSubmit}>Submit</button>
+    //                 )}
+    //             <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
+    //         </div>
+    //     </div >
+    // )
 }
 // import dog from '../../public/images/NEW_dog'
 

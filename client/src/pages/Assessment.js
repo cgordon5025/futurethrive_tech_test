@@ -246,115 +246,6 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
     // utterThis.rate = rate;
     // utterThis.voice = daniel;
     // console.log(formState)
-    function toObject(arr) {
-        var rv = {};
-        for (const index in arr) {
-            var key = Object.keys(arr[index])
-            var value = Object.values(arr[index])
-            rv = { ...rv, [key]: value[0] }
-        }
-        return rv
-    }
-    const handleYes = (event) => {
-        var value
-        if (event.target.value == "on") {
-            value = true
-        }
-        // const value = event.target.value
-        console.log(value)
-        var name;
-        console.log(currentQuestion)
-
-    }
-    const handleNo = (event) => {
-        var value
-        if (event.target.value == "on") {
-            value = false
-        }
-        var name;
-        switch (currentQuestion) {
-            case 4:
-                name = "outsideHelp"
-                break;
-            case 7:
-                name = "recentDeath"
-                break;
-            case 9:
-                name = "familySick"
-                break;
-            case 15:
-                name = "academics"
-                break;
-            case 16:
-                name = "schoolTrouble"
-                break;
-            case 17:
-                name = "schoolFriends"
-                break;
-            case 18:
-                name = "madeFunOf"
-                break;
-            case 21:
-                name = "areWorried"
-                break;
-        }
-        setFormState({
-            ...formState, [currentQuestion]: { [name]: value }
-        })
-    }
-    const handleProgression = (event) => {
-        console.log("hey hey you clicked me")
-        // switch (currentQuestion) {
-        //     case 4:
-        //         if (outsideHelp == true) {
-        //             // const tempObj = { "outsideHelp": true }
-        //             // setFormState({ ...formState, "outsideHelp": true })
-        //             // console.log(formState)
-        //             console.log("on the outside help questions")
-        //             const nextQuestion = currentQuestion + 1
-        //             setCurrentQuestion(nextQuestion)
-        //             break;
-        //         } else {
-        //             //skip the next two questions to continue onwards
-        //             const nextQuestion = currentQuestion + 3
-        //             setCurrentQuestion(nextQuestion)
-        //             break;
-        //         }
-        //     case 7:
-        //         if (deathInFamily) {
-        //             const nextQuestion = currentQuestion + 1
-        //             setCurrentQuestion(nextQuestion)
-        //             break;
-        //         } else {
-        //             const nextQuestion = currentQuestion + 2
-        //             setCurrentQuestion(nextQuestion)
-        //             break;
-        //         }
-        //     case 9:
-        //         if (sickInFamily) {
-        //             const nextQuestion = currentQuestion + 1
-        //             setCurrentQuestion(nextQuestion)
-        //             break;
-        //         } else {
-        //             const nextQuestion = currentQuestion + 2
-        //             setCurrentQuestion(nextQuestion)
-        //             break;
-        //         }
-        //     case 21:
-        //         if (isWorried) {
-        //             const nextQuestion = currentQuestion + 1
-        //             setCurrentQuestion(nextQuestion)
-        //             break;
-        //         } else {
-        //             const nextQuestion = currentQuestion + 3
-        //             setCurrentQuestion(nextQuestion)
-        //             break;
-        //         }
-        //     default:
-        //         const nextQuestion = currentQuestion + 1
-        //         setCurrentQuestion(nextQuestion)
-        // }
-    }
     const handleChange = (event) => {
         // console.log("hey i be triggered")
         const index = currentQuestion
@@ -368,7 +259,7 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
     }
     const handleSubmit = async (event) => {
         console.log("submitting")
-        const finalFormState = toObject(formState)
+        // const finalFormState = toObject(formState)
         // finalFormState.userId = "63e1645e690cc9d7fcf52bd0"
         console.log({ ...finalFormState })
         try {
@@ -493,60 +384,7 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
             )
 
     }
-    // return (
-    //     <div className="assessmentContainer">
-
-    //         {/* need a plan b if the launched version does repeat twice, seems like it wont as its a dev tool */}
-    //         {/* {synth.speak(utterThis)} */}
-    //         <div className="questionContainer">
-    //             <h2> {questions[currentQuestion].question}</h2>
-    //             <form>
-    //                 {currentQuestion == 4 || currentQuestion == 7 || currentQuestion == 9 || currentQuestion == 15 || currentQuestion == 16 || currentQuestion == 17 || currentQuestion == 18 || currentQuestion == 21 ?
-    //                     (
-    //                         <div>
-    //                             <label>
-    //                                 <input
-    //                                     type="radio"
-    //                                     name={questions[currentQuestion].name}
-    //                                     onChange={handleYes}
-    //                                 />Yes
-    //                             </label>
-    //                             <label>
-    //                                 <input
-    //                                     type="radio"
-    //                                     name={questions[currentQuestion].name}
-
-    //                                     onChange={handleNo}
-    //                                 />No
-    //                             </label>
-    //                         </div>
-
-    //                     ) :
-    //                     (
-    //                         <input
-    //                             name={questions[currentQuestion].name}
-    //                             type="text"
-    //                             value={[Object.values(formState[currentQuestion])]}
-    //                             onChange={handleChange}
-    //                         />
-    //                     )}
-    //             </form>
-    //             {/* <input></input> */}
-    //             {currentQuestion < 25 ?
-    //                 (
-    //                     <>
-    //                         <button className="progressBtn" onClick={handleProgression}>Next </button>
-    //                         <button style={{ marginTop: "10%" }} onClick={handleSubmit}>Submit</button>
-    //                     </>
-
-    //                 ) : (
-    //                     <button style={{ marginTop: "10%" }} onClick={handleSubmit}>Submit</button>
-    //                 )}
-    //             <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
-    //         </div>
-    //     </div >
-    // )
+   
 }
-// import dog from '../../public/images/NEW_dog'
 
 export default Assessment

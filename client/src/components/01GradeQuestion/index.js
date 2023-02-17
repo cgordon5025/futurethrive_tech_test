@@ -25,6 +25,7 @@ const GradeQuestion = ({ formState, setFormState, setCurrentQuestion, currentQue
                 />
             </div>
             <button className='progressBtn' onClick={handleProgression}>Next</button>
+            <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
         </div>
     )
 }

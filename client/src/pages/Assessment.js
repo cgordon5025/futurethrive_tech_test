@@ -389,6 +389,7 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
                         />
                     </div>
                     <button className='submitBtn' onClick={handleSubmit}>Complete</button>
+                    <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
                 </div>
             )
     }

@@ -2,6 +2,9 @@ const { Schema, model } = require('mongoose')
 const VideoSchema = new Schema({
     videofile: {
         type: String
+    },
+    url:{
+        type:String
     }
 });
 

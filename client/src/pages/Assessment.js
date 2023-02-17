@@ -67,7 +67,6 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay, assessm
             talents: null
         }
     );
-    console.log(voice)
     // console.log(formState)
     //here are the questions and data associated with it
     const questions = [
@@ -229,7 +228,6 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay, assessm
         }
     ]
     //setting up the voice reader
-    console.log(voice.voice)
     const synth = voice.synth
     const utterThis = new SpeechSynthesisUtterance(questions[currentQuestion].question);
     utterThis.rate = voice.rate;
@@ -244,7 +242,7 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay, assessm
     //     console.log("trigger")
     //     synth.speak(utterThis)
     // }, [assessmentDisplay == "block"])
-    
+
     const handleChange = (event) => {
         // console.log("hey i be triggered")
         const name = event.target.name

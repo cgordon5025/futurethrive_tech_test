@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import { SAVE_VIDEO } from "../utils/mutations";
 import { useMutation } from "@apollo/client";
 import { RecordWebcam, useRecordWebcam } from 'react-record-webcam'
 import Assessment from "./Assessment";
+
+
 
 const Welcome = () => {
     const [welcomeDisplay, setWelcomeDisplay] = useState("flex-root")
@@ -14,7 +16,35 @@ const Welcome = () => {
     const [camStatus, setCamStatus] = useState(false)
     const [saveVid, { error, data }] = useMutation(SAVE_VIDEO)
 
-    const Options = {
+    let mediaRecorder;
+    const stream = navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: true
+    })
+    window.stream = stream
+    const startRecord = async () => {
+        mediaRecorder = new MediaRecorder(stream, { mimeType: "video.mp4" })
+        mediaRecorder.start()
+        mediaRecorder.ondataavailable = recordVideo
+    }
+    const recordVideo = async (event) => {
+        if (event.data && event.data.size > 0) {
+            let videoURL = URL.createObjectURL(event.data)
+        }
+
+    }
+
+
+    useEffect(() => {
+        recordWebcam.open()
+    }, [])
+    useEffect(() => {
+        if (camStatus == true) {
+            recordWebcam.stop()
+        }
+    })
+
+    const OPTIONS = {
         aspectRatio: 1.7,
         disableLogs: true,
         fileName: "test-filename",
@@ -24,17 +54,31 @@ const Welcome = () => {
         width: 1280,
 
     }
-    const recordWebcam = useRecordWebcam(Options)
-
+    const recordWebcam = useRecordWebcam(OPTIONS)
+    // const recordWebcam = useRecordWebcam()
     const saveFile = async () => {
         // const blob = await recordWebcam.getRecording(Options);
         const blob = await recordWebcam.getRecording()
-        const fileTypeFromMimeType = Options.mimeType?.split('video/')[1]?.split(';')[0] || 'mp4';
+        const fileTypeFromMimeType = OPTIONS.mimeType?.split('video/')[1]?.split(';')[0] || 'mp4';
         const fileType = fileTypeFromMimeType === 'x-matroska' ? 'mkv' : fileTypeFromMimeType;
-        const filename = `${Options.fileName}.${fileType}`;
+        const filename = `${OPTIONS.fileName}.${fileType}`;
+        const readFile = new FileReader()
+        // const something = URL.createObjectURL(blob)
+        // const url = new Response(something).text()
         const url = URL.createObjectURL(blob)
-        console.log(url)
+        // const myFile = new File([url], "test.mp4", { type: 'video/mp4' });
+        const mediaBlob = await fetch(url).then(response => response.blob())
+        const myFile = new File([mediaBlob], "demo.mp4", { type: 'video.mp4' })
+        console.log(myFile)
+        // const file = readFile.readAsArrayBuffer(myFile)
+        // const file = readFile.readAsDataURL(myFile)
+        const file = readFile.readAsText(myFile)
+        // const file = readFile.readAsBinaryString(myFile)
+        console.log(file)
+
+        // console.log(url)
         // saveFile(filename, blob);
+        console.log(recordWebcam.getRecording())
         console.log(filename)
         console.log(blob)        // console.log(blob)
         try {
@@ -44,7 +88,7 @@ const Welcome = () => {
                     videofile: filename,
                     blob: blob,
                     path: "../videos/",
-                    URL: url
+                    url: file
                 }
             })
         } catch (e) {
@@ -71,7 +115,8 @@ const Welcome = () => {
                     <p>Before we being please make sure you can see your whole head in the display.</p>
                     <div style={{ display: camButton }}>
                         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                            <video style={{ width: "50vw", marginBottom: "2.5%" }} ref={recordWebcam.webcamRef} autoPlay muted />
+                            <video id="previewVid" style={{ width: "50vw", marginBottom: "%2.5" }} autoPlay muted />
+                            {/* <video style={{ width: "50vw", marginBottom: "2.5%" }} ref={recordWebcam.webcamRef} autoPlay muted /> */}
 
                             <Button onClick={confirmView}>I can see myself</Button>
                         </div>
@@ -84,7 +129,7 @@ const Welcome = () => {
                 {/* <RecordWebcam options={Options} /> */}
                 <p>Camera status: {recordWebcam.status}</p>
                 <button onClick={recordWebcam.open}>Open camera</button>
-                <button onClick={recordWebcam.start}>Start recording</button>
+                <button onClick={startRecord}>Start recording</button>
                 <button onClick={recordWebcam.stop}>Stop recording</button>
                 <button onClick={recordWebcam.retake}>Retake recording</button>
                 <button onClick={recordWebcam.download}>Download recording</button>

@@ -93,7 +93,7 @@ const Welcome = () => {
                 {/* <video ref={recordWebcam.previewRef} autoPlay muted loop /> */}
             </div>
             <div style={{ display: assessmentDisplay }}>
-                <Assessment setCamStatus={setCamStatus} setAssessmentDisplay={setAssessmentDisplay} setEndDisplay={setEndDisplay} />
+                <Assessment setCamStatus={setCamStatus} setAssessmentDisplay={setAssessmentDisplay} assessmentDisplay={assessmentDisplay} setEndDisplay={setEndDisplay} />
             </div>
             <div style={{ display: endDisplay }}>
                 <div className='WelcomeContainer'>

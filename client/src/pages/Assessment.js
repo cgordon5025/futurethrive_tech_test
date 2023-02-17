@@ -31,7 +31,7 @@ import MakeLessWorriedQuestion from "../components/23MakeLessWorriedQuestion";
 import GreatestWorryQuestion from "../components/24GreatestWorryQuestion";
 import TalentsQuestion from "../components/25TalentQuestion";
 
-function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
+function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay, assessmentDisplay }) {
     const { voice, setVoice } = useContext(VoiceContext)
     const [currentQuestion, setCurrentQuestion] = useState(0)
     //these states will be used to trigger the contigency, if they respond yes it will flip to true and show the corresponding questions, if false it will skip it
@@ -241,8 +241,10 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
     // }, [currentQuestion])
 
     // useEffect(() => {
+    //     console.log("trigger")
     //     synth.speak(utterThis)
-    // }, [])
+    // }, [assessmentDisplay == "block"])
+    
     const handleChange = (event) => {
         // console.log("hey i be triggered")
         const name = event.target.name
@@ -268,9 +270,9 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
         } catch (error) {
             console.log(error)
         };
-        // setAssessmentDisplay("none")
-        // setEndDisplay("block")
-        // setCamStatus(true)
+        setAssessmentDisplay("none")
+        setEndDisplay("block")
+        setCamStatus(true)
     }
     switch (currentQuestion) {
         case 0:
@@ -387,8 +389,9 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
                             value={formState.talents}
                             onChange={handleChange}
                         />
+                        <button style={{ marginTop: "2%" }} className='submitBtn' onClick={handleSubmit}>Complete</button>
+
                     </div>
-                    <button className='submitBtn' onClick={handleSubmit}>Complete</button>
                     <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
                 </div>
             )

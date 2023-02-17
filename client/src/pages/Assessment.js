@@ -1,7 +1,8 @@
-import React, { useState } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import { RecordWebcam, useRecordWebcam } from 'react-record-webcam';
 import { SAVE_ANSWERS } from "../utils/mutations";
 import { useMutation } from "@apollo/client";
+import VoiceContext from "../utils/VoiceContext";
 //lets import all of the components for the questions
 import AgeQuestion from "../components/00AgeQuestion";
 import GradeQuestion from "../components/01GradeQuestion";
@@ -31,7 +32,7 @@ import GreatestWorryQuestion from "../components/24GreatestWorryQuestion";
 import TalentsQuestion from "../components/25TalentQuestion";
 
 function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
-
+    const { voice, setVoice } = useContext(VoiceContext)
     const [currentQuestion, setCurrentQuestion] = useState(0)
     //these states will be used to trigger the contigency, if they respond yes it will flip to true and show the corresponding questions, if false it will skip it
     const [saveAns, { error, data }] = useMutation(SAVE_ANSWERS)
@@ -66,7 +67,8 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
             talents: null
         }
     );
-    console.log(formState)
+    console.log(voice)
+    // console.log(formState)
     //here are the questions and data associated with it
     const questions = [
         {
@@ -227,33 +229,27 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
         }
     ]
     //setting up the voice reader
-    // const rate = .8;
-    // const synth = window.speechSynthesis;
-    // const voices = synth.getVoices().sort(function (a, b) {
-    //     const aname = a.name.toUpperCase();
-    //     const bname = b.name.toUpperCase();
-
-    //     if (aname < bname) {
-    //         return -1;
-    //     } else if (aname == bname) {
-    //         return 0;
-    //     } else {
-    //         return +1;
-    //     }
-    // });
-    // const daniel = voices[14];
-    // const utterThis = new SpeechSynthesisUtterance(questions[currentQuestion].question);
-    // utterThis.rate = rate;
-    // utterThis.voice = daniel;
+    console.log(voice.voice)
+    const synth = voice.synth
+    const utterThis = new SpeechSynthesisUtterance(questions[currentQuestion].question);
+    utterThis.rate = voice.rate;
+    utterThis.voice = voice.voice;
     // console.log(formState)
+
+    // useEffect(() => {
+    //     synth.speak(utterThis)
+    // }, [currentQuestion])
+
+    // useEffect(() => {
+    //     synth.speak(utterThis)
+    // }, [])
     const handleChange = (event) => {
         // console.log("hey i be triggered")
-        const index = currentQuestion
         const name = event.target.name
         const value = event.target.value
         setFormState({
             ...formState,
-            [index]: { [name]: value }
+            [name]: value
         })
         console.log(formState)
     }
@@ -261,21 +257,20 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
         console.log("submitting")
         // const finalFormState = toObject(formState)
         // finalFormState.userId = "63e1645e690cc9d7fcf52bd0"
-        console.log({ ...finalFormState })
         try {
             const { data } = await saveAns({
                 variables: {
                     userId: "63ea86c4fd9ddbf82469e45e",
-                    ...finalFormState
+                    ...formState
                 }
             });
             console.log(data)
         } catch (error) {
             console.log(error)
         };
-        setAssessmentDisplay("none")
-        setEndDisplay("block")
-        setCamStatus(true)
+        // setAssessmentDisplay("none")
+        // setEndDisplay("block")
+        // setCamStatus(true)
     }
     switch (currentQuestion) {
         case 0:
@@ -378,13 +373,26 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay }) {
             return (
                 <GreatestWorryQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
-        case 25:
+        // case 25:
+        //     return (
+        //         <TalentsQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} setAssessmentDisplay={setAssessmentDisplay} setEndDisplay={setEndDisplay} setCamStatus={setCamStatus} />
+        //     )
+        default:
             return (
-                <TalentsQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} setAssessmentDisplay={setAssessmentDisplay} setEndDisplay={setEndDisplay} setCamStatus={setCamStatus} />
+                <div className='questionContainer'>
+                    <div className='formContainer'>
+                        <p>What are you really good at?</p>
+                        <input
+                            name='talents'
+                            value={formState.talents}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <button className='submitBtn' onClick={handleSubmit}>Complete</button>
+                </div>
             )
-
     }
-   
+
 }
 
 export default Assessment

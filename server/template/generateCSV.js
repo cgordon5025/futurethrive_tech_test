@@ -23,10 +23,16 @@ var lessWorriedField
 var greatestWorryField
 var talentField
 function popFields(data) {
+    var tempLiveWith = data.liveWith;
+    var liveWithStr = tempLiveWith.join(" ");
+
+    var tempRelyFam = data.familyHelpDetails;
+    var relyFamStr = tempRelyFam.join(" ");
+
     ageField = `${data.userId},Age,${data.age}`
     gradeField = `${data.userId},Grade,${data.grade}`
-    liveWithField = `${data.userId},Live With who,${data.liveWith}`
-    familyField = `${data.userId},Family they can rely on,${data.familyHelpDetails}`;
+    liveWithField = `${data.userId},Live With who,${liveWithStr}`
+    familyField = `${data.userId},Family they can rely on,${relyFamStr}`;
     outsideHelpField = `${data.userId},People outside of family they can rely on,${data.outsideDetails}`;
     outsideFamilyField = `${data.userId},How do you know these people,${data.outsideDetails2}`
     recentDeathField = `${data.userId},Recent Death,${data.whoDeath}`;
@@ -73,6 +79,7 @@ function generateCSV(data) {
     ${hobbyField}
     ${stopHobbyField}
     ${worriedField}
+    ${whyWorriedField}
     ${lessWorriedField}
     ${greatestWorryField}
     ${talentField}

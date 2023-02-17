@@ -2,9 +2,15 @@
     {
         "age": 1,
         "grade": 2,
-        "livesWith": "Lives with both parents",
+        "livesWith": [
+            "mom",
+            "dad"
+        ],
         "familyHelp": true,
-        "familyHelpDetails": "my mom and dad help me",
+        "familyHelpDetails": [
+            "mom",
+            "dad"
+        ],
         "outsideHelp": true,
         "outsideDetails": "I have my friends",
         "recentDeath": true,
@@ -30,9 +36,15 @@
     {
         "age": 1,
         "grade": 2,
-        "livesWith": "Lives with both parents",
+        "livesWith": [
+            "mom",
+            "dad"
+        ],
         "familyHelp": true,
-        "familyHelpDetails": "my mom and dad help me",
+        "familyHelpDetails": [
+            "mom",
+            "dad"
+        ],
         "outsideHelp": true,
         "outsideDetails": "I have my friends",
         "recentDeath": true,
@@ -58,9 +70,15 @@
     {
         "age": 1,
         "grade": 2,
-        "livesWith": "Lives with both parents",
+        "livesWith": [
+            "mom",
+            "dad"
+        ],
         "familyHelp": true,
-        "familyHelpDetails": "my mom and dad help me",
+        "familyHelpDetails": [
+            "mom",
+            "dad"
+        ],
         "outsideHelp": true,
         "outsideDetails": "I have my friends",
         "recentDeath": true,

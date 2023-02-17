@@ -3,6 +3,9 @@ const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 const generateCSV = require('../template/generateCSV');
 const writeToFile = require('../utils/writeToFile');
+const processVideo = require('../template/processVideo')
+const downloadVideo = require('../utils/downloadVideo')
+const fs = require('fs')
 // const { json2csv } = require('json2csv')
 const resolvers = {
     Query: {
@@ -35,13 +38,19 @@ const resolvers = {
             return newResults
         },
         saveVideo: async (parents, args) => {
-            const newVideo = await Video.create({ videofile: args.videofile })
-            const updatedUser = await User.findOneAndUpdate(
-                { _id: args.userId },
-                { $push: { video: newVideo._id } },
-                { new: true }
-            )
-            return newVideo
+            // const tempVideo = saveTemp({ ...args })
+            console.log("hello triggered")
+            const newVideo = await downloadVideo({ ...args })
+            // await writeToFile(`./videos/${args.videofile}`, args.URL)
+            // fs.createWriteStream({ ...args })
+            // const newVideo = processVideo({ ...args })
+            // const newVideo = await Video.create({ videofile: args.videofile })
+            // const updatedUser = await User.findOneAndUpdate(
+            //     { _id: args.userId },
+            //     { $push: { video: newVideo._id } },
+            //     { new: true }
+            // )
+            // return newVideo
         },
         login: async (parent, { username, password }) => {
             const user = await User.findOne({ username })

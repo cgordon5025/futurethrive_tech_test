@@ -1,27 +1,27 @@
 import './App.css';
-import React, { useState, useReducer, useEffect } from 'react';
+import React, { useState, useReducer } from 'react';
 import Button from "react-bootstrap/Button";
 
 import Auth from './utils/auth'
-import { setContext } from '@apollo/client/link/context'
 import { Routes, Route } from 'react-router-dom'
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client'
 import { RecordWebcam, useRecordWebcam } from 'react-record-webcam'
+import VoiceContext from './utils/VoiceContext';
+import { reducer } from './utils/reducers';
+import { SET_VOICE } from './utils/action';
+
 //import the pages
 import Assessment from './pages/Assessment';
-// import Welcome from './pages/Welcome';
-// import CameraControls from './components/CameraControl';
-// import recordWebcam from './utils/cameraControls';
-
-const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('id_token');
-  return {
-    headers: {
-      ...headers,
-      authorization: token ? `Bearer ${token}` : '',
-    },
-  };
-});
+import Welcome from './pages/Welcome';
+// const authLink = setContext((_, { headers }) => {
+//   const token = localStorage.getItem('id_token');
+//   return {
+//     headers: {
+//       ...headers,
+//       authorization: token ? `Bearer ${token}` : '',
+//     },
+//   };
+// });
 const httpLink = createHttpLink({
   uri: '/graphql'
 });
@@ -30,51 +30,37 @@ const client = new ApolloClient({
   link: httpLink,
   cache: new InMemoryCache()
 })
-
+// useEffect(() => {
+//   recordWebcam.open()
+// }, [])
+// useEffect(() => {
+//   if (camStatus == true) {
+//     recordWebcam.stop()
+//   }
+// })
 function App() {
-  const [welcomeDisplay, setWelcomeDisplay] = useState("flex-root")
-  const [assessmentDisplay, setAssessmentDisplay] = useState("none")
-  const [endDisplay, setEndDisplay] = useState("none")
-  const [camButton, setcamButton] = useState("block")
-  const [startButton, setStartButton] = useState("none")
-  const [camStatus, setCamStatus] = useState(false)
-  // const recordWebcam = useRecordWebcam({ frameRate: 60 })
-  const Options = {
-    fileName: "test-filename",
-    mimeType: "video/mp4",
-    frames: 60
-  }
-  const recordWebcam = useRecordWebcam(Options)
-  const saveFile = async () => {
-    const blob = await recordWebcam.getRecording();
-    console.log({ blob })
-    // console.log(recordWebcam.download)
-  };
-  // console.log(recordWebcam.)
-  console.log(recordWebcam.status)
+  const rate = .8;
+  const synth = window.speechSynthesis;
+  const voices = synth.getVoices().sort(function (a, b,) {
+    const aname = a.name.toUpperCase();
+    const bname = b.name.toUpperCase();
+    if (aname < bname) {
+      return -1;
+    } else if (aname == bname) {
+      return 0;
+    } else {
+      return +1;
+    }
+  })
 
-  // useEffect(() => {
-  //   recordWebcam.open()
-  // }, [])
-  // useEffect(() => {
-  //   if (camStatus == true) {
-  //     recordWebcam.stop()
-  //   }
-  // })
-
-  const confirmView = async () => {
-    setcamButton("none")
-    setStartButton("block")
-  }
-  const startSession = async () => {
-    await recordWebcam.start()
-    setWelcomeDisplay("none")
-    setAssessmentDisplay("block")
-  }
+  const daniel = voices[14]
+  const [voice, setVoice] = useReducer(reducer, { synth: synth, rate: rate, voice: daniel })
 
   return (
     <ApolloProvider client={client}>
-      <div className="App">
+      <VoiceContext.Provider value={{ voice, setVoice }}>
+        <Welcome />
+        {/* <div className="App">
         <div className='WelcomeContainer' style={{ display: welcomeDisplay }}>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             <p>Welcome statement about confidentiality and such</p>
@@ -89,19 +75,19 @@ function App() {
             <Button style={{ display: startButton }} onClick={startSession}>Lets begin</Button>
           </div>
         </div>
-        <div>
-          {/* this renders an open/close/start/stop and download button look into ways to get a save to server/autosave to server */}
-          {/* <RecordWebcam options={Options} /> */}
-          <p>Camera status: {recordWebcam.status}</p>
+        <div> */}
+        {/* this renders an open/close/start/stop and download button look into ways to get a save to server/autosave to server */}
+        {/* <RecordWebcam options={Options} /> */}
+        {/* <p>Camera status: {recordWebcam.status}</p>
           <button onClick={recordWebcam.open}>Open camera</button>
           <button onClick={recordWebcam.start}>Start recording</button>
           <button onClick={recordWebcam.stop}>Stop recording</button>
           <button onClick={recordWebcam.retake}>Retake recording</button>
           <button onClick={recordWebcam.download}>Download recording</button>
-          <button onClick={saveFile}>Save file to server</button>
-          {/* <video ref={recordWebcam.webcamRef} autoPlay muted /> */}
-          {/* <video ref={recordWebcam.previewRef} autoPlay muted loop /> */}
-        </div>
+          <button onClick={saveFile}>Save file to server</button> */}
+        {/* <video ref={recordWebcam.webcamRef} autoPlay muted /> */}
+        {/* <video ref={recordWebcam.previewRef} autoPlay muted loop /> */}
+        {/* </div>
         <div style={{ display: assessmentDisplay }}>
           <Assessment setCamStatus={setCamStatus} setAssessmentDisplay={setAssessmentDisplay} setEndDisplay={setEndDisplay} />
         </div>
@@ -111,12 +97,8 @@ function App() {
             <p>More instructions to follow, include a timeout portion such that it'll log them out, restart the app etc</p>
           </div>
         </div>
-        {/* <Routes>
-          <Route path="/Assessment" element={<Assessment />} />
-        </Routes> */}
-        {/* <Assessment /> */}
-        {/* <CameraControls /> */}
-      </div>
+      </div> */}
+      </VoiceContext.Provider>
     </ApolloProvider>
   );
 }

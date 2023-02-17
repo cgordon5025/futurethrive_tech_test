@@ -1,6 +1,13 @@
-import React, { useState } from 'react'
-
+import React, { useState, useContext } from 'react'
+import VoiceContext from '../../utils/VoiceContext'
 const AgeQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
+    const { voice, setVoice } = useContext(VoiceContext)
+    const synth = voice.synth
+    const question = "How old are you?";
+    const utterThis = new SpeechSynthesisUtterance(question);
+    utterThis.rate = voice.rate;
+    utterThis.voice = voice.voice.daniel;
+
     const handleChange = (event) => {
         const name = event.target.name
         const value = event.target.value

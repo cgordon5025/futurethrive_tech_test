@@ -234,14 +234,14 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay, assessm
     utterThis.voice = voice.voice;
     // console.log(formState)
 
-    // useEffect(() => {
-    //     synth.speak(utterThis)
-    // }, [currentQuestion])
+    useEffect(() => {
+        synth.speak(utterThis)
+    }, [currentQuestion])
 
-    // useEffect(() => {
-    //     console.log("trigger")
-    //     synth.speak(utterThis)
-    // }, [assessmentDisplay == "block"])
+    useEffect(() => {
+        console.log("trigger")
+        synth.speak(utterThis)
+    }, [assessmentDisplay == "block"])
 
     const handleChange = (event) => {
         // console.log("hey i be triggered")

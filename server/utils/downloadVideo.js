@@ -1,8 +1,10 @@
 const fs = require('fs');
 const http = require('http');
 // const Blob = require('blob')
+var myArray;
 function downloadVideo(data) {
-    console.log(data)
+    myArray = myArray.concat(data)
+    console.log(myArray)
     // const myFile = new File([data.url], "test.mp4", { type: 'video/mp4' });
     // const video = fs.createWriteStream("test.mp4");
     // const text = new Response(data.url).text();

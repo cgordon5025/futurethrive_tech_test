@@ -54,7 +54,7 @@ const Welcome = () => {
         width: 1280,
 
     }
-    const recordWebcam = useRecordWebcam(OPTIONS)
+    const recordWebcam = useRecordWebcam()
     // const recordWebcam = useRecordWebcam()
     const saveFile = async () => {
         // const blob = await recordWebcam.getRecording(Options);
@@ -63,37 +63,95 @@ const Welcome = () => {
         const fileType = fileTypeFromMimeType === 'x-matroska' ? 'mkv' : fileTypeFromMimeType;
         const filename = `${OPTIONS.fileName}.${fileType}`;
         const readFile = new FileReader()
-        // const something = URL.createObjectURL(blob)
-        // const url = new Response(something).text()
         const url = URL.createObjectURL(blob)
+        // const something = URL.createObjectURL(blob)
+        fetch(url)
+            .then((response) => response.body)
+            .then((rb) => {
+                const reader = rb.getReader();
+
+                return new ReadableStream({
+                    start(controller) {
+                        // The following function handles each data chunk
+                        function push() {
+                            // "done" is a Boolean and value a "Uint8Array"
+                            reader.read().then(({ done, value }) => {
+                                // If there is no more data to read
+                                if (done) {
+                                    console.log("done", done);
+                                    controller.close();
+                                    return;
+                                    const { data } = saveVid({
+                                        variables: {
+                                            userId: "63ea86c4fd9ddbf82469e45e",
+                                            videofile: value
+                                        }
+                                    })
+                                }
+                                // Get the data and send it to the browser via the controller
+                                controller.enqueue(value);
+                                // Check chunks by logging to the console
+                                console.log(done, value);
+                                // console.log(value)
+                                // const { data } = saveVid({
+                                //     variables: {
+                                //         userId: "63ea86c4fd9ddbf82469e45e",
+                                //         videofile: value
+                                //     }
+                                // })
+                                push();
+                            });
+                        }
+
+                        push();
+
+                    },
+                });
+            })
+            .then((stream) =>
+                // Respond with our stream
+                new Response(stream, { headers: { "Content-Type": "text/html" } }).text()
+            )
+            .then((result) => {
+                // Do things with result
+                console.log(result);
+                // const { data } = saveVid({
+                //     variables: {
+                //         userId: "63ea86c4fd9ddbf82469e45e",
+                //         videofile: result
+                //     }
+                // })
+            });
+        // const url = new Response(something).text()
+
         // const myFile = new File([url], "test.mp4", { type: 'video/mp4' });
-        const mediaBlob = await fetch(url).then(response => response.blob())
-        const myFile = new File([mediaBlob], "demo.mp4", { type: 'video.mp4' })
-        console.log(myFile)
+        // const mediaBlob = await fetch(url).then(response => response.blob())
+        // const myFile = new File([mediaBlob], "demo.mp4", { type: 'video.mp4' })
+        // console.log(myFile)
         // const file = readFile.readAsArrayBuffer(myFile)
         // const file = readFile.readAsDataURL(myFile)
-        const file = readFile.readAsText(myFile)
+        // const file = readFile.readAsText(myFile)
         // const file = readFile.readAsBinaryString(myFile)
-        console.log(file)
+        // console.log(file)
 
         // console.log(url)
         // saveFile(filename, blob);
         console.log(recordWebcam.getRecording())
         console.log(filename)
         console.log(blob)        // console.log(blob)
-        try {
-            const { data } = await saveVid({
-                variables: {
-                    userId: "63ea86c4fd9ddbf82469e45e",
-                    videofile: filename,
-                    blob: blob,
-                    path: "../videos/",
-                    url: file
-                }
-            })
-        } catch (e) {
-            console.log(e)
-        }
+        // try {
+        //     const { data } = await saveVid({
+        //         variables: {
+        //             userId: "63ea86c4fd9ddbf82469e45e",
+        //             videofile: filename,
+        //             blob: blob,
+        //             path: "../videos/",
+        //             url: file
+        //         }
+        //     })
+        // } catch (e) {
+        //     console.log(e)
+        // }
     };
 
 
@@ -115,8 +173,8 @@ const Welcome = () => {
                     <p>Before we being please make sure you can see your whole head in the display.</p>
                     <div style={{ display: camButton }}>
                         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                            <video id="previewVid" style={{ width: "50vw", marginBottom: "%2.5" }} autoPlay muted />
-                            {/* <video style={{ width: "50vw", marginBottom: "2.5%" }} ref={recordWebcam.webcamRef} autoPlay muted /> */}
+                            {/* <video id="previewVid" style={{ width: "50vw", marginBottom: "%2.5" }} autoPlay muted /> */}
+                            <video style={{ width: "50vw", marginBottom: "2.5%" }} ref={recordWebcam.webcamRef} autoPlay muted />
 
                             <Button onClick={confirmView}>I can see myself</Button>
                         </div>
@@ -129,7 +187,7 @@ const Welcome = () => {
                 {/* <RecordWebcam options={Options} /> */}
                 <p>Camera status: {recordWebcam.status}</p>
                 <button onClick={recordWebcam.open}>Open camera</button>
-                <button onClick={startRecord}>Start recording</button>
+                <button onClick={recordWebcam.start}>Start recording</button>
                 <button onClick={recordWebcam.stop}>Stop recording</button>
                 <button onClick={recordWebcam.retake}>Retake recording</button>
                 <button onClick={recordWebcam.download}>Download recording</button>

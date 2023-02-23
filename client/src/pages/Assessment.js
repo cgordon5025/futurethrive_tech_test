@@ -228,10 +228,25 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay, assessm
         }
     ]
     //setting up the voice reader
-    const synth = voice.synth
+    const rate = .9;
+    const synth = window.speechSynthesis;
+    const voices = synth.getVoices().sort(function (a, b,) {
+        const aname = a.name.toUpperCase();
+        const bname = b.name.toUpperCase();
+        if (aname < bname) {
+            return -1;
+        } else if (aname == bname) {
+            return 0;
+        } else {
+            return +1;
+        }
+    })
+    console.log(voices)
+    const daniel = voices[10]
+    // const synth = voice.synth
     const utterThis = new SpeechSynthesisUtterance(questions[currentQuestion].question);
-    utterThis.rate = voice.rate;
-    utterThis.voice = voice.voice;
+    utterThis.rate = rate;
+    utterThis.voice = daniel;
     // console.log(formState)
 
     useEffect(() => {

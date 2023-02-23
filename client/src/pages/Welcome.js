@@ -35,14 +35,14 @@ const Welcome = () => {
     }
 
 
-    useEffect(() => {
-        recordWebcam.open()
-    }, [])
-    useEffect(() => {
-        if (camStatus == true) {
-            recordWebcam.stop()
-        }
-    })
+    // useEffect(() => {
+    //     recordWebcam.open()
+    // }, [])
+    // useEffect(() => {
+    //     if (camStatus == true) {
+    //         recordWebcam.stop()
+    //     }
+    // })
 
     const OPTIONS = {
         aspectRatio: 1.7,

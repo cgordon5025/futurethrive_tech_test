@@ -55,7 +55,7 @@ function App() {
 
   const daniel = voices[14]
   const [voice, setVoice] = useReducer(reducer, { synth: synth, rate: rate, voice: daniel })
-
+console.log(voice)
   return (
     <ApolloProvider client={client}>
       <VoiceContext.Provider value={{ voice, setVoice }}>

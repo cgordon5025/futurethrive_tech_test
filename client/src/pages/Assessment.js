@@ -35,6 +35,8 @@ import TalentsQuestion from "../components/25TalentQuestion";
 
 function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisplay, assessmentDisplay }) {
     const [currentQuestion, setCurrentQuestion] = useState(0)
+    const showButton = readFirstQ
+    const [buttonTimeout, setButtonTimeOut] = useState(false)
     //these states will be used to trigger the contigency, if they respond yes it will flip to true and show the corresponding questions, if false it will skip it
     const [saveAns, { error, data }] = useMutation(SAVE_ANSWERS)
     // take this out later, this is for testing purposes
@@ -236,21 +238,18 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
     utterThis.rate = rate;
     utterThis.voice = voice[0];
     // console.log(formState)
-    console.log(currentQuestion)
     useEffect(() => {
-        console.log("the issue is here! the current Question dependency")        // <>
         //     {console.log("using new tech")
         //     }
         //     <TextToSpeech
         //         markTextAsSpoken lang="en-GB"
         //         rate={".9"}>
         //         <p>{questions[currentQuestion].question}</p></TextToSpeech>
-        // </>
+        // </
         synth.speak(utterThis)
     }, [currentQuestion]) //this should only run if the index number changes
 
     useEffect(() => {
-        console.log("the issue is here, the block dependency")
         synth.speak(utterThis)
     }, [readFirstQ])
     // [])
@@ -286,7 +285,7 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
     switch (currentQuestion) {
         case 0:
             return (
-                <AgeQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <AgeQuestion showButton={showButton} readFirstQ={readFirstQ} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 1:
             return (

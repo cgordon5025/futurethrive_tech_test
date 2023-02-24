@@ -5,6 +5,6 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/ft_test',
     useUnifiedTopology: true
 });
 
-// mongoose.set('strictPopulate', false)
+mongoose.set('strictPopulate', false)
 
 module.exports = mongoose.connection;

@@ -23,7 +23,7 @@ import Welcome from './pages/Welcome';
 //   };
 // });
 const httpLink = createHttpLink({
-  uri: '/graphql'
+  uri: 'http://localhost:3001/graphql'
 });
 
 const client = new ApolloClient({
@@ -55,7 +55,7 @@ function App() {
 
   const daniel = voices[14]
   const [voice, setVoice] = useReducer(reducer, { synth: synth, rate: rate, voice: daniel })
-console.log(voice)
+  console.log(voice)
   return (
     <ApolloProvider client={client}>
       <VoiceContext.Provider value={{ voice, setVoice }}>

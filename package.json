@@ -25,5 +25,5 @@
   "dependencies": {
     "bootstrap": "^5.2.3",
     "concurrently": "^7.6.0"
-  }
+    }
 }

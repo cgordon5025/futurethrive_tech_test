@@ -22,7 +22,6 @@
     "graphql": "^16.6.0",
     "json2csv": "^6.0.0-alpha.2",
     "jsonwebtoken": "^9.0.0",
-    "mongodb": "^5.0.1",
     "mongoose": "^6.9.0"
   },
   "devDependencies": {

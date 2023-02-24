@@ -1,14 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react'
 import VoiceContext from '../../utils/VoiceContext'
+import { TextToSpeech } from 'tts-react'
+
 const AgeQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
-    const { voice, setVoice } = useContext(VoiceContext)
     const [buttonDisplay, setButtonDisplay] = useState("none")
-    // const synth = voice.synth
-    console.log(voice)
-    // const question = "How old are you?";
-    // const utterThis = new SpeechSynthesisUtterance(question);
-    // utterThis.rate = voice.rate;
-    // utterThis.voice = voice.voice.daniel;
+
     useEffect(() => {
         setTimeout(() => {
             console.log("countdown start")
@@ -41,6 +37,14 @@ const AgeQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuest
     return (
         <div className='questionContainer'>
             <div className="formContainer">
+                {/* <TextToSpeech
+                    markTextAsSpoken
+                    markBackgroundColor='red'
+                    rate={".9"}
+                    lang="en-GB"
+                    autoPlay>
+                    <p>How old are you?</p>
+                </TextToSpeech> */}
                 <p>How old are you?</p>
                 <input
                     name='age'

@@ -2,7 +2,9 @@ import React, { useState, useContext, useEffect } from "react"
 import { RecordWebcam, useRecordWebcam } from 'react-record-webcam';
 import { SAVE_ANSWERS } from "../utils/mutations";
 import { useMutation } from "@apollo/client";
-import VoiceContext from "../utils/VoiceContext";
+import VoiceContext from "../utils/VoiceContext"
+import { useTts } from 'tts-react';
+import { TextToSpeech } from "tts-react";
 //lets import all of the components for the questions
 import AgeQuestion from "../components/00AgeQuestion";
 import GradeQuestion from "../components/01GradeQuestion";
@@ -32,7 +34,6 @@ import GreatestWorryQuestion from "../components/24GreatestWorryQuestion";
 import TalentsQuestion from "../components/25TalentQuestion";
 
 function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay, assessmentDisplay }) {
-    const { voice, setVoice } = useContext(VoiceContext)
     const [currentQuestion, setCurrentQuestion] = useState(0)
     //these states will be used to trigger the contigency, if they respond yes it will flip to true and show the corresponding questions, if false it will skip it
     const [saveAns, { error, data }] = useMutation(SAVE_ANSWERS)
@@ -230,26 +231,22 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay, assessm
     //setting up the voice reader
     const rate = .9;
     const synth = window.speechSynthesis;
-    const voices = synth.getVoices().sort(function (a, b,) {
-        const aname = a.name.toUpperCase();
-        const bname = b.name.toUpperCase();
-        if (aname < bname) {
-            return -1;
-        } else if (aname == bname) {
-            return 0;
-        } else {
-            return +1;
-        }
-    })
-    console.log(voices)
-    const daniel = voices[10]
-    // const synth = voice.synth
+    const voice = synth.getVoices().filter((voice) => voice.voiceURI == 'Google UK English Male')
     const utterThis = new SpeechSynthesisUtterance(questions[currentQuestion].question);
     utterThis.rate = rate;
-    utterThis.voice = daniel;
+    utterThis.voice = voice[0];
     // console.log(formState)
-
+    console.log(currentQuestion)
     useEffect(() => {
+        console.log("other questions beyond the first")
+        // <>
+        //     {console.log("using new tech")
+        //     }
+        //     <TextToSpeech
+        //         markTextAsSpoken lang="en-GB"
+        //         rate={".9"}>
+        //         <p>{questions[currentQuestion].question}</p></TextToSpeech>
+        // </>
         synth.speak(utterThis)
     }, [currentQuestion])
 
@@ -283,8 +280,8 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay, assessm
         } catch (error) {
             console.log(error)
         };
-        // setAssessmentDisplay("none")
-        // setEndDisplay("block")
+        setAssessmentDisplay("none")
+        setEndDisplay("block")
         // setCamStatus(true)
     }
     switch (currentQuestion) {

@@ -33,7 +33,7 @@ import MakeLessWorriedQuestion from "../components/23MakeLessWorriedQuestion";
 import GreatestWorryQuestion from "../components/24GreatestWorryQuestion";
 import TalentsQuestion from "../components/25TalentQuestion";
 
-function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay, assessmentDisplay }) {
+function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisplay, assessmentDisplay }) {
     const [currentQuestion, setCurrentQuestion] = useState(0)
     //these states will be used to trigger the contigency, if they respond yes it will flip to true and show the corresponding questions, if false it will skip it
     const [saveAns, { error, data }] = useMutation(SAVE_ANSWERS)
@@ -238,8 +238,7 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay, assessm
     // console.log(formState)
     console.log(currentQuestion)
     useEffect(() => {
-        console.log("other questions beyond the first")
-        // <>
+        console.log("the issue is here! the current Question dependency")        // <>
         //     {console.log("using new tech")
         //     }
         //     <TextToSpeech
@@ -248,13 +247,13 @@ function Assessment({ setCamStatus, setEndDisplay, setAssessmentDisplay, assessm
         //         <p>{questions[currentQuestion].question}</p></TextToSpeech>
         // </>
         synth.speak(utterThis)
-    }, [currentQuestion])
+    }, [currentQuestion]) //this should only run if the index number changes
 
     useEffect(() => {
-        console.log("trigger")
+        console.log("the issue is here, the block dependency")
         synth.speak(utterThis)
-    }, [assessmentDisplay == "block"])
-
+    }, [readFirstQ])
+    // [])
     const handleChange = (event) => {
         // console.log("hey i be triggered")
         const name = event.target.name

@@ -15,7 +15,7 @@ const Welcome = () => {
     const [startButton, setStartButton] = useState("none")
     const [camStatus, setCamStatus] = useState(false)
     const [saveVid, { error, data }] = useMutation(SAVE_VIDEO)
-
+    const [readFirstQ, setReadFirstQ] = useState(false)
     let mediaRecorder;
     const stream = navigator.mediaDevices.getUserMedia({
         audio: true,
@@ -164,6 +164,7 @@ const Welcome = () => {
         await recordWebcam.start()
         setWelcomeDisplay("none")
         setAssessmentDisplay("block")
+        setReadFirstQ(true)
     }
     return (
         <>
@@ -196,7 +197,7 @@ const Welcome = () => {
                 {/* <video ref={recordWebcam.previewRef} autoPlay muted loop /> */}
             </div>
             <div style={{ display: assessmentDisplay }}>
-                <Assessment setCamStatus={setCamStatus} setAssessmentDisplay={setAssessmentDisplay} assessmentDisplay={assessmentDisplay} setEndDisplay={setEndDisplay} />
+                <Assessment readFirstQ={readFirstQ} setCamStatus={setCamStatus} setAssessmentDisplay={setAssessmentDisplay} assessmentDisplay={assessmentDisplay} setEndDisplay={setEndDisplay} />
             </div>
             <div style={{ display: endDisplay }}>
                 <div className='WelcomeContainer'>

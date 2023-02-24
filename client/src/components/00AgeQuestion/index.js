@@ -34,8 +34,17 @@ const AgeQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuest
         setCurrentQuestion(nextQuestion)
     }
 
+    const rate = .9;
+    const synth = window.speechSynthesis;
+    const voice = synth.getVoices().filter((voice) => voice.voiceURI == 'Google UK English Male')
+    const utterThis = new SpeechSynthesisUtterance("How old are you");
+    utterThis.rate = rate;
+    utterThis.voice = voice[0];
+
     return (
-        <div className='questionContainer'>
+
+        < div className='questionContainer' >
+            {/* {synth.speak(utterThis)} */}
             <div className="formContainer">
                 {/* <TextToSpeech
                     markTextAsSpoken
@@ -54,7 +63,7 @@ const AgeQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuest
             </div>
             <button style={{ display: buttonDisplay }} className='progressBtn' onClick={handleProgression}>Next</button>
             <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
-        </div>
+        </div >
     )
 }
 

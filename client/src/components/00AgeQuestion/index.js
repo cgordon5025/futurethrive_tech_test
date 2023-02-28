@@ -33,6 +33,7 @@ const AgeQuestion = ({ readFirstQ, showButton, formState, setFormState, setCurre
         })
     }
     const handleProgression = () => {
+        // setButtonDisplay("none")
         const nextQuestion = currentQuestion + 1
         setCurrentQuestion(nextQuestion)
     }

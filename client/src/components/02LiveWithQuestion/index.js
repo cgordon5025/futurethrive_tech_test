@@ -1,8 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const LiveWithQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
+    const [buttonDisplay, setButtonDisplay] = useState("none")
+    
+    useEffect(() => {
+        setTimeout(() => {
+            setButtonDisplay("block")
+        }, 3000)
+    }, [currentQuestion])
+
     const handleChange = async (event) => {
-        const name = "liveWith"
         if (event.target.checked) {
             console.log("you checked me")
             const value = event.target.value
@@ -80,7 +87,7 @@ const LiveWithQuestion = ({ formState, setFormState, setCurrentQuestion, current
                 </form>
             </div>
 
-            <button className='progressBtn' onClick={handleProgression}>Next</button>
+            <button style={{ display: buttonDisplay }} className='progressBtn' onClick={handleProgression}>Next</button>
             <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
         </div>
     )

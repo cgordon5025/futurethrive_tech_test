@@ -2,17 +2,11 @@ import React, { useState, useEffect } from 'react'
 
 const GradeQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
     const [buttonDisplay, setButtonDisplay] = useState("none")
-    console.log(buttonDisplay)
+  
     useEffect(() => {
-        console.log("triggered2")
-
-        console.log("here here")
         setTimeout(() => {
-            console.log("countdown start")
             setButtonDisplay("block")
         }, 3000)
-
-
     }, [currentQuestion])
 
     const handleChange = (event) => {

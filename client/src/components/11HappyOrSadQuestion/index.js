@@ -1,6 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const HappyOrSadQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
+    const [buttonDisplay, setButtonDisplay] = useState("none")
+
+    useEffect(() => {
+        setTimeout(() => {
+            setButtonDisplay("block")
+        }, 3000)
+    }, [currentQuestion])
+
     const handleChange = (event) => {
         console.log(event.target.value)
         switch (event.target.value) {
@@ -51,7 +59,7 @@ const HappyOrSadQuestion = ({ formState, setFormState, setCurrentQuestion, curre
                     />
                 </form>
             </div>
-            <button className='progressBtn' onClick={handleProgression}>Next</button>
+            <button style={{ display: buttonDisplay }} className='progressBtn' onClick={handleProgression}>Next</button>
             <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
         </div>
     )

@@ -2,16 +2,19 @@ import React, { useState, useContext, useEffect } from 'react'
 import VoiceContext from '../../utils/VoiceContext'
 import { TextToSpeech } from 'tts-react'
 
-const AgeQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
+const AgeQuestion = ({ readFirstQ, showButton, formState, setFormState, setCurrentQuestion, currentQuestion }) => {
     const [buttonDisplay, setButtonDisplay] = useState("none")
-
     useEffect(() => {
-        setTimeout(() => {
-            console.log("countdown start")
-            setButtonDisplay("block")
-        }, 3000)
+        console.log("triggered")
+        if (readFirstQ == true) {
+            console.log("here here")
+            setTimeout(() => {
+                console.log("countdown start")
+                setButtonDisplay("block")
+            }, 3000)
+        }
 
-    }, [])
+    }, )
 
     // useEffect(() => {
     //     setTimeout(() => {
@@ -30,6 +33,7 @@ const AgeQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuest
         })
     }
     const handleProgression = () => {
+        // setButtonDisplay("none")
         const nextQuestion = currentQuestion + 1
         setCurrentQuestion(nextQuestion)
     }

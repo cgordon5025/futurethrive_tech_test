@@ -27,6 +27,11 @@ const httpLink = createHttpLink({
   uri: 'http://localhost:3001/graphql'
 });
 
+//TODO: create .env file with config variables, such that it will always point to port 3001 when running
+// const httpLink = createHttpLink({
+//   uri: `${window.location}/graphql/`
+// })
+
 const client = new ApolloClient({
   link: httpLink,
   cache: new InMemoryCache()

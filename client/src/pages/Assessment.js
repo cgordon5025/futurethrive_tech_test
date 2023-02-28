@@ -35,6 +35,9 @@ import TalentsQuestion from "../components/25TalentQuestion";
 
 function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisplay, assessmentDisplay }) {
     const [currentQuestion, setCurrentQuestion] = useState(0)
+    const showButton = readFirstQ
+    const [buttonDisplay, setButtonDisplay] = useState("none")
+
     //these states will be used to trigger the contigency, if they respond yes it will flip to true and show the corresponding questions, if false it will skip it
     const [saveAns, { error, data }] = useMutation(SAVE_ANSWERS)
     // take this out later, this is for testing purposes
@@ -235,25 +238,30 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
     const utterThis = new SpeechSynthesisUtterance(questions[currentQuestion].question);
     utterThis.rate = rate;
     utterThis.voice = voice[0];
-    // console.log(formState)
-    console.log(currentQuestion)
+
+    //this is the use effect that will enable the button timeout for the last question
     useEffect(() => {
-        console.log("the issue is here! the current Question dependency")        // <>
+        if (currentQuestion == 25) {
+            setTimeout(() => {
+                setButtonDisplay("block")
+            }, 3000)
+        }
+    }, [currentQuestion])
+    // console.log(formState)
+    useEffect(() => {
         //     {console.log("using new tech")
         //     }
         //     <TextToSpeech
         //         markTextAsSpoken lang="en-GB"
         //         rate={".9"}>
         //         <p>{questions[currentQuestion].question}</p></TextToSpeech>
-        // </>
+        // </
         synth.speak(utterThis)
     }, [currentQuestion]) //this should only run if the index number changes
 
     useEffect(() => {
-        console.log("the issue is here, the block dependency")
         synth.speak(utterThis)
     }, [readFirstQ])
-    // [])
     const handleChange = (event) => {
         // console.log("hey i be triggered")
         const name = event.target.name
@@ -286,7 +294,7 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
     switch (currentQuestion) {
         case 0:
             return (
-                <AgeQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <AgeQuestion showButton={showButton} readFirstQ={readFirstQ} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 1:
             return (
@@ -398,7 +406,7 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
                             value={formState.talents}
                             onChange={handleChange}
                         />
-                        <button style={{ marginTop: "2%" }} className='submitBtn' onClick={handleSubmit}>Complete</button>
+                        <button style={{ display: buttonDisplay, marginTop: "2%" }} className='submitBtn' onClick={handleSubmit}>Complete</button>
 
                     </div>
                     <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>

@@ -4,7 +4,7 @@
   "private": true,
   "options": {
     "allowedHosts": "all",
-    "proxy": "http://localhost:1/"
+    "proxy": "http://localhost:3001/"
   },
   "dependencies": {
     "@apollo/client": "^3.7.7",
@@ -26,7 +26,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "gen-env-loc": "python3 scripts/generate-envionment.py -e './.env.development.local' -o './public/environment.js' -p './package.json'",
+    "gen-env-dev": "python3 scripts/generate-envionment.py -e './.env.development' -o './public/environment.js' -p './package.json'",
+    "gen-env-stg": "python3 scripts/generate-envionment.py -e './.env.staging' -o './public/environment.js' -p './package.json'",
+    "gen-env-prd": "python3 scripts/generate-envionment.py -e './.env' -o './public/environment.js' -p './package.json'"
   },
   "eslintConfig": {
     "extends": [

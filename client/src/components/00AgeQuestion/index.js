@@ -15,15 +15,7 @@ const AgeQuestion = ({ readFirstQ, showButton, formState, setFormState, setCurre
         }
 
     }, )
-
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         return (
-    //             <button className='progressBtn' onClick={handleProgression}>Next</button>
-    //         );
-    //     }, 3000)
-    //     console.log("in the effect")
-    // }, [])
+    
     const handleChange = (event) => {
         const name = event.target.name
         const value = event.target.value

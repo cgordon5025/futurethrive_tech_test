@@ -234,6 +234,8 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
     //setting up the voice reader
     const rate = .9;
     const synth = window.speechSynthesis;
+    //for this we would want to build out a version for every device, when i launch this try and see if it will work on a chrome book, and if the same voice exist, that is our target device at the moment anyways
+    //long term look into safari, chrome, firefox, edge and maybe devices (unfortunately there is no true way to control this :())
     const voice = synth.getVoices().filter((voice) => voice.voiceURI == 'Google UK English Male')
     const utterThis = new SpeechSynthesisUtterance(questions[currentQuestion].question);
     utterThis.rate = rate;

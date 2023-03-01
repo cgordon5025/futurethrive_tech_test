@@ -170,8 +170,8 @@ const Welcome = () => {
         <>
             <div className='WelcomeContainer' style={{ display: welcomeDisplay }}>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                    <p>Welcome statement about confidentiality and such</p>
-                    <p>Before we being please make sure you can see your whole head in the display.</p>
+                    <h2>Welcome statement about confidentiality and such</h2>
+                    <h2>Before we being please make sure you can see your whole head in the display.</h2>
                     <div style={{ display: camButton }}>
                         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                             {/* <video id="previewVid" style={{ width: "50vw", marginBottom: "%2.5" }} autoPlay muted /> */}
@@ -186,7 +186,7 @@ const Welcome = () => {
             <div>
                 {/* this renders an open/close/start/stop and download button look into ways to get a save to server/autosave to server */}
                 {/* <RecordWebcam options={Options} /> */}
-                <p>Camera status: {recordWebcam.status}</p>
+                <h5>Camera status: {recordWebcam.status}</h5>
                 <button onClick={recordWebcam.open}>Open camera</button>
                 <button onClick={recordWebcam.start}>Start recording</button>
                 <button onClick={recordWebcam.stop}>Stop recording</button>

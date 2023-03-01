@@ -251,12 +251,12 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
     }, [currentQuestion])
     // console.log(formState)
     useEffect(() => {
-        //     {console.log("using new tech")
-        //     }
-        //     <TextToSpeech
-        //         markTextAsSpoken lang="en-GB"
-        //         rate={".9"}>
-        //         <p>{questions[currentQuestion].question}</p></TextToSpeech>
+        // console.log("using new tech");
+
+        // <TextToSpeech
+        //     markTextAsSpoken lang="en-GB"
+        //     rate={".9"} >
+        //     <p>{questions[currentQuestion].question}</p></TextToSpeech >
         // </
         synth.speak(utterThis)
     }, [currentQuestion]) //this should only run if the index number changes

@@ -67,3 +67,6 @@ div.formContainer {
   right: 16px;
 }
 
+::selection {
+  background-color: yellow;
+}

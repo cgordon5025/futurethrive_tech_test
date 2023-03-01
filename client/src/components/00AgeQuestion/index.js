@@ -12,56 +12,69 @@ const AgeQuestion = ({ readFirstQ, showButton, formState, setFormState, setCurre
         }
 
     },)
-    const questionText = document.getElementById("ageQuestion")
+    // const questionText = document.getElementById("ageQuestion")
+    // console.log(questionText)
+    // const textContent = questionText.textContent.split(' ')
+    // console.log(textContent)
     const questionNodes = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
-    console.log(questionNodes)
+    const testNodes = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
+    // console.log(questionNodes)
+    const finalTextNode = []
     const allTextNodes = []
     useEffect(() => {
         console.log("highlight the text")
-        let currentNode = questionNodes.nextNode();
-        while (currentNode) {
-            console.log(currentNode)
-            console.log(getComputedStyle(currentNode.parentNode).getAttribute())
-            if (getComputedStyle(currentNode.parentNode).display !== "none") {
-                console.log("pushing the correct")
-                allTextNodes.push(currentNode)
+        console.log(questionNodes)
+        console.log(testNodes)
+        // finalTextNode.push(questionNodes)
+        console.log(finalTextNode)
+
+        let realNode = questionNodes.nextNode();
+        while (realNode) {
+            if (realNode.textContent.includes("?")) {
+                finalTextNode.push(realNode)
             }
-            currentNode = questionNodes.nextNode()
+            realNode = questionNodes.nextNode()
         }
-        // const allWords = []
-        // for (const textNode of allTextNodes) {
-        //     for (const word of textNode.textContent.matchAll(/[a-zA-Z]+/g)) {
-        //         allWords.push({
-        //             word: word[0],
-        //             parentNode: textNode,
-        //             offset: word.index
-        //         });
-        //     }
-        // }
-        // let index = 0;
-        // const range = new Range();
+        console.log(finalTextNode)
+        const finalWords = []
 
-        // const highLight = setInterval(() => {
-        //     // if (readFirstQ) {
-        //     console.log("yay it working")
-        //     if (index >= allWords.length) {
-        //         index = 0;
-        //     }
-        //     const { word, parentNode, offset } = allWords[index];
-        //     console.log(word)
-        //     console.log(word)
+        for (const textNode of finalTextNode) {
+            // console.log("in the initial loop")
+            for (const word of textNode.textContent.matchAll(/[a-zA-Z]+/g)) {
+                // console.log("pushing")
+                console.log(word)
+                finalWords.push({
+                    word: word[0],
+                    parentNode: textNode,
+                    offset: word.index
+                });
+            }
+        }
+        let index = 0;
+        const range = new Range();
+        console.log(finalWords)
+        const highLight = setInterval(() => {
+            if (readFirstQ) {
+                console.log("yay it working")
+                if (index >= finalWords.length) {
+                    console.log("entering the stop loop")
+                    document.getSelection().removeAllRanges();
 
-        //     range.setStart(parentNode, offset);
-        //     range.setEnd(parentNode, offset + word.length);
-        //     document.getSelection().removeAllRanges();
-        //     document.getSelection().addRange(range);
+                    clearInterval(highLight)
+                }
+                const { word, parentNode, offset } = finalWords[index];
 
-        //     index++;
-        //     // }
+                range.setStart(parentNode, offset);
+                range.setEnd(parentNode, offset + word.length);
+                document.getSelection().removeAllRanges();
+                document.getSelection().addRange(range);
 
-        // }, 1000);
+                index++;
+            }
 
-    }, [])
+        }, 200);
+
+    }, [readFirstQ])
 
 
     const handleChange = (event) => {
@@ -96,7 +109,7 @@ const AgeQuestion = ({ readFirstQ, showButton, formState, setFormState, setCurre
                     autoPlay>
                     <p>How old are you?</p>
                 </TextToSpeech> */}
-                <p id="ageQuestion">How old are you?</p>
+                <p className="ageQuestion">How old are you?</p>
                 <input
                     name='age'
                     value={formState.age}

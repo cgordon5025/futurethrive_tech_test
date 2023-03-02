@@ -20,14 +20,12 @@ const AgeQuestion = ({ readFirstQ, showButton, formState, setFormState, setCurre
             }
             realNode = questionNodes.nextNode()
         }
-        console.log(finalTextNode)
         const finalWords = []
 
         for (const textNode of finalTextNode) {
             // console.log("in the initial loop")
             for (const word of textNode.textContent.matchAll(/[a-zA-Z]+/g)) {
                 // console.log("pushing")
-                console.log(word)
                 finalWords.push({
                     word: word[0],
                     parentNode: textNode,

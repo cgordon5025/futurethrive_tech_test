@@ -127,7 +127,6 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             talents: null
         }
     );
-    // console.log(formState)
     //here are the questions and data associated with it
     const questions = [
         {
@@ -244,11 +243,20 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
     const synth = window.speechSynthesis;
     //for this we would want to build out a version for every device, when i launch this try and see if it will work on a chrome book, and if the same voice exist, that is our target device at the moment anyways
     //long term look into safari, chrome, firefox, edge and maybe devices (unfortunately there is no true way to control this :())
-    const voice = synth.getVoices().filter((voice) => voice.voiceURI == 'Google UK English Male')
+    const primaryVoice = synth.getVoices().filter((voice) => voice.voiceURI == 'Google UK English Male');
+    //as a backup we will just grab the first version in the device that is in Great British english, there is just so much variety in the voices, cannot standardize it
+    const backupVoice = synth.getVoices().filter((voice) => voice.lang == 'en-GB');
+    const voices = []
+    if (primaryVoice !== null) {
+        voices.push(...primaryVoice)
+    }
+    if (backupVoice !== null) {
+        voices.push(...backupVoice)
+    }
+    const finalVoice = voices[0]
     const utterThis = new SpeechSynthesisUtterance(questions[currentQuestion].question);
     utterThis.rate = rate;
-    utterThis.voice = voice[0];
-
+    utterThis.voice = finalVoice[0];
     //this is the use effect that will enable the button timeout for the last question
     useEffect(() => {
         if (currentQuestion == 25) {
@@ -257,7 +265,6 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             }, 3000)
         }
     }, [currentQuestion])
-    // console.log(formState)
     useEffect(() => {
 
         synth.speak(utterThis)
@@ -280,7 +287,6 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
         const finalWords = []
         for (const textNode of finalTextNode) {
             for (const word of textNode.textContent.matchAll(/[a-zA-Z]+/g)) {
-                console.log(word)
                 finalWords.push({
                     word: word[0],
                     parentNode: textNode,
@@ -292,10 +298,7 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
         const range = new Range();
         const highLight = setInterval(() => {
             if (currentQuestion == 25) {
-                console.log("yay it working")
-                console.log(index)
                 if (index >= finalWords.length) {
-                    console.log("entering the stop loop")
                     document.getSelection().removeAllRanges();
                     clearInterval(highLight)
                 } else {
@@ -310,23 +313,18 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
         }, 200);
     }
     useEffect(() => {
-        console.log("highlight the text")
         highLight()
     }, [currentQuestion])
 
     const handleChange = (event) => {
-        // console.log("hey i be triggered")
         const name = event.target.name
         const value = event.target.value
         setFormState({
             ...formState,
             [name]: value
         })
-        console.log(formState)
     }
     const handleSubmit = async (event) => {
-        console.log("submitting")
-
         try {
             const { data } = await saveAns({
                 variables: {
@@ -334,7 +332,6 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
                     ...formState
                 }
             });
-            console.log(data)
         } catch (error) {
             console.log(error)
         };

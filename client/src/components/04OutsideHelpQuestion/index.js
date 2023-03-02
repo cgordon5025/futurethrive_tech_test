@@ -8,6 +8,52 @@ const OutsideHelpQuestion = ({ setYesNoChecked, yesNoChecked, formState, setForm
             setButtonDisplay("block")
         }, 3000)
     }, [currentQuestion])
+    const questionNodes = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
+    const finalTextNode = []
+    const highLight = () => {
+        let realNode = questionNodes.nextNode();
+        while (realNode) {
+            if (realNode.textContent.includes("?")) {
+                finalTextNode.push(realNode)
+            }
+            realNode = questionNodes.nextNode()
+        }
+        const finalWords = []
+        for (const textNode of finalTextNode) {
+            for (const word of textNode.textContent.matchAll(/[a-zA-Z]+/g)) {
+                console.log(word)
+                finalWords.push({
+                    word: word[0],
+                    parentNode: textNode,
+                    offset: word.index
+                });
+            }
+        }
+        let index = 0;
+        const range = new Range();
+        const highLight = setInterval(() => {
+            if (currentQuestion == 4) {
+                console.log("yay it working")
+                console.log(index)
+                if (index >= finalWords.length) {
+                    console.log("entering the stop loop")
+                    document.getSelection().removeAllRanges();
+                    clearInterval(highLight)
+                } else {
+                    const { word, parentNode, offset } = finalWords[index];
+                    range.setStart(parentNode, offset);
+                    range.setEnd(parentNode, offset + word.length);
+                    document.getSelection().removeAllRanges();
+                    document.getSelection().addRange(range);
+                    index++;
+                }
+            }
+        }, 325);
+    }
+    useEffect(() => {
+        console.log("highlight the text")
+        highLight()
+    }, [currentQuestion])
 
     const handleChange = (event) => {
         if (event.target.value == "yes") {
@@ -37,7 +83,7 @@ const OutsideHelpQuestion = ({ setYesNoChecked, yesNoChecked, formState, setForm
     return (
         <div className='questionContainer'>
             <div className='formContainer'>
-                <p>Are the people outside your family you "talk to" when you need help?</p>
+                <p>Are there people outside your family you "talk to" when you need help?</p>
                 <form>
                     <label htmlFor="yes">Yes</label>
                     <input

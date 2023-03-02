@@ -133,158 +133,106 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
         {
             index: 0,
             question: "How old are you?",
-            hint: "",
-            name: "age",
         },
         {
             index: 1,
             question: "What grade are you in?",
-            hint: "",
-            name: "grade",
         },
         {
             index: 2,
             question: "Who do you live with?",
-            hint: "Mom, dad, Grandparents?",
-            name: "liveWith",
         },
         {
             index: 3,//make this have choices so they can select mom dad brother sister
             question: "Who can you talk to in your family if you need help?",
-            hint: ["Mom", "Dad", "Grandmother", "Grandfather", "Brother", "Sister"],
-            name: "familyHelpDetails",
         },
         {
             index: 4,
             question: `Are there people outside your family you "talk to" when you need help?`,
-            hint: "",
-            name: "outsideHelp"
         },
         {
             index: 5,
             question: "Great who is it?",
-            hint: "",
-            name: "outsideDetails"
         },
         {
             index: 6,
             question: "How do you know them?",
-            hint: "",
-            name: "outsideDetails2"
         },
         {
             index: 7,
             question: "Has anyone you love died?",
-            hint: "",
-            name: "recentDeath"
         },
         {
             index: 8,
             question: "Who?",
-            hint: "",
-            name: "whoDeath"
         },
         {
             index: 9,
             question: "Is anyone living in your house really sick?",
-            hint: "",
-            name: "sickFamily"
         },
         {
             index: 10,
             question: "Who?",
-            hint: "",
-            name: "whoSick"
         },
         {
             index: 11,
             question: "Are you sad most of the time, happy most of the time, or in between?",
-            hint: "",
-            name: "happyOrSad"
         },
         {
             index: 12,
             question: "What makes you sad?",
-            hint: "",
-            name: "whySad"
         },
         {
             index: 13,
             question: "What makes you happy?",
-            hint: "",
-            name: "whyHappy"
         },
         {
             index: 14,
             question: "What could make you even happier?",
-            hint: "",
-            name: "beHappier"
         },
         {
             index: 15,
             question: "Are you making good grades in school?",
-            hint: "",
-            name: "academics"
         },
         {
             index: 16,
             question: "Are you getting in trouble in school?",
-            hint: "",
-            name: "schoolTrouble"
         },
         {
             index: 17,
             question: "Do you have friends at school?",
-            hint: "",
-            name: "schoolFriends"
         },
         {
             index: 18,
             question: "Have any of your friends or classmates ever said or done anything that hurt your or make you feel bad?",
-            hint: "",
-            name: "madeFunOf"
         },
         {
             index: 19,
             question: "What do you really like to do?",
-            hint: "",
-            name: "hobbies"
         },
         {
             index: 20,
             question: "What stops you from doing that?",
-            hint: "",
-            name: "hobbiesStop"
         },
         {
             index: 21,
             question: "Do you get worried?",
-            hint: "",
-            name: "areWorried"
         },
         {
             index: 22,
             question: "What makes you feel worried?",
-            hint: "",
-            name: "whyWorried"
         },
         {
             index: 23,
             question: "If there was one thing in your life that you could change to make you feel less worried, what would it be?",
-            hint: "",
-            name: "makeLessWorry"
         },
         {
             index: 24,
             question: "What is your greatest worry?",
-            hint: "",
-            name: "greatestWorry"
         },
         {
             index: 25,
             question: "What are you really good at?",
-            hint: "",
-            name: "talents"
         }
     ]
     //setting up the voice reader
@@ -314,6 +262,54 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
     useEffect(() => {
         synth.speak(utterThis)
     }, [readFirstQ])
+
+    const questionNodes = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
+    const finalTextNode = []
+    const highLight = () => {
+        let realNode = questionNodes.nextNode();
+        while (realNode) {
+            if (realNode.textContent.includes("?")) {
+                finalTextNode.push(realNode)
+            }
+            realNode = questionNodes.nextNode()
+        }
+        const finalWords = []
+        for (const textNode of finalTextNode) {
+            for (const word of textNode.textContent.matchAll(/[a-zA-Z]+/g)) {
+                console.log(word)
+                finalWords.push({
+                    word: word[0],
+                    parentNode: textNode,
+                    offset: word.index
+                });
+            }
+        }
+        let index = 0;
+        const range = new Range();
+        const highLight = setInterval(() => {
+            if (currentQuestion == 25) {
+                console.log("yay it working")
+                console.log(index)
+                if (index >= finalWords.length) {
+                    console.log("entering the stop loop")
+                    document.getSelection().removeAllRanges();
+                    clearInterval(highLight)
+                } else {
+                    const { word, parentNode, offset } = finalWords[index];
+                    range.setStart(parentNode, offset);
+                    range.setEnd(parentNode, offset + word.length);
+                    document.getSelection().removeAllRanges();
+                    document.getSelection().addRange(range);
+                    index++;
+                }
+            }
+        }, 200);
+    }
+    useEffect(() => {
+        console.log("highlight the text")
+        highLight()
+    }, [currentQuestion])
+
     const handleChange = (event) => {
         // console.log("hey i be triggered")
         const name = event.target.name

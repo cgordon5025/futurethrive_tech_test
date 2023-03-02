@@ -12,12 +12,7 @@ const AgeQuestion = ({ readFirstQ, showButton, formState, setFormState, setCurre
         }
 
     },)
-    // const questionText = document.getElementById("ageQuestion")
-    // console.log(questionText)
-    // const textContent = questionText.textContent.split(' ')
-    // console.log(textContent)
     const questionNodes = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
-    // console.log(questionNodes)
     const finalTextNode = []
     const highLight = () => {
         let realNode = questionNodes.nextNode();
@@ -44,32 +39,28 @@ const AgeQuestion = ({ readFirstQ, showButton, formState, setFormState, setCurre
         }
         let index = 0;
         const range = new Range();
-        console.log(finalWords)
         const highLight = setInterval(() => {
             if (readFirstQ) {
                 console.log("yay it working")
+                console.log(index)
                 if (index >= finalWords.length) {
                     console.log("entering the stop loop")
                     document.getSelection().removeAllRanges();
-
                     clearInterval(highLight)
+                } else {
+                    const { word, parentNode, offset } = finalWords[index];
+                    range.setStart(parentNode, offset);
+                    range.setEnd(parentNode, offset + word.length);
+                    document.getSelection().removeAllRanges();
+                    document.getSelection().addRange(range);
+                    index++;
                 }
-                const { word, parentNode, offset } = finalWords[index];
-
-                range.setStart(parentNode, offset);
-                range.setEnd(parentNode, offset + word.length);
-                document.getSelection().removeAllRanges();
-                document.getSelection().addRange(range);
-
-                index++;
             }
-
         }, 200);
     }
     useEffect(() => {
         console.log("highlight the text")
         highLight()
-
     }, [readFirstQ])
 
 

@@ -293,6 +293,10 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
         setEndDisplay("block")
         // setCamStatus(true)
     }
+    const handleRegression = () => {
+        const prevQuestion = currentQuestion - 1
+        setCurrentQuestion(prevQuestion)
+    }
     switch (currentQuestion) {
         case 0:
             return (
@@ -409,7 +413,7 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
                             onChange={handleChange}
                         />
                         <button style={{ display: buttonDisplay, marginTop: "2%" }} className='submitBtn' onClick={handleSubmit}>Complete</button>
-
+                        <button style={{ display: buttonDisplay }} className='regressBtn' onClick={handleRegression}>Back</button>
                     </div>
                     <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
                 </div>

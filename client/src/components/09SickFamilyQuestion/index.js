@@ -29,6 +29,15 @@ const SickFamilyQuestion = ({ formState, setFormState, setCurrentQuestion, curre
             setCurrentQuestion(nextQuestion)
         }
     }
+    const handleRegression = () => {
+        if (formState.recentDeath != false) {
+            const prevQuestion = currentQuestion - 1
+            setCurrentQuestion(prevQuestion)
+        } else {
+            const prevQuestion = currentQuestion - 2
+            setCurrentQuestion(prevQuestion)
+        }
+    }
 
     return (
         <div className='questionContainer'>
@@ -53,7 +62,8 @@ const SickFamilyQuestion = ({ formState, setFormState, setCurrentQuestion, curre
                     />
                 </form>
             </div>
-            <button style={{display:buttonDisplay}} className='progressBtn' onClick={handleProgression}>Next</button>
+            <button style={{ display: buttonDisplay }} className='progressBtn' onClick={handleProgression}>Next</button>
+            <button style={{ display: buttonDisplay }} className='regressBtn' onClick={handleRegression}>Back</button>
             <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
         </div>
     )

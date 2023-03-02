@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 
 const OutsideHelpQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
-  const [buttonDisplay, setButtonDisplay] = useState("none")
-  
-  useEffect(() => {
+    const [buttonDisplay, setButtonDisplay] = useState("none")
+
+    useEffect(() => {
         setTimeout(() => {
             setButtonDisplay("block")
         }, 3000)
@@ -29,6 +29,10 @@ const OutsideHelpQuestion = ({ formState, setFormState, setCurrentQuestion, curr
             setCurrentQuestion(nextQuestion)
         }
     }
+    const handleRegression = () => {
+        const prevQuestion = currentQuestion - 1
+        setCurrentQuestion(prevQuestion)
+    }
 
     return (
         <div className='questionContainer'>
@@ -53,7 +57,8 @@ const OutsideHelpQuestion = ({ formState, setFormState, setCurrentQuestion, curr
                     />
                 </form>
             </div>
-            <button style={{display:buttonDisplay}} className='progressBtn' onClick={handleProgression}>Next</button>
+            <button style={{ display: buttonDisplay }} className='progressBtn' onClick={handleProgression}>Next</button>
+            <button style={{ display: buttonDisplay }} className='regressBtn' onClick={handleRegression}>Back</button>
             <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
         </div>
     )

@@ -8,7 +8,7 @@ const OutsideHelpHowQuestion = ({ formState, setFormState, setCurrentQuestion, c
             setButtonDisplay("block")
         }, 3000)
     }, [currentQuestion])
-   
+
     const handleChange = (event) => {
         const name = event.target.name
         const value = event.target.value
@@ -21,6 +21,10 @@ const OutsideHelpHowQuestion = ({ formState, setFormState, setCurrentQuestion, c
         const nextQuestion = currentQuestion + 1
         setCurrentQuestion(nextQuestion)
     }
+    const handleRegression = () => {
+        const prevQuestion = currentQuestion - 1
+        setCurrentQuestion(prevQuestion)
+    }
 
     return (
         <div className='questionContainer'>
@@ -32,7 +36,8 @@ const OutsideHelpHowQuestion = ({ formState, setFormState, setCurrentQuestion, c
                     onChange={handleChange}
                 />
             </div>
-            <button style={{display:buttonDisplay}}className='progressBtn' onClick={handleProgression}>Next</button>
+            <button style={{ display: buttonDisplay }} className='progressBtn' onClick={handleProgression}>Next</button>
+            <button style={{ display: buttonDisplay }} className='regressBtn' onClick={handleRegression}>Back</button>
             <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
         </div>
     )

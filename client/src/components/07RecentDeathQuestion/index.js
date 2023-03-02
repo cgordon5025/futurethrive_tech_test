@@ -8,7 +8,7 @@ const RecentDeathQuestion = ({ formState, setFormState, setCurrentQuestion, curr
             setButtonDisplay("block")
         }, 3000)
     }, [currentQuestion])
-    
+
     const handleChange = (event) => {
         console.log(event.target.name)
         console.log(event.target.value)
@@ -27,6 +27,15 @@ const RecentDeathQuestion = ({ formState, setFormState, setCurrentQuestion, curr
             //this will skip the next 2 questions
             const nextQuestion = currentQuestion + 2
             setCurrentQuestion(nextQuestion)
+        }
+    }
+    const handleRegression = () => {
+        if (formState.outsideHelp != false) {
+            const prevQuestion = currentQuestion - 1
+            setCurrentQuestion(prevQuestion)
+        } else {
+            const prevQuestion = currentQuestion - 3
+            setCurrentQuestion(prevQuestion)
         }
     }
 
@@ -53,7 +62,8 @@ const RecentDeathQuestion = ({ formState, setFormState, setCurrentQuestion, curr
                     />
                 </form>
             </div>
-            <button style={{display:buttonDisplay}}className='progressBtn' onClick={handleProgression}>Next</button>
+            <button style={{ display: buttonDisplay }} className='progressBtn' onClick={handleProgression}>Next</button>
+            <button style={{ display: buttonDisplay }} className='regressBtn' onClick={handleRegression}>Back</button>
             <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
         </div>
     )

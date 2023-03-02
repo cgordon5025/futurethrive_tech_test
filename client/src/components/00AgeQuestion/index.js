@@ -17,17 +17,9 @@ const AgeQuestion = ({ readFirstQ, showButton, formState, setFormState, setCurre
     // const textContent = questionText.textContent.split(' ')
     // console.log(textContent)
     const questionNodes = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
-    const testNodes = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
     // console.log(questionNodes)
     const finalTextNode = []
-    const allTextNodes = []
-    useEffect(() => {
-        console.log("highlight the text")
-        console.log(questionNodes)
-        console.log(testNodes)
-        // finalTextNode.push(questionNodes)
-        console.log(finalTextNode)
-
+    const highLight = () => {
         let realNode = questionNodes.nextNode();
         while (realNode) {
             if (realNode.textContent.includes("?")) {
@@ -73,6 +65,10 @@ const AgeQuestion = ({ readFirstQ, showButton, formState, setFormState, setCurre
             }
 
         }, 200);
+    }
+    useEffect(() => {
+        console.log("highlight the text")
+        highLight()
 
     }, [readFirstQ])
 
@@ -108,7 +104,18 @@ const AgeQuestion = ({ readFirstQ, showButton, formState, setFormState, setCurre
                     lang="en-GB"
                     autoPlay>
                     <p>How old are you?</p>
-                </TextToSpeech> */}
+                </TextToSpeech>
+                {readFirstQ ?
+                    (
+                    <TextToSpeech
+                        markTextAsSpoken
+                        rate={.9}
+                        lang="en-GB"
+                        autoPlay>
+                        <p>Lets see why the highlighting mark of the text is not working with qa rteally long sentence maybes it just delayed i don't know what do celebs know do they know things lets find out</p>
+                    </TextToSpeech>) : (
+                        <></>
+                    )} */}
                 <p className="ageQuestion">How old are you?</p>
                 <input
                     name='age'

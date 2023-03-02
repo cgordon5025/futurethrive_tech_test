@@ -64,7 +64,6 @@ function App() {
 
   return (
     <ApolloProvider client={client}>
-
       <Welcome />
       {/* <div className="App">
         <div className='WelcomeContainer' style={{ display: welcomeDisplay }}>

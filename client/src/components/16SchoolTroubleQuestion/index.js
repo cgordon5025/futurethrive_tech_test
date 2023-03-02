@@ -22,7 +22,10 @@ const SchoolTroubleQuestion = ({ formState, setFormState, setCurrentQuestion, cu
         const nextQuestion = currentQuestion + 1
         setCurrentQuestion(nextQuestion)
     }
-
+    const handleRegression = () => {
+        const prevQuestion = currentQuestion - 1
+        setCurrentQuestion(prevQuestion)
+    }
     return (
         <div className='questionContainer'>
             <div className='formContainer'>
@@ -47,6 +50,7 @@ const SchoolTroubleQuestion = ({ formState, setFormState, setCurrentQuestion, cu
                 </form>
             </div>
             <button style={{display:buttonDisplay}} className='progressBtn' onClick={handleProgression}>Next</button>
+            <button style={{ display: buttonDisplay }} className='regressBtn' onClick={handleRegression}>Back</button>
             <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
         </div>
     )

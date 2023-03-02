@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const SchoolSocialQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
+const SchoolSocialQuestion = ({ setYesNoChecked, yesNoChecked, formState, setFormState, setCurrentQuestion, currentQuestion }) => {
     const [buttonDisplay, setButtonDisplay] = useState("none")
 
     useEffect(() => {
@@ -10,11 +10,11 @@ const SchoolSocialQuestion = ({ formState, setFormState, setCurrentQuestion, cur
     }, [currentQuestion])
 
     const handleChange = (event) => {
-        console.log(event.target.name)
-        console.log(event.target.value)
         if (event.target.value == "yes") {
+            setYesNoChecked({ ...yesNoChecked, schoolFriends: { yes: true, no: false } })
             setFormState({ ...formState, schoolFriends: true })
         } else {
+            setYesNoChecked({ ...yesNoChecked, schoolFriends: { yes: false, no: true } })
             setFormState({ ...formState, schoolFriends: false })
         }
     }
@@ -35,6 +35,7 @@ const SchoolSocialQuestion = ({ formState, setFormState, setCurrentQuestion, cur
                     <input
                         type="radio"
                         id="yes"
+                        checked={yesNoChecked.schoolFriends.yes}
                         name="schoolFriends"
                         value="yes"
                         onChange={handleChange}
@@ -43,6 +44,7 @@ const SchoolSocialQuestion = ({ formState, setFormState, setCurrentQuestion, cur
                     <input
                         type="radio"
                         id="no"
+                        checked={yesNoChecked.schoolFriends.no}
                         name="schoolFriends"
                         value="no"
                         onChange={handleChange}

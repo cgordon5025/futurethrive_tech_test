@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const SickFamilyQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
+const SickFamilyQuestion = ({ setYesNoChecked, yesNoChecked, formState, setFormState, setCurrentQuestion, currentQuestion }) => {
     const [buttonDisplay, setButtonDisplay] = useState("none")
 
     useEffect(() => {
@@ -10,11 +10,11 @@ const SickFamilyQuestion = ({ formState, setFormState, setCurrentQuestion, curre
     }, [currentQuestion])
 
     const handleChange = (event) => {
-        console.log(event.target.name)
-        console.log(event.target.value)
         if (event.target.value == "yes") {
+            setYesNoChecked({ ...yesNoChecked, sickFamily: { yes: true, no: false } })
             setFormState({ ...formState, sickFamily: true })
         } else {
+            setYesNoChecked({ ...yesNoChecked, sickFamily: { yes: false, no: true } })
             setFormState({ ...formState, sickFamily: false })
         }
     }
@@ -48,6 +48,7 @@ const SickFamilyQuestion = ({ formState, setFormState, setCurrentQuestion, curre
                     <input
                         type="radio"
                         id="yes"
+                        checked={yesNoChecked.sickFamily.yes}
                         name="recentDeath"
                         value="yes"
                         onChange={handleChange}
@@ -56,6 +57,7 @@ const SickFamilyQuestion = ({ formState, setFormState, setCurrentQuestion, curre
                     <input
                         type="radio"
                         id="no"
+                        checked={yesNoChecked.sickFamily.no}
                         name="recentDeath"
                         value="no"
                         onChange={handleChange}

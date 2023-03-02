@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const MadeFunOfQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
+const MadeFunOfQuestion = ({ setYesNoChecked, yesNoChecked, formState, setFormState, setCurrentQuestion, currentQuestion }) => {
     const [buttonDisplay, setButtonDisplay] = useState("none")
 
     useEffect(() => {
@@ -8,13 +8,14 @@ const MadeFunOfQuestion = ({ formState, setFormState, setCurrentQuestion, curren
             setButtonDisplay("block")
         }, 3000)
     }, [currentQuestion])
-    
+
     const handleChange = (event) => {
-        console.log(event.target.name)
-        console.log(event.target.value)
         if (event.target.value == "yes") {
+            setYesNoChecked({ ...yesNoChecked, madeFunOf: { yes: true, no: false } })
             setFormState({ ...formState, madeFunOf: true })
         } else {
+            console.log("clicked")
+            setYesNoChecked({ ...yesNoChecked, madeFunOf: { yes: false, no: true } })
             setFormState({ ...formState, madeFunOf: false })
         }
     }
@@ -35,6 +36,7 @@ const MadeFunOfQuestion = ({ formState, setFormState, setCurrentQuestion, curren
                     <input
                         type="radio"
                         id="yes"
+                        checked={yesNoChecked.madeFunOf.yes}
                         name="madeFunOf"
                         value="yes"
                         onChange={handleChange}
@@ -43,13 +45,14 @@ const MadeFunOfQuestion = ({ formState, setFormState, setCurrentQuestion, curren
                     <input
                         type="radio"
                         id="no"
+                        checked={yesNoChecked.madeFunOf.no}
                         name="madeFunOf"
                         value="no"
                         onChange={handleChange}
                     />
                 </form>
             </div>
-            <button style={{display:buttonDisplay}}className='progressBtn' onClick={handleProgression}>Next</button>
+            <button style={{ display: buttonDisplay }} className='progressBtn' onClick={handleProgression}>Next</button>
             <button style={{ display: buttonDisplay }} className='regressBtn' onClick={handleRegression}>Back</button>
             <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
         </div>

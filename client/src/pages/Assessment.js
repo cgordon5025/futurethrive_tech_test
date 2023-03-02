@@ -55,6 +55,45 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
         sister: false
 
     })
+    const [yesNoChecked, setYesNoChecked] = useState({
+        outsideHelp: {
+            yes: false,
+            no: false
+        },
+        recentDeath: {
+            yes: false,
+            no: false
+        },
+        sickFamily: {
+            yes: false,
+            no: false
+        },
+        happyOrSad: {
+            happy: false,
+            sad: false,
+            inbetween: false
+        },
+        academics: {
+            yes: false,
+            no: false
+        },
+        schoolTrouble: {
+            yes: false,
+            no: false
+        },
+        schoolFriends: {
+            yes: false,
+            no: false
+        },
+        madeFunOf: {
+            yes: false,
+            no: false
+        },
+        areWorried: {
+            yes: false,
+            no: false
+        }
+    })
     //these states will be used to trigger the contigency, if they respond yes it will flip to true and show the corresponding questions, if false it will skip it
     const [saveAns, { error, data }] = useMutation(SAVE_ANSWERS)
     // take this out later, this is for testing purposes
@@ -327,7 +366,7 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             )
         case 4:
             return (
-                <OutsideHelpQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <OutsideHelpQuestion yesNoChecked={yesNoChecked} setYesNoChecked={setYesNoChecked} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 5:
             return (
@@ -339,7 +378,7 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             )
         case 7:
             return (
-                <RecentDeathQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <RecentDeathQuestion yesNoChecked={yesNoChecked} setYesNoChecked={setYesNoChecked} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 8:
             return (
@@ -347,7 +386,7 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             )
         case 9:
             return (
-                <SickFamilyQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <SickFamilyQuestion yesNoChecked={yesNoChecked} setYesNoChecked={setYesNoChecked} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 10:
             return (
@@ -355,7 +394,7 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             )
         case 11:
             return (
-                <HappyOrSadQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <HappyOrSadQuestion yesNoChecked={yesNoChecked} setYesNoChecked={setYesNoChecked} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 12:
             return (
@@ -371,19 +410,19 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             )
         case 15:
             return (
-                <AcademicsQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <AcademicsQuestion yesNoChecked={yesNoChecked} setYesNoChecked={setYesNoChecked} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 16:
             return (
-                <SchoolTroubleQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <SchoolTroubleQuestion yesNoChecked={yesNoChecked} setYesNoChecked={setYesNoChecked} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 17:
             return (
-                <SchoolSocialQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <SchoolSocialQuestion yesNoChecked={yesNoChecked} setYesNoChecked={setYesNoChecked} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 18:
             return (
-                <MadeFunOfQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <MadeFunOfQuestion yesNoChecked={yesNoChecked} setYesNoChecked={setYesNoChecked} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 19:
             return (
@@ -395,7 +434,7 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             )
         case 21:
             return (
-                <AreWorriedQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <AreWorriedQuestion yesNoChecked={yesNoChecked} setYesNoChecked={setYesNoChecked} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 22:
             return (

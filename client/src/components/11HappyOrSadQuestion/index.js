@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const HappyOrSadQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
+const HappyOrSadQuestion = ({ setYesNoChecked, yesNoChecked, formState, setFormState, setCurrentQuestion, currentQuestion }) => {
     const [buttonDisplay, setButtonDisplay] = useState("none")
 
     useEffect(() => {
@@ -8,17 +8,20 @@ const HappyOrSadQuestion = ({ formState, setFormState, setCurrentQuestion, curre
             setButtonDisplay("block")
         }, 3000)
     }, [currentQuestion])
-
+console.log(yesNoChecked.happyOrSad.inbetween)
     const handleChange = (event) => {
         console.log(event.target.value)
         switch (event.target.value) {
             case "mostlySad":
+                setYesNoChecked({ ...yesNoChecked, happyOrSad: { sad: true, happy: false, inbetween: false } })
                 setFormState({ ...formState, happyOrSad: "mostly sad" })
                 break;
             case "mostlyHappy":
+                setYesNoChecked({ ...yesNoChecked, happyOrSad: { sad: false, happy: true, inbetween: false } })
                 setFormState({ ...formState, happyOrSad: "mostly happy" })
                 break;
             case "inbetween":
+                setYesNoChecked({ ...yesNoChecked, happyOrSad: { sad: false, happy: false, inbetween: true } })
                 setFormState({ ...formState, happyOrSad: "in between" })
                 break;
         }
@@ -46,6 +49,7 @@ const HappyOrSadQuestion = ({ formState, setFormState, setCurrentQuestion, curre
                     <input
                         type="radio"
                         id="sad"
+                        checked={yesNoChecked.happyOrSad.sad}
                         name="happyOrSad"
                         value="mostlySad"
                         onChange={handleChange}
@@ -54,6 +58,7 @@ const HappyOrSadQuestion = ({ formState, setFormState, setCurrentQuestion, curre
                     <input
                         type="radio"
                         id="happy"
+                        checked={yesNoChecked.happyOrSad.happy}
                         name="happyOrSad"
                         value="mostlyHappy"
                         onChange={handleChange}
@@ -62,6 +67,7 @@ const HappyOrSadQuestion = ({ formState, setFormState, setCurrentQuestion, curre
                     <input
                         type="radio"
                         id="inbetween"
+                        checked={yesNoChecked.happyOrSad.inbetween}
                         name="happyOrSad"
                         value="inbetween"
                         onChange={handleChange}

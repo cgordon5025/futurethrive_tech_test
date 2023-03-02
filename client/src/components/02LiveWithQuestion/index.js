@@ -8,30 +8,27 @@ const LiveWithQuestion = ({ setSaveLiveWith, saveLiveWith, formState, setFormSta
             setButtonDisplay("block")
         }, 3000)
     }, [currentQuestion])
-    // console.log(saveLiveWith.mother)
 
     const handleChange = async (event) => {
         if (event.target.checked) {
             console.log("you checked me")
-            // console.log(event.target.checked)
             const name = event.target.name
-            const value = event.target.checked
-            //TODO: need to be able to save the checked values here if they decide to go back and change their answers
-            // setSaveLiveWith({ ...saveLiveWith, [name]: value })
-            // console.log(saveLiveWith)
-            // console.log(saveLiveWith)
-            // const newArray = [saveLiveWith]
-            // const array = { name: value }
+            const checkStatus = event.target.checked
+            setSaveLiveWith({ ...saveLiveWith, [name]: checkStatus })
+
             const liveWithArray = [...formState.liveWith, name]
             //this line right here makes it so we only have single occurance, b/c of the progression/regression issue for checking it
             const filteredArray = [...new Set(liveWithArray)]
-            console.log(liveWithArray)
             setFormState({ ...formState, liveWith: filteredArray })
             console.log(formState.liveWith)
         }
         if (!event.target.checked) {
             console.log("you unchecked me")
+            const name = event.target.name
             const targetFamilyMember = event.target.value
+            const checkStatus = event.target.checked
+            setSaveLiveWith({ ...saveLiveWith, [name]: checkStatus })
+            console.log(saveLiveWith)
             const updatedLiveWith = await formState.liveWith.filter((famMember) =>
                 famMember !== targetFamilyMember)
             console.log(updatedLiveWith)
@@ -58,7 +55,8 @@ const LiveWithQuestion = ({ setSaveLiveWith, saveLiveWith, formState, setFormSta
                         <input
                             type="checkbox"
                             name="mother"
-                            value={saveLiveWith.mother}
+                            checked={saveLiveWith.mother}
+                            value="mother"
                             onChange={handleChange} />
                     </div>
                     <div>
@@ -66,6 +64,7 @@ const LiveWithQuestion = ({ setSaveLiveWith, saveLiveWith, formState, setFormSta
                         <input
                             type="checkbox"
                             name="father"
+                            checked={saveLiveWith.father}
                             value="father"
                             onChange={handleChange} />
                     </div>
@@ -74,6 +73,7 @@ const LiveWithQuestion = ({ setSaveLiveWith, saveLiveWith, formState, setFormSta
                         <input
                             type="checkbox"
                             name="grandmother"
+                            checked={saveLiveWith.grandmother}
                             value="grandmother"
                             onChange={handleChange} />
                     </div>
@@ -82,6 +82,7 @@ const LiveWithQuestion = ({ setSaveLiveWith, saveLiveWith, formState, setFormSta
                         <input
                             type="checkbox"
                             name="grandfather"
+                            checked={saveLiveWith.grandfather}
                             value="grandfather"
                             onChange={handleChange} />
                     </div>
@@ -90,6 +91,7 @@ const LiveWithQuestion = ({ setSaveLiveWith, saveLiveWith, formState, setFormSta
                         <input
                             type="checkbox"
                             name="brother"
+                            checked={saveLiveWith.brother}
                             value="brother"
                             onChange={handleChange} />
                     </div>
@@ -98,6 +100,7 @@ const LiveWithQuestion = ({ setSaveLiveWith, saveLiveWith, formState, setFormSta
                         <input
                             type="checkbox"
                             name="sister"
+                            checked={saveLiveWith.sister}
                             value="sister"
                             onChange={handleChange} />
                     </div>

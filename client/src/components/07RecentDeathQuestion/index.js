@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const RecentDeathQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
+const RecentDeathQuestion = ({ setYesNoChecked, yesNoChecked, formState, setFormState, setCurrentQuestion, currentQuestion }) => {
     const [buttonDisplay, setButtonDisplay] = useState("none")
 
     useEffect(() => {
@@ -13,8 +13,10 @@ const RecentDeathQuestion = ({ formState, setFormState, setCurrentQuestion, curr
         console.log(event.target.name)
         console.log(event.target.value)
         if (event.target.value == "yes") {
+            setYesNoChecked({ ...yesNoChecked, recentDeath: { yes: true, no: false } })
             setFormState({ ...formState, recentDeath: true })
         } else {
+            setYesNoChecked({ ...yesNoChecked, recentDeath: { yes: false, no: true } })
             setFormState({ ...formState, recentDeath: false })
         }
     }
@@ -48,6 +50,7 @@ const RecentDeathQuestion = ({ formState, setFormState, setCurrentQuestion, curr
                     <input
                         type="radio"
                         id="yes"
+                        checked={yesNoChecked.recentDeath.yes}
                         name="recentDeath"
                         value="yes"
                         onChange={handleChange}
@@ -56,6 +59,7 @@ const RecentDeathQuestion = ({ formState, setFormState, setCurrentQuestion, curr
                     <input
                         type="radio"
                         id="no"
+                        checked={yesNoChecked.recentDeath.no}
                         name="recentDeath"
                         value="no"
                         onChange={handleChange}

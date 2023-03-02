@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const OutsideHelpQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
+const OutsideHelpQuestion = ({ setYesNoChecked, yesNoChecked, formState, setFormState, setCurrentQuestion, currentQuestion }) => {
     const [buttonDisplay, setButtonDisplay] = useState("none")
 
     useEffect(() => {
@@ -10,11 +10,11 @@ const OutsideHelpQuestion = ({ formState, setFormState, setCurrentQuestion, curr
     }, [currentQuestion])
 
     const handleChange = (event) => {
-        console.log(event.target.name)
-        console.log(event.target.value)
         if (event.target.value == "yes") {
+            setYesNoChecked({ ...yesNoChecked, outsideHelp: { yes: true, no: false } })
             setFormState({ ...formState, outsideHelp: true })
         } else {
+            setYesNoChecked({ ...yesNoChecked, outsideHelp: { yes: false, no: true } })
             setFormState({ ...formState, outsideHelp: false })
         }
     }
@@ -43,6 +43,7 @@ const OutsideHelpQuestion = ({ formState, setFormState, setCurrentQuestion, curr
                     <input
                         type="radio"
                         id="yes"
+                        checked={yesNoChecked.outsideHelp.yes}
                         name="outsideHelp"
                         value="yes"
                         onChange={handleChange}
@@ -51,6 +52,7 @@ const OutsideHelpQuestion = ({ formState, setFormState, setCurrentQuestion, curr
                     <input
                         type="radio"
                         id="no"
+                        checked={yesNoChecked.outsideHelp.no}
                         name="outsideHelp"
                         value="no"
                         onChange={handleChange}

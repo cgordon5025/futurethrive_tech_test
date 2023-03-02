@@ -2,9 +2,9 @@ import React, { useState, useContext, useEffect } from "react"
 import { RecordWebcam, useRecordWebcam } from 'react-record-webcam';
 import { SAVE_ANSWERS } from "../utils/mutations";
 import { useMutation } from "@apollo/client";
-import VoiceContext from "../utils/VoiceContext"
 import { useTts } from 'tts-react';
 import { TextToSpeech } from "tts-react";
+import UserContext from "../utils/UserContext";
 //lets import all of the components for the questions
 import AgeQuestion from "../components/00AgeQuestion";
 import GradeQuestion from "../components/01GradeQuestion";
@@ -235,6 +235,10 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             question: "What are you really good at?",
         }
     ]
+
+    //userContext
+    const { user } = useContext(UserContext)
+    const userId = user._id
     //setting up the voice reader
     const rate = .9;
     const synth = window.speechSynthesis;
@@ -322,12 +326,11 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
     }
     const handleSubmit = async (event) => {
         console.log("submitting")
-        // const finalFormState = toObject(formState)
-        // finalFormState.userId = "63e1645e690cc9d7fcf52bd0"
+
         try {
             const { data } = await saveAns({
                 variables: {
-                    userId: "63f8d8008264f4a5e02d3635",
+                    userId: userId,
                     ...formState
                 }
             });

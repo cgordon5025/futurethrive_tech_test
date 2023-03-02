@@ -1,1 +1,1 @@
-export const SET_VOICE = 'SET_VOICE'
+export const SET_USER = 'SET_USER'

@@ -42,3 +42,11 @@ mutation SaveVideo($userId: ID!, $videofile: String, $url:String) {
   }
 }
 `;
+
+export const CREATE_USER = gql`
+mutation CreateUser($username: String!) {
+  createUser(username: $username) {
+    _id
+  }
+}
+`;

@@ -25,7 +25,11 @@ const resolvers = {
     Mutation: {
         //to add back in if we want this, might be causing the issue?
         // familyHelp:args.familyHelp
-
+        //on the front end we'll hardcode this so it's deidentified, but linked the ids to respective reports and vids
+        createUser: async (parents, args) => {
+            const newUser = await User.create({ username: args.username })
+            return (newUser)
+        },
         saveAnswers: async (parent, args) => {
 
             const newResults = await Results.create({ ...args })

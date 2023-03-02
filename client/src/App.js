@@ -6,9 +6,9 @@ import Auth from './utils/auth'
 import { Routes, Route } from 'react-router-dom'
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client'
 import { RecordWebcam, useRecordWebcam } from 'react-record-webcam'
-import VoiceContext from './utils/VoiceContext';
+import UserContext from './utils/UserContext';
 import { reducer } from './utils/reducers';
-import { SET_VOICE } from './utils/action';
+import { SET_USER } from './utils/action';
 import { useTts } from 'tts-react';
 import { TextToSpeech } from 'tts-react';
 //import the pages
@@ -61,11 +61,13 @@ function App() {
   //   }
   // })
   // console.log(voices)
-
+  const initialState = {}
+  const [user, setUser] = useReducer(reducer, initialState)
   return (
     <ApolloProvider client={client}>
-      <Welcome />
-      {/* <div className="App">
+      <UserContext.Provider value={{ user, setUser }}>
+        <Welcome />
+        {/* <div className="App">
         <div className='WelcomeContainer' style={{ display: welcomeDisplay }}>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             <p>Welcome statement about confidentiality and such</p>
@@ -81,18 +83,18 @@ function App() {
           </div>
         </div>
         <div> */}
-      {/* this renders an open/close/start/stop and download button look into ways to get a save to server/autosave to server */}
-      {/* <RecordWebcam options={Options} /> */}
-      {/* <p>Camera status: {recordWebcam.status}</p>
+        {/* this renders an open/close/start/stop and download button look into ways to get a save to server/autosave to server */}
+        {/* <RecordWebcam options={Options} /> */}
+        {/* <p>Camera status: {recordWebcam.status}</p>
           <button onClick={recordWebcam.open}>Open camera</button>
           <button onClick={recordWebcam.start}>Start recording</button>
           <button onClick={recordWebcam.stop}>Stop recording</button>
           <button onClick={recordWebcam.retake}>Retake recording</button>
           <button onClick={recordWebcam.download}>Download recording</button>
           <button onClick={saveFile}>Save file to server</button> */}
-      {/* <video ref={recordWebcam.webcamRef} autoPlay muted /> */}
-      {/* <video ref={recordWebcam.previewRef} autoPlay muted loop /> */}
-      {/* </div>
+        {/* <video ref={recordWebcam.webcamRef} autoPlay muted /> */}
+        {/* <video ref={recordWebcam.previewRef} autoPlay muted loop /> */}
+        {/* </div>
         <div style={{ display: assessmentDisplay }}>
           <Assessment setCamStatus={setCamStatus} setAssessmentDisplay={setAssessmentDisplay} setEndDisplay={setEndDisplay} />
         </div>
@@ -103,6 +105,7 @@ function App() {
           </div>
         </div>
       </div> */}
+      </UserContext.Provider>
     </ApolloProvider>
   );
 }

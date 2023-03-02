@@ -1,6 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react'
-import VoiceContext from '../../utils/VoiceContext'
-import { TextToSpeech } from 'tts-react'
 
 const AgeQuestion = ({ readFirstQ, showButton, formState, setFormState, setCurrentQuestion, currentQuestion }) => {
     const [buttonDisplay, setButtonDisplay] = useState("none")

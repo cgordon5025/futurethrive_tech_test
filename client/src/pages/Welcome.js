@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import { SAVE_VIDEO } from "../utils/mutations";
 import { useMutation } from "@apollo/client";
 import { RecordWebcam, useRecordWebcam } from 'react-record-webcam'
 import Assessment from "./Assessment";
-
-
-
+import { CREATE_USER } from "../utils/mutations";
+import { SET_USER } from "../utils/action";
+import UserContext from '../utils/UserContext'
 const Welcome = () => {
     const [welcomeDisplay, setWelcomeDisplay] = useState("flex-root")
     const [assessmentDisplay, setAssessmentDisplay] = useState("none")
@@ -16,6 +16,8 @@ const Welcome = () => {
     const [camStatus, setCamStatus] = useState(false)
     const [saveVid, { error, data }] = useMutation(SAVE_VIDEO)
     const [readFirstQ, setReadFirstQ] = useState(false)
+    const [createUser, { userError, userData }] = useMutation(CREATE_USER)
+    const { setUser } = useContext(UserContext)
     let mediaRecorder;
     const stream = navigator.mediaDevices.getUserMedia({
         audio: true,
@@ -161,10 +163,25 @@ const Welcome = () => {
         setStartButton("block")
     }
     const startSession = async () => {
-        await recordWebcam.start()
-        setWelcomeDisplay("none")
-        setAssessmentDisplay("block")
-        setReadFirstQ(true)
+        try {
+            const { data } = await createUser({
+                variables: { username: "test" }
+            });
+            const payload = {
+                _id: data.createUser._id
+            }
+            setUser({
+                type: SET_USER,
+                payload: payload
+            })
+
+            await recordWebcam.start()
+            setWelcomeDisplay("none")
+            setAssessmentDisplay("block")
+            setReadFirstQ(true)
+        } catch (err) {
+            console.log(err)
+        }
     }
     return (
         <>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const LiveWithQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
+const LiveWithQuestion = ({ setSaveLiveWith, saveLiveWith, formState, setFormState, setCurrentQuestion, currentQuestion }) => {
     const [buttonDisplay, setButtonDisplay] = useState("none")
 
     useEffect(() => {
@@ -8,14 +8,26 @@ const LiveWithQuestion = ({ formState, setFormState, setCurrentQuestion, current
             setButtonDisplay("block")
         }, 3000)
     }, [currentQuestion])
+    // console.log(saveLiveWith.mother)
 
     const handleChange = async (event) => {
         if (event.target.checked) {
             console.log("you checked me")
-            const value = event.target.value
-            const liveWithArray = [...formState.liveWith, value]
+            // console.log(event.target.checked)
+            const name = event.target.name
+            const value = event.target.checked
+            //TODO: need to be able to save the checked values here if they decide to go back and change their answers
+            // setSaveLiveWith({ ...saveLiveWith, [name]: value })
+            // console.log(saveLiveWith)
+            // console.log(saveLiveWith)
+            // const newArray = [saveLiveWith]
+            // const array = { name: value }
+            const liveWithArray = [...formState.liveWith, name]
+            //this line right here makes it so we only have single occurance, b/c of the progression/regression issue for checking it
+            const filteredArray = [...new Set(liveWithArray)]
             console.log(liveWithArray)
-            setFormState({ ...formState, liveWith: liveWithArray })
+            setFormState({ ...formState, liveWith: filteredArray })
+            console.log(formState.liveWith)
         }
         if (!event.target.checked) {
             console.log("you unchecked me")
@@ -46,7 +58,7 @@ const LiveWithQuestion = ({ formState, setFormState, setCurrentQuestion, current
                         <input
                             type="checkbox"
                             name="mother"
-                            value="mother"
+                            value={saveLiveWith.mother}
                             onChange={handleChange} />
                     </div>
                     <div>

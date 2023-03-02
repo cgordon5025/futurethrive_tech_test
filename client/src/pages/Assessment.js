@@ -37,7 +37,24 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const showButton = readFirstQ
     const [buttonDisplay, setButtonDisplay] = useState("none")
+    const [saveLiveWith, setSaveLiveWith] = useState({
+        mother: false,
+        father: false,
+        grandmother: false,
+        grandfather: false,
+        brother: false,
+        sister: false
 
+    })
+    const [saveRelyFam, setSaveRelyFam] = useState({
+        mother: false,
+        father: false,
+        grandmother: false,
+        grandfather: false,
+        brother: false,
+        sister: false
+
+    })
     //these states will be used to trigger the contigency, if they respond yes it will flip to true and show the corresponding questions, if false it will skip it
     const [saveAns, { error, data }] = useMutation(SAVE_ANSWERS)
     // take this out later, this is for testing purposes
@@ -251,13 +268,7 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
     }, [currentQuestion])
     // console.log(formState)
     useEffect(() => {
-        // console.log("using new tech");
 
-        // <TextToSpeech
-        //     markTextAsSpoken lang="en-GB"
-        //     rate={".9"} >
-        //     <p>{questions[currentQuestion].question}</p></TextToSpeech >
-        // </
         synth.speak(utterThis)
     }, [currentQuestion]) //this should only run if the index number changes
 
@@ -308,11 +319,11 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             )
         case 2:
             return (
-                <LiveWithQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <LiveWithQuestion saveLiveWith={saveLiveWith} setSaveLiveWith={setSaveLiveWith} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 3:
             return (
-                <FamilyHelpQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <FamilyHelpQuestion saveRelyFam={saveRelyFam} setSaveRelyFam={setSaveRelyFam} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 4:
             return (

@@ -4,10 +4,13 @@ const path = require('path');
 // const mongodb = require('mongodb')
 const { typeDefs, resolvers } = require('./schemas');
 const { authMiddleware } = require('./utils/auth');
-
+const { BlobServiceClient, BlobServiceClient } = require('@azure/storage-blob')
 const db = require('./config/connection');
 
 const PORT = process.env.PORT || 3001;
+//note remove or hide this after development
+const connStr = "DefaultEndpointsProtocol=https;AccountName=ftnsftestvideos;AccountKey=ZrdiLeyADwqrwLweHbaBhR+opWPAB+gTSVzNxiksGf9A2LnwtY/oSjvGPyNTeCCIvg3o1he0zDOs+AStIKzIeQ==;EndpointSuffix=core.windows.net"
+const blobServiceClient = BlobServiceClient.fromConnectionString(connStr)
 const app = express();
 const server = new ApolloServer({
     typeDefs,

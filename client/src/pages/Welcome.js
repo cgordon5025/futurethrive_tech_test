@@ -8,6 +8,8 @@ import Assessment from "./Assessment";
 import { CREATE_USER } from "../utils/mutations";
 import { SET_USER } from "../utils/action";
 import UserContext from '../utils/UserContext'
+import { BlobServiceClient } from '@azure/storage-blob'
+
 const Welcome = () => {
     const [welcomeDisplay, setWelcomeDisplay] = useState("flex-root")
     const [assessmentDisplay, setAssessmentDisplay] = useState("none")
@@ -42,17 +44,39 @@ const Welcome = () => {
     }
     const recordWebcam = useRecordWebcam(OPTIONS)
     // const recordWebcam = useRecordWebcam()
+    const saveVideo = async (blob) => {
+        const connStr = "DefaultEndpointsProtocol=https;AccountName=ftnsftestvideos;AccountKey=ZrdiLeyADwqrwLweHbaBhR+opWPAB+gTSVzNxiksGf9A2LnwtY/oSjvGPyNTeCCIvg3o1he0zDOs+AStIKzIeQ==;EndpointSuffix=core.windows.net"
+        const blobServiceClient = BlobServiceClient.fromConnectionString(connStr)
+        const containerName = "videos"
+        const containerClient = blobServiceClient.getContainerClient(containerName)
+        const content = blob
+        const filename = vidUserId
+        const mimetype = blob.type
+        const blobName = `${filename}.${mimetype}`
+        const blockBlobClient = containerClient.getBlockBlobClient(blobName)
+        const uploadBlobResponse = await blockBlobClient.upload(content, content.length)
+        console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
+    }
+
     const saveFile = async () => {
         // const blob = await recordWebcam.getRecording(Options);
         const blob = await recordWebcam.getRecording()
+        // console.log('first level uploading')
+        // await saveVideo(blob)
+
+        // const content = args.url
         const filename = vidUserId
         const mimetype = blob.type
-
+        const encoding = "7bit"
+        const url = URL.createObjectURL(blob)
         await fetch('http://localhost:3001/api/videos', {
             method: 'POST',
             body: JSON.stringify({
-                filename, mimetype,
-            })
+                filename, mimetype, encoding, url, blob
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
         })
         console.log("uploaded?")
 
@@ -164,8 +188,6 @@ const Welcome = () => {
         // // }
     };
 
-
-
     const confirmView = async () => {
         setcamButton("none")
         setStartButton("block")
@@ -173,20 +195,24 @@ const Welcome = () => {
     const startSession = async () => {
         const username = 'test'
         try {
-            await fetch('http://localhost:3001/api/users', {
+            const data = await fetch('http://localhost:3001/api/users', {
                 method: 'POST',
-                body: JSON.stringify({ username })
-            })
-            // const { data } = await createUser({
-            //     variables: { username: "test" }
-            // });
-            setVidUserId(data.createUser._id)
-            const payload = {
-                _id: data.createUser._id
-            }
-            setUser({
-                type: SET_USER,
-                payload: payload
+                body: JSON.stringify({ username }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(function (response) {
+
+                return response.json()
+            }).then(function (data) {
+                setVidUserId(data)
+                const payload = {
+                    _id: data
+                }
+                setUser({
+                    type: SET_USER,
+                    payload: payload
+                })
             })
 
             await recordWebcam.start(OPTIONS)

@@ -258,7 +258,7 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
     utterThis.rate = rate;
     // console.log(finalVoice)
     //weird load error
-    utterThis.voice = finalVoice[0];
+    // utterThis.voice = finalVoice[0];
     //this is the use effect that will enable the button timeout for the last question
     useEffect(() => {
         if (currentQuestion == 25) {
@@ -267,14 +267,14 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             }, 3000)
         }
     }, [currentQuestion])
-    useEffect(() => {
+    // useEffect(() => {
 
-        synth.speak(utterThis)
-    }, [currentQuestion]) //this should only run if the index number changes
+    //     synth.speak(utterThis)
+    // }, [currentQuestion]) //this should only run if the index number changes
 
-    useEffect(() => {
-        synth.speak(utterThis)
-    }, [readFirstQ])
+    // useEffect(() => {
+    //     synth.speak(utterThis)
+    // }, [readFirstQ])
 
     const questionNodes = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
     const finalTextNode = []

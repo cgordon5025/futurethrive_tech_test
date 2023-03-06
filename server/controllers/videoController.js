@@ -6,6 +6,7 @@ const containerName = "videos"
 module.exports = {
     async saveVideo(req, res) {
         const containerClient = blobServiceClient.getContainerClient(containerName)
+        console.log(req.body)
         // const content = args.videofile
         const content = req.body.blob
         // const content = args.url

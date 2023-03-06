@@ -50,3 +50,11 @@ mutation CreateUser($username: String!) {
   }
 }
 `;
+
+export const UPLOAD_VIDEO = gql`
+mutation uploadVideo ($video:Upload!){
+  uploadVideo(video:$video){
+    filename
+  }
+}
+`

@@ -21,6 +21,7 @@
     "fast-csv": "^4.3.6",
     "fs": "^0.0.1-security",
     "graphql": "^16.6.0",
+    "graphql-upload": "^13.0.0",
     "json2csv": "^6.0.0-alpha.2",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.9.0",

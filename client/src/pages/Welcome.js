@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import Button from "react-bootstrap/Button";
-import { SAVE_VIDEO } from "../utils/mutations";
+// import { SAVE_VIDEO } from "../utils/mutations";
+import { UPLOAD_VIDEO } from "../utils/mutations";
 import { useMutation } from "@apollo/client";
 import { RecordWebcam, useRecordWebcam } from 'react-record-webcam'
 import Assessment from "./Assessment";
@@ -14,37 +15,20 @@ const Welcome = () => {
     const [camButton, setcamButton] = useState("block")
     const [startButton, setStartButton] = useState("none")
     const [camStatus, setCamStatus] = useState(false)
-    const [saveVid, { error, data }] = useMutation(SAVE_VIDEO)
+    const [saveVid, { error, data }] = useMutation(UPLOAD_VIDEO)
     const [readFirstQ, setReadFirstQ] = useState(false)
     const [createUser, { userError, userData }] = useMutation(CREATE_USER)
     const { setUser } = useContext(UserContext)
-    let mediaRecorder;
-    const stream = navigator.mediaDevices.getUserMedia({
-        audio: true,
-        video: true
-    })
-    window.stream = stream
-    const startRecord = async () => {
-        mediaRecorder = new MediaRecorder(stream, { mimeType: "video.mp4" })
-        mediaRecorder.start()
-        mediaRecorder.ondataavailable = recordVideo
-    }
-    const recordVideo = async (event) => {
-        if (event.data && event.data.size > 0) {
-            let videoURL = URL.createObjectURL(event.data)
+    const [vidUserId, setVidUserId] = useState()
+
+    useEffect(() => {
+        recordWebcam.open()
+    }, [])
+    useEffect(() => {
+        if (camStatus == true) {
+            recordWebcam.stop()
         }
-
-    }
-
-
-    // useEffect(() => {
-    //     recordWebcam.open()
-    // }, [])
-    // useEffect(() => {
-    //     if (camStatus == true) {
-    //         recordWebcam.stop()
-    //     }
-    // })
+    })
 
     const OPTIONS = {
         aspectRatio: 1.7,
@@ -56,104 +40,128 @@ const Welcome = () => {
         width: 1280,
 
     }
-    const recordWebcam = useRecordWebcam()
+    const recordWebcam = useRecordWebcam(OPTIONS)
     // const recordWebcam = useRecordWebcam()
     const saveFile = async () => {
         // const blob = await recordWebcam.getRecording(Options);
         const blob = await recordWebcam.getRecording()
-        const fileTypeFromMimeType = OPTIONS.mimeType?.split('video/')[1]?.split(';')[0] || 'mp4';
-        const fileType = fileTypeFromMimeType === 'x-matroska' ? 'mkv' : fileTypeFromMimeType;
-        const filename = `${OPTIONS.fileName}.${fileType}`;
-        const readFile = new FileReader()
-        const url = URL.createObjectURL(blob)
-        // const something = URL.createObjectURL(blob)
-        fetch(url)
-            .then((response) => response.body)
-            .then((rb) => {
-                const reader = rb.getReader();
+        const filename = vidUserId
+        const mimetype = blob.type
 
-                return new ReadableStream({
-                    start(controller) {
-                        // The following function handles each data chunk
-                        function push() {
-                            // "done" is a Boolean and value a "Uint8Array"
-                            reader.read().then(({ done, value }) => {
-                                // If there is no more data to read
-                                if (done) {
-                                    console.log("done", done);
-                                    controller.close();
-                                    return;
-                                    const { data } = saveVid({
-                                        variables: {
-                                            userId: "63ea86c4fd9ddbf82469e45e",
-                                            videofile: value
-                                        }
-                                    })
-                                }
-                                // Get the data and send it to the browser via the controller
-                                controller.enqueue(value);
-                                // Check chunks by logging to the console
-                                console.log(done, value);
-                                // console.log(value)
-                                // const { data } = saveVid({
-                                //     variables: {
-                                //         userId: "63ea86c4fd9ddbf82469e45e",
-                                //         videofile: value
-                                //     }
-                                // })
-                                push();
-                            });
-                        }
-
-                        push();
-
-                    },
-                });
+        await fetch('http://localhost:3001/api/videos', {
+            method: 'POST',
+            body: JSON.stringify({
+                filename, mimetype,
             })
-            .then((stream) =>
-                // Respond with our stream
-                new Response(stream, { headers: { "Content-Type": "text/html" } }).text()
-            )
-            .then((result) => {
-                // Do things with result
-                console.log(result);
-                // const { data } = saveVid({
-                //     variables: {
-                //         userId: "63ea86c4fd9ddbf82469e45e",
-                //         videofile: result
-                //     }
-                // })
-            });
-        // const url = new Response(something).text()
+        })
+        console.log("uploaded?")
 
-        // const myFile = new File([url], "test.mp4", { type: 'video/mp4' });
-        // const mediaBlob = await fetch(url).then(response => response.blob())
-        // const myFile = new File([mediaBlob], "demo.mp4", { type: 'video.mp4' })
-        // console.log(myFile)
-        // const file = readFile.readAsArrayBuffer(myFile)
-        // const file = readFile.readAsDataURL(myFile)
-        // const file = readFile.readAsText(myFile)
-        // const file = readFile.readAsBinaryString(myFile)
-        // console.log(file)
-
-        // console.log(url)
-        // saveFile(filename, blob);
-        console.log(recordWebcam.getRecording())
-        console.log(filename)
-        console.log(blob)        // console.log(blob)
+        // const fileTypeFromMimeType = OPTIONS.mimeType?.split('video/')[1]?.split(';')[0] || 'mp4';
+        // const fileType = fileTypeFromMimeType === 'x-matroska' ? 'mkv' : fileTypeFromMimeType;
         // try {
         //     const { data } = await saveVid({
         //         variables: {
-        //             userId: "63ea86c4fd9ddbf82469e45e",
-        //             videofile: filename,
-        //             blob: blob,
-        //             path: "../videos/",
-        //             url: file
+        //             filename: vidUserId,
+        //             mimetype: blob.type,
+        //             encoding: "7bit"
         //         }
         //     })
         // } catch (e) {
         //     console.log(e)
         // }
+        // const fileTypeFromMimeType = OPTIONS.mimeType?.split('video/')[1]?.split(';')[0] || 'mp4';
+        // const fileType = fileTypeFromMimeType === 'x-matroska' ? 'mkv' : fileTypeFromMimeType;
+        // const filename = `${OPTIONS.fileName}.${fileType}`;
+        // const readFile = new FileReader()
+        // const url = URL.createObjectURL(blob)
+        // // const something = URL.createObjectURL(blob)
+        // fetch(url)
+        //     .then((response) => response.body)
+        //     .then((rb) => {
+        //         const reader = rb.getReader();
+
+        //         return new ReadableStream({
+        //             start(controller) {
+        //                 // The following function handles each data chunk
+        //                 function push() {
+        //                     // "done" is a Boolean and value a "Uint8Array"
+        //                     reader.read().then(({ done, value }) => {
+        //                         // If there is no more data to read
+        //                         if (done) {
+        //                             console.log("done", done);
+        //                             controller.close();
+        //                             return;
+        //                             const { data } = saveVid({
+        //                                 variables: {
+        //                                     userId: "63ea86c4fd9ddbf82469e45e",
+        //                                     videofile: value
+        //                                 }
+        //                             })
+        //                         }
+        //                         // Get the data and send it to the browser via the controller
+        //                         controller.enqueue(value);
+        //                         // Check chunks by logging to the console
+        //                         console.log(done, value);
+        //                         // console.log(value)
+        //                         // const { data } = saveVid({
+        //                         //     variables: {
+        //                         //         userId: "63ea86c4fd9ddbf82469e45e",
+        //                         //         videofile: value
+        //                         //     }
+        //                         // })
+        //                         push();
+        //                     });
+        //                 }
+
+        //                 push();
+
+        //             },
+        //         });
+        //     })
+        //     .then((stream) =>
+        //         // Respond with our stream
+        //         new Response(stream, { headers: { "Content-Type": "text/html" } }).text()
+        //     )
+        //     .then((result) => {
+        //         // Do things with result
+        //         console.log(result);
+        //         // const { data } = saveVid({
+        //         //     variables: {
+        //         //         userId: "63ea86c4fd9ddbf82469e45e",
+        //         //         videofile: result
+        //         //     }
+        //         // })
+        //     });
+        // // const url = new Response(something).text()
+
+        // // const myFile = new File([url], "test.mp4", { type: 'video/mp4' });
+        // // const mediaBlob = await fetch(url).then(response => response.blob())
+        // // const myFile = new File([mediaBlob], "demo.mp4", { type: 'video.mp4' })
+        // // console.log(myFile)
+        // // const file = readFile.readAsArrayBuffer(myFile)
+        // // const file = readFile.readAsDataURL(myFile)
+        // // const file = readFile.readAsText(myFile)
+        // // const file = readFile.readAsBinaryString(myFile)
+        // // console.log(file)
+
+        // // console.log(url)
+        // // saveFile(filename, blob);
+        // console.log(recordWebcam.getRecording())
+        // console.log(filename)
+        // console.log(blob)        // console.log(blob)
+        // // try {
+        // //     const { data } = await saveVid({
+        // //         variables: {
+        // //             userId: "63ea86c4fd9ddbf82469e45e",
+        // //             videofile: filename,
+        // //             blob: blob,
+        // //             path: "../videos/",
+        // //             url: file
+        // //         }
+        // //     })
+        // // } catch (e) {
+        // //     console.log(e)
+        // // }
     };
 
 
@@ -163,10 +171,16 @@ const Welcome = () => {
         setStartButton("block")
     }
     const startSession = async () => {
+        const username = 'test'
         try {
-            const { data } = await createUser({
-                variables: { username: "test" }
-            });
+            await fetch('http://localhost:3001/api/users', {
+                method: 'POST',
+                body: JSON.stringify({ username })
+            })
+            // const { data } = await createUser({
+            //     variables: { username: "test" }
+            // });
+            setVidUserId(data.createUser._id)
             const payload = {
                 _id: data.createUser._id
             }
@@ -175,7 +189,7 @@ const Welcome = () => {
                 payload: payload
             })
 
-            await recordWebcam.start()
+            await recordWebcam.start(OPTIONS)
             setWelcomeDisplay("none")
             setAssessmentDisplay("block")
             setReadFirstQ(true)

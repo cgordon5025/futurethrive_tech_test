@@ -1,17 +1,18 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
+const { GraphQLUpload } = require("graphql-upload");
 const path = require('path');
+const routes = require('./routes')
 // const mongodb = require('mongodb')
 const { typeDefs, resolvers } = require('./schemas');
 const { authMiddleware } = require('./utils/auth');
-const { BlobServiceClient, BlobServiceClient } = require('@azure/storage-blob')
 const db = require('./config/connection');
 
 const PORT = process.env.PORT || 3001;
 //note remove or hide this after development
-const connStr = "DefaultEndpointsProtocol=https;AccountName=ftnsftestvideos;AccountKey=ZrdiLeyADwqrwLweHbaBhR+opWPAB+gTSVzNxiksGf9A2LnwtY/oSjvGPyNTeCCIvg3o1he0zDOs+AStIKzIeQ==;EndpointSuffix=core.windows.net"
-const blobServiceClient = BlobServiceClient.fromConnectionString(connStr)
+
 const app = express();
+// app.use(`${PORT}/graphql`,graphqlUploadExpress())
 const server = new ApolloServer({
     typeDefs,
     resolvers,
@@ -21,22 +22,30 @@ const server = new ApolloServer({
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '../client/build')));
-    app.get("/*", function (req, res) {
-        res.sendFile(path.join(__dirname, "../client/build/index.html"));
-    });
-};
+app.use(routes);
 
-const startApolloServer = async (typeDefs, resolvers) => {
-    await server.start();
-    server.applyMiddleware({ app });
-    await db.once('open', () => {
-        app.listen(PORT, () => {
-            console.log(`API Server running on port ${PORT}`);
-            console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`)
-        });
-    });
-};
+db.once('open', () => {
+    app.listen(PORT, () => {
+        console.log(`listening on port ${PORT}`)
+    })
+})
 
-startApolloServer(typeDefs, resolvers);
+// if (process.env.NODE_ENV === 'production') {
+//     app.use(express.static(path.join(__dirname, '../client/build')));
+//     app.get("/*", function (req, res) {
+//         res.sendFile(path.join(__dirname, "../client/build/index.html"));
+//     });
+// };
+
+// const startApolloServer = async (typeDefs, resolvers) => {
+//     await server.start();
+//     server.applyMiddleware({ app });
+//     await db.once('open', () => {
+//         app.listen(PORT, () => {
+//             console.log(`API Server running on port ${PORT}`);
+//             console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`)
+//         });
+//     });
+// };
+
+// startApolloServer(typeDefs, resolvers);

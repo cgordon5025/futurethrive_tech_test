@@ -1,5 +1,6 @@
 {
     "liveServer.settings.CustomBrowser": "chrome",
     "editor.snippetSuggestions": "none",
-    "editor.inlayHints.enabled": "offUnlessPressed"
+    "editor.inlayHints.enabled": "offUnlessPressed",
+    "editor.parameterHints.enabled": false
 }

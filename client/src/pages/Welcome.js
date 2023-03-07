@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import Button from "react-bootstrap/Button";
 // import { SAVE_VIDEO } from "../utils/mutations";
-import { UPLOAD_VIDEO } from "../utils/mutations";
+import { SAVE_VIDEO, UPLOAD_VIDEO } from "../utils/mutations";
 import { useMutation } from "@apollo/client";
 import { RecordWebcam, useRecordWebcam } from 'react-record-webcam'
 import Assessment from "./Assessment";
@@ -17,12 +17,12 @@ const Welcome = () => {
     const [camButton, setcamButton] = useState("block")
     const [startButton, setStartButton] = useState("none")
     const [camStatus, setCamStatus] = useState(false)
-    const [saveVid, { error, data }] = useMutation(UPLOAD_VIDEO)
+    const [saveVid, { error, data }] = useMutation(SAVE_VIDEO)
     const [readFirstQ, setReadFirstQ] = useState(false)
     const [createUser, { userError, userData }] = useMutation(CREATE_USER)
     const { setUser } = useContext(UserContext)
     const [vidUserId, setVidUserId] = useState()
-
+    const [uploadVid, { upError, upData }] = useMutation(UPLOAD_VIDEO)
     useEffect(() => {
         recordWebcam.open()
     }, [])
@@ -45,35 +45,78 @@ const Welcome = () => {
     const recordWebcam = useRecordWebcam(OPTIONS)
     // const recordWebcam = useRecordWebcam()
     const saveVideo = async (blob) => {
-        const connStr = "DefaultEndpointsProtocol=https;AccountName=ftnsftestvideos;AccountKey=ZrdiLeyADwqrwLweHbaBhR+opWPAB+gTSVzNxiksGf9A2LnwtY/oSjvGPyNTeCCIvg3o1he0zDOs+AStIKzIeQ==;EndpointSuffix=core.windows.net"
-        const blobServiceClient = BlobServiceClient.fromConnectionString(connStr)
-        const containerName = "videos"
-        const containerClient = blobServiceClient.getContainerClient(containerName)
-        const content = blob
-        const filename = vidUserId
-        const mimetype = blob.type
-        const blobName = `${filename}.${mimetype}`
-        const blockBlobClient = containerClient.getBlockBlobClient(blobName)
-        const uploadBlobResponse = await blockBlobClient.upload(content, content.length)
-        console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
+        // console.log(blob)
+        // const account = 'ftnsftestvideos'
+        // const accountKey = 'ZrdiLeyADwqrwLweHbaBhR+opWPAB+gTSVzNxiksGf9A2LnwtY/oSjvGPyNTeCCIvg3o1he0zDOs+AStIKzIeQ=='
+        // const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey)
+        // // const connStr = "DefaultEndpointsProtocol=https;AccountName=ftnsftestvideos;AccountKey=ZrdiLeyADwqrwLweHbaBhR+opWPAB+gTSVzNxiksGf9A2LnwtY/oSjvGPyNTeCCIvg3o1he0zDOs+AStIKzIeQ==;EndpointSuffix=core.windows.net"
+        // const blobServiceClient = new BlobServiceClient(`https://${account}.blob.core.windows.net`, sharedKeyCredential)
+        // // const blobServiceClient = BlobServiceClient.fromConnectionString(connStr)
+        // const containerName = "videos"
+        // const containerClient = blobServiceClient.getContainerClient(containerName)
+        // const content = blob.stream()
+        // const filename = vidUserId
+        // const mimetype = blob.type
+        // const url = URL.createObjectURL(blob)
+        // // const something = await fetch(url).then((response) => response.body).then((rb) => {
+        // //     const reader = rb.getReader();
+        // //     return new ReadableStream({
+        // //         start(controller) {
+        // //             function push() {
+        // //                 // "done" is a Boolean and value a "Uint8Array"
+        // //                 reader.read().then(({ done, value }) => {
+        // //                     // If there is no more data to read
+        // //                     if (done) {
+        // //                         console.log("done", done);
+        // //                         controller.close();
+        // //                         return;
+        // //                         const { data } = saveVid({
+        // //                             variables: {
+        // //                                 userId: "63ea86c4fd9ddbf82469e45e",
+        // //                                 videofile: value
+        // //                             }
+        // //                         })
+        // //                     }
+        // //                 })
+
+        // //             }
+        // //         }
+        // //     })
+        // // })
+        // // console.log(something)
+        // const blobName = `${filename}.${mimetype}`
+        // const blockBlobClient = containerClient.getBlockBlobClient(blobName)
+        // const uploadBlobResponse = await blockBlobClient.upload(content, Blob.size)
+        // console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
     }
 
     const saveFile = async () => {
         // const blob = await recordWebcam.getRecording(Options);
         const blob = await recordWebcam.getRecording()
+        // console.log(blob)
         // console.log('first level uploading')
         // await saveVideo(blob)
-
         // const content = args.url
         const filename = vidUserId
         const mimetype = blob.type
         const encoding = "7bit"
-        const url = URL.createObjectURL(blob)
+        const url = window.URL.createObjectURL(blob)
+        var data = [{
+            filename: vidUserId,
+            mimetype: blob.type,
+            encoding: "7bit",
+            blob: { ...blob }
+        }]
+        blob.filename = vidUserId
+        console.log(blob)
+        console.log({ blob })
+        console.log({ ...blob })
+        console.log(blob.text())
+        console.log(JSON.stringify({ blob }))
+        // console.log(blob)
         await fetch('http://localhost:3001/api/videos', {
             method: 'POST',
-            body: JSON.stringify({
-                filename, mimetype, encoding, url, blob
-            }),
+            body: blob,
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -195,6 +238,16 @@ const Welcome = () => {
     const startSession = async () => {
         const username = 'test'
         try {
+            // const { data } = await createUser({
+            //     variables: { username: "test" }
+            // });
+            // const payload = {
+            //     _id: data.createUser._id
+            // }
+            // setUser({
+            //     type: SET_USER,
+            //     payload: payload
+            // })
             const data = await fetch('http://localhost:3001/api/users', {
                 method: 'POST',
                 body: JSON.stringify({ username }),

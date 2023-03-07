@@ -45,11 +45,11 @@ const resolvers = {
             return newResults
         },
         uploadVideo: async (parents, args) => {
-            // const { createReadStream, filename, mimetype } = video
+            const { createReadStream, filename, mimetype } = args.video
             console.log("hello triggered")
             const containerClient = blobServiceClient.getContainerClient(containerName)
             // const content = args.videofile
-            const content = video
+            const content = args.video
             // const content = args.url
             const blobName = `${filename}.${mimetype}`
             const blockBlobClient = containerClient.getBlockBlobClient(blobName)
@@ -57,13 +57,13 @@ const resolvers = {
             console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
         },
         saveVideo: async (parents, args) => {
-            // const { createReadStream, filename, mimetype } = video
+            const { createReadStream, filename, mimetype } = video
             console.log("hello triggered")
             const containerClient = blobServiceClient.getContainerClient(containerName)
             // const content = args.videofile
             const content = video
             // const content = args.url
-            const blobName = `${filename}.${mimetype}`
+            const blobName = `${args.filename}.${args.mimetype}`
             const blockBlobClient = containerClient.getBlockBlobClient(blobName)
             const uploadBlobResponse = await blockBlobClient.upload(content, content.length)
             console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);

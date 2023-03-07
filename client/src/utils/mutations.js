@@ -35,9 +35,9 @@ mutation SaveAnswers($grade: String!, $age: String!, $liveWith: [String], $famil
 }`
 
 export const SAVE_VIDEO = gql`
-mutation SaveVideo($userId: ID!, $videofile: String, $url:String) {
-  saveVideo(userId: $userId, videofile: $videofile, url:$url) {
-    videofile
+mutation SaveVideo( $filename: String, $url:String, $mimetype:String, $encoding:String) {
+  saveVideo( filename: $filename, url:$url, mimetype:$mimetype, encoding:$encoding) {
+    filename
     _id
   }
 }

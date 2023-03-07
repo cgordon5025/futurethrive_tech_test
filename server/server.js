@@ -1,6 +1,6 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
-const { GraphQLUpload } = require("graphql-upload");
+// const { GraphQLUpload } = require("graphql-upload");
 const path = require('path');
 const routes = require('./routes')
 const cors = require('cors')
@@ -10,10 +10,12 @@ const { authMiddleware } = require('./utils/auth');
 const db = require('./config/connection');
 
 const PORT = process.env.PORT || 3001;
+// const PORT = process.env.PORT || 3001;
+
 //note remove or hide this after development
 
 const app = express();
-// app.use(`${PORT}/graphql`,graphqlUploadExpress())
+// app.use(`${PORT}/graphql`,GraphQLUpload())
 const server = new ApolloServer({
     typeDefs,
     resolvers,

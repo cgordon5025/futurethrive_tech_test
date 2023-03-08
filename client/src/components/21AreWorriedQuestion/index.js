@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const AreWorriedQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
+const AreWorriedQuestion = ({ setYesNoChecked, yesNoChecked, formState, setFormState, setCurrentQuestion, currentQuestion }) => {
     const [buttonDisplay, setButtonDisplay] = useState("none")
 
     useEffect(() => {
@@ -8,13 +8,59 @@ const AreWorriedQuestion = ({ formState, setFormState, setCurrentQuestion, curre
             setButtonDisplay("block")
         }, 3000)
     }, [currentQuestion])
-    
+    const questionNodes = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
+    const finalTextNode = []
+    const highLight = () => {
+        let realNode = questionNodes.nextNode();
+        while (realNode) {
+            if (realNode.textContent.includes("?")) {
+                finalTextNode.push(realNode)
+            }
+            realNode = questionNodes.nextNode()
+        }
+        const finalWords = []
+        for (const textNode of finalTextNode) {
+            for (const word of textNode.textContent.matchAll(/[a-zA-Z]+/g)) {
+                console.log(word)
+                finalWords.push({
+                    word: word[0],
+                    parentNode: textNode,
+                    offset: word.index
+                });
+            }
+        }
+        let index = 0;
+        const range = new Range();
+        const highLight = setInterval(() => {
+            if (currentQuestion == 21) {
+                console.log("yay it working")
+                console.log(index)
+                if (index >= finalWords.length) {
+                    console.log("entering the stop loop")
+                    document.getSelection().removeAllRanges();
+                    clearInterval(highLight)
+                } else {
+                    const { word, parentNode, offset } = finalWords[index];
+                    range.setStart(parentNode, offset);
+                    range.setEnd(parentNode, offset + word.length);
+                    document.getSelection().removeAllRanges();
+                    document.getSelection().addRange(range);
+                    index++;
+                }
+            }
+        }, 200);
+    }
+    useEffect(() => {
+        console.log("highlight the text")
+        highLight()
+    }, [currentQuestion])
+
     const handleChange = (event) => {
-        console.log(event.target.name)
-        console.log(event.target.value)
         if (event.target.value == "yes") {
+            setYesNoChecked({ ...yesNoChecked, areWorried: { yes: true, no: false } })
             setFormState({ ...formState, areWorried: true })
         } else {
+            setYesNoChecked({ ...yesNoChecked, areWorried: { yes: false, no: true } })
             setFormState({ ...formState, areWorried: false })
         }
     }
@@ -29,7 +75,10 @@ const AreWorriedQuestion = ({ formState, setFormState, setCurrentQuestion, curre
             setCurrentQuestion(nextQuestion)
         }
     }
-
+    const handleRegression = () => {
+        const prevQuestion = currentQuestion - 1
+        setCurrentQuestion(prevQuestion)
+    }
     return (
         <div className='questionContainer'>
             <div className='formContainer'>
@@ -39,6 +88,7 @@ const AreWorriedQuestion = ({ formState, setFormState, setCurrentQuestion, curre
                     <input
                         type="radio"
                         id="yes"
+                        checked={yesNoChecked.areWorried.yes}
                         name="areWorried"
                         value="yes"
                         onChange={handleChange}
@@ -47,13 +97,15 @@ const AreWorriedQuestion = ({ formState, setFormState, setCurrentQuestion, curre
                     <input
                         type="radio"
                         id="no"
+                        checked={yesNoChecked.areWorried.no}
                         name="areWorried"
                         value="no"
                         onChange={handleChange}
                     />
                 </form>
             </div>
-            <button style={{display:buttonDisplay}} className='progressBtn' onClick={handleProgression}>Next</button>
+            <button style={{ display: buttonDisplay }} className='progressBtn' onClick={handleProgression}>Next</button>
+            <button style={{ display: buttonDisplay }} className='regressBtn' onClick={handleRegression}>Back</button>
             <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
         </div>
     )

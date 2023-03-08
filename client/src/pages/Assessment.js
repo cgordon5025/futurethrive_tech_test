@@ -2,9 +2,9 @@ import React, { useState, useContext, useEffect } from "react"
 import { RecordWebcam, useRecordWebcam } from 'react-record-webcam';
 import { SAVE_ANSWERS } from "../utils/mutations";
 import { useMutation } from "@apollo/client";
-import VoiceContext from "../utils/VoiceContext"
 import { useTts } from 'tts-react';
 import { TextToSpeech } from "tts-react";
+import UserContext from "../utils/UserContext";
 //lets import all of the components for the questions
 import AgeQuestion from "../components/00AgeQuestion";
 import GradeQuestion from "../components/01GradeQuestion";
@@ -37,7 +37,63 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const showButton = readFirstQ
     const [buttonDisplay, setButtonDisplay] = useState("none")
+    const [saveLiveWith, setSaveLiveWith] = useState({
+        mother: false,
+        father: false,
+        grandmother: false,
+        grandfather: false,
+        brother: false,
+        sister: false
 
+    })
+    const [saveRelyFam, setSaveRelyFam] = useState({
+        mother: false,
+        father: false,
+        grandmother: false,
+        grandfather: false,
+        brother: false,
+        sister: false
+
+    })
+    const [yesNoChecked, setYesNoChecked] = useState({
+        outsideHelp: {
+            yes: false,
+            no: false
+        },
+        recentDeath: {
+            yes: false,
+            no: false
+        },
+        sickFamily: {
+            yes: false,
+            no: false
+        },
+        happyOrSad: {
+            happy: false,
+            sad: false,
+            inbetween: false
+        },
+        academics: {
+            yes: false,
+            no: false
+        },
+        schoolTrouble: {
+            yes: false,
+            no: false
+        },
+        schoolFriends: {
+            yes: false,
+            no: false
+        },
+        madeFunOf: {
+            yes: false,
+            no: false
+        },
+        areWorried: {
+            yes: false,
+            no: false
+        }
+    })
     //these states will be used to trigger the contigency, if they respond yes it will flip to true and show the corresponding questions, if false it will skip it
     const [saveAns, { error, data }] = useMutation(SAVE_ANSWERS)
     // take this out later, this is for testing purposes
@@ -71,176 +127,138 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             talents: null
         }
     );
-    // console.log(formState)
     //here are the questions and data associated with it
     const questions = [
         {
             index: 0,
             question: "How old are you?",
-            hint: "",
-            name: "age",
         },
         {
             index: 1,
             question: "What grade are you in?",
-            hint: "",
-            name: "grade",
         },
         {
             index: 2,
             question: "Who do you live with?",
-            hint: "Mom, dad, Grandparents?",
-            name: "liveWith",
         },
         {
             index: 3,//make this have choices so they can select mom dad brother sister
             question: "Who can you talk to in your family if you need help?",
-            hint: ["Mom", "Dad", "Grandmother", "Grandfather", "Brother", "Sister"],
-            name: "familyHelpDetails",
         },
         {
             index: 4,
             question: `Are there people outside your family you "talk to" when you need help?`,
-            hint: "",
-            name: "outsideHelp"
         },
         {
             index: 5,
             question: "Great who is it?",
-            hint: "",
-            name: "outsideDetails"
         },
         {
             index: 6,
             question: "How do you know them?",
-            hint: "",
-            name: "outsideDetails2"
         },
         {
             index: 7,
             question: "Has anyone you love died?",
-            hint: "",
-            name: "recentDeath"
         },
         {
             index: 8,
             question: "Who?",
-            hint: "",
-            name: "whoDeath"
         },
         {
             index: 9,
             question: "Is anyone living in your house really sick?",
-            hint: "",
-            name: "sickFamily"
         },
         {
             index: 10,
             question: "Who?",
-            hint: "",
-            name: "whoSick"
         },
         {
             index: 11,
             question: "Are you sad most of the time, happy most of the time, or in between?",
-            hint: "",
-            name: "happyOrSad"
         },
         {
             index: 12,
             question: "What makes you sad?",
-            hint: "",
-            name: "whySad"
         },
         {
             index: 13,
             question: "What makes you happy?",
-            hint: "",
-            name: "whyHappy"
         },
         {
             index: 14,
             question: "What could make you even happier?",
-            hint: "",
-            name: "beHappier"
         },
         {
             index: 15,
             question: "Are you making good grades in school?",
-            hint: "",
-            name: "academics"
         },
         {
             index: 16,
             question: "Are you getting in trouble in school?",
-            hint: "",
-            name: "schoolTrouble"
         },
         {
             index: 17,
             question: "Do you have friends at school?",
-            hint: "",
-            name: "schoolFriends"
         },
         {
             index: 18,
             question: "Have any of your friends or classmates ever said or done anything that hurt your or make you feel bad?",
-            hint: "",
-            name: "madeFunOf"
         },
         {
             index: 19,
             question: "What do you really like to do?",
-            hint: "",
-            name: "hobbies"
         },
         {
             index: 20,
             question: "What stops you from doing that?",
-            hint: "",
-            name: "hobbiesStop"
         },
         {
             index: 21,
             question: "Do you get worried?",
-            hint: "",
-            name: "areWorried"
         },
         {
             index: 22,
             question: "What makes you feel worried?",
-            hint: "",
-            name: "whyWorried"
         },
         {
             index: 23,
             question: "If there was one thing in your life that you could change to make you feel less worried, what would it be?",
-            hint: "",
-            name: "makeLessWorry"
         },
         {
             index: 24,
             question: "What is your greatest worry?",
-            hint: "",
-            name: "greatestWorry"
         },
         {
             index: 25,
             question: "What are you really good at?",
-            hint: "",
-            name: "talents"
         }
     ]
+
+    //userContext
+    const { user } = useContext(UserContext)
+    const userId = user._id
     //setting up the voice reader
     const rate = .9;
     const synth = window.speechSynthesis;
     //for this we would want to build out a version for every device, when i launch this try and see if it will work on a chrome book, and if the same voice exist, that is our target device at the moment anyways
     //long term look into safari, chrome, firefox, edge and maybe devices (unfortunately there is no true way to control this :())
-    const voice = synth.getVoices().filter((voice) => voice.voiceURI == 'Google UK English Male')
+    const primaryVoice = synth.getVoices().filter((voice) => voice.voiceURI == 'Google UK English Male');
+    //as a backup we will just grab the first version in the device that is in Great British english, there is just so much variety in the voices, cannot standardize it
+    const backupVoice = synth.getVoices().filter((voice) => voice.lang == 'en-GB');
+    const voices = []
+    if (primaryVoice !== null) {
+        voices.push(...primaryVoice)
+    }
+    if (backupVoice !== null) {
+        voices.push(...backupVoice)
+    }
+    const finalVoice = voices[0]
     const utterThis = new SpeechSynthesisUtterance(questions[currentQuestion].question);
     utterThis.rate = rate;
-    utterThis.voice = voice[0];
-
+    // console.log(finalVoice)
+    //weird load error
+    // utterThis.voice = finalVoice[0];
     //this is the use effect that will enable the button timeout for the last question
     useEffect(() => {
         if (currentQuestion == 25) {
@@ -249,49 +267,83 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             }, 3000)
         }
     }, [currentQuestion])
-    // console.log(formState)
-    useEffect(() => {
-        //     {console.log("using new tech")
-        //     }
-        //     <TextToSpeech
-        //         markTextAsSpoken lang="en-GB"
-        //         rate={".9"}>
-        //         <p>{questions[currentQuestion].question}</p></TextToSpeech>
-        // </
-        synth.speak(utterThis)
-    }, [currentQuestion]) //this should only run if the index number changes
+    // useEffect(() => {
 
+    //     synth.speak(utterThis)
+    // }, [currentQuestion]) //this should only run if the index number changes
+
+    // useEffect(() => {
+    //     synth.speak(utterThis)
+    // }, [readFirstQ])
+
+    const questionNodes = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
+    const finalTextNode = []
+    const highLight = () => {
+        let realNode = questionNodes.nextNode();
+        while (realNode) {
+            if (realNode.textContent.includes("?")) {
+                finalTextNode.push(realNode)
+            }
+            realNode = questionNodes.nextNode()
+        }
+        const finalWords = []
+        for (const textNode of finalTextNode) {
+            for (const word of textNode.textContent.matchAll(/[a-zA-Z]+/g)) {
+                finalWords.push({
+                    word: word[0],
+                    parentNode: textNode,
+                    offset: word.index
+                });
+            }
+        }
+        let index = 0;
+        const range = new Range();
+        const highLight = setInterval(() => {
+            if (currentQuestion == 25) {
+                if (index >= finalWords.length) {
+                    document.getSelection().removeAllRanges();
+                    clearInterval(highLight)
+                } else {
+                    const { word, parentNode, offset } = finalWords[index];
+                    range.setStart(parentNode, offset);
+                    range.setEnd(parentNode, offset + word.length);
+                    document.getSelection().removeAllRanges();
+                    document.getSelection().addRange(range);
+                    index++;
+                }
+            }
+        }, 200);
+    }
     useEffect(() => {
-        synth.speak(utterThis)
-    }, [readFirstQ])
+        highLight()
+    }, [currentQuestion])
+
     const handleChange = (event) => {
-        // console.log("hey i be triggered")
         const name = event.target.name
         const value = event.target.value
         setFormState({
             ...formState,
             [name]: value
         })
-        console.log(formState)
     }
     const handleSubmit = async (event) => {
-        console.log("submitting")
-        // const finalFormState = toObject(formState)
-        // finalFormState.userId = "63e1645e690cc9d7fcf52bd0"
         try {
             const { data } = await saveAns({
                 variables: {
-                    userId: "63f8d8008264f4a5e02d3635",
+                    userId: userId,
                     ...formState
                 }
             });
-            console.log(data)
         } catch (error) {
             console.log(error)
         };
         setAssessmentDisplay("none")
         setEndDisplay("block")
         // setCamStatus(true)
+    }
+    const handleRegression = () => {
+        const prevQuestion = currentQuestion - 1
+        setCurrentQuestion(prevQuestion)
     }
     switch (currentQuestion) {
         case 0:
@@ -304,15 +356,15 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             )
         case 2:
             return (
-                <LiveWithQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <LiveWithQuestion saveLiveWith={saveLiveWith} setSaveLiveWith={setSaveLiveWith} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 3:
             return (
-                <FamilyHelpQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <FamilyHelpQuestion saveRelyFam={saveRelyFam} setSaveRelyFam={setSaveRelyFam} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 4:
             return (
-                <OutsideHelpQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <OutsideHelpQuestion yesNoChecked={yesNoChecked} setYesNoChecked={setYesNoChecked} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 5:
             return (
@@ -324,7 +376,7 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             )
         case 7:
             return (
-                <RecentDeathQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <RecentDeathQuestion yesNoChecked={yesNoChecked} setYesNoChecked={setYesNoChecked} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 8:
             return (
@@ -332,7 +384,7 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             )
         case 9:
             return (
-                <SickFamilyQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <SickFamilyQuestion yesNoChecked={yesNoChecked} setYesNoChecked={setYesNoChecked} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 10:
             return (
@@ -340,7 +392,7 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             )
         case 11:
             return (
-                <HappyOrSadQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <HappyOrSadQuestion yesNoChecked={yesNoChecked} setYesNoChecked={setYesNoChecked} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 12:
             return (
@@ -356,19 +408,19 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             )
         case 15:
             return (
-                <AcademicsQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <AcademicsQuestion yesNoChecked={yesNoChecked} setYesNoChecked={setYesNoChecked} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 16:
             return (
-                <SchoolTroubleQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <SchoolTroubleQuestion yesNoChecked={yesNoChecked} setYesNoChecked={setYesNoChecked} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 17:
             return (
-                <SchoolSocialQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <SchoolSocialQuestion yesNoChecked={yesNoChecked} setYesNoChecked={setYesNoChecked} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 18:
             return (
-                <MadeFunOfQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <MadeFunOfQuestion yesNoChecked={yesNoChecked} setYesNoChecked={setYesNoChecked} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 19:
             return (
@@ -380,7 +432,7 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             )
         case 21:
             return (
-                <AreWorriedQuestion formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
+                <AreWorriedQuestion yesNoChecked={yesNoChecked} setYesNoChecked={setYesNoChecked} formState={formState} setCurrentQuestion={setCurrentQuestion} setFormState={setFormState} currentQuestion={currentQuestion} />
             )
         case 22:
             return (
@@ -409,7 +461,7 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
                             onChange={handleChange}
                         />
                         <button style={{ display: buttonDisplay, marginTop: "2%" }} className='submitBtn' onClick={handleSubmit}>Complete</button>
-
+                        <button style={{ display: buttonDisplay }} className='regressBtn' onClick={handleRegression}>Back</button>
                     </div>
                     <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
                 </div>

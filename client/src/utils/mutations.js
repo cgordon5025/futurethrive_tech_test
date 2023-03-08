@@ -35,10 +35,26 @@ mutation SaveAnswers($grade: String!, $age: String!, $liveWith: [String], $famil
 }`
 
 export const SAVE_VIDEO = gql`
-mutation SaveVideo($userId: ID!, $videofile: String, $url:String) {
-  saveVideo(userId: $userId, videofile: $videofile, url:$url) {
-    videofile
+mutation SaveVideo( $filename: String, $url:String, $mimetype:String, $encoding:String) {
+  saveVideo( filename: $filename, url:$url, mimetype:$mimetype, encoding:$encoding) {
+    filename
     _id
   }
 }
 `;
+
+export const CREATE_USER = gql`
+mutation CreateUser($username: String!) {
+  createUser(username: $username) {
+    _id
+  }
+}
+`;
+
+export const UPLOAD_VIDEO = gql`
+mutation uploadVideo ($video:Upload!){
+  uploadVideo(video:$video){
+    filename
+  }
+}
+`

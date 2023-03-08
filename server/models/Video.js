@@ -1,10 +1,17 @@
 const { Schema, model } = require('mongoose')
 const VideoSchema = new Schema({
-    videofile: {
+
+    filename: {
         type: String
     },
-    url:{
-        type:String
+    mimetype: {
+        type: String
+    },
+    encoding: {
+        type: String
+    },
+    url: {
+        type: String
     }
 });
 

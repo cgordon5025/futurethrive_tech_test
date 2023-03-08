@@ -1,9 +1,11 @@
 const router = require('express').Router();
 
 const {
-    saveVideo
+    saveVideo,
+    uploadVideo
 } = require('../../controllers/videoController')
 
-router.route('/').post(saveVideo)
+router.route('/').post(uploadVideo)
+router.route('/:filename').post(saveVideo)
 
 module.exports = router

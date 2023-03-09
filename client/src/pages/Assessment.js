@@ -234,7 +234,6 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             question: "What are you really good at?",
         }
     ]
-
     //userContext
     const { user } = useContext(UserContext)
     const userId = user._id
@@ -267,14 +266,14 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             }, 3000)
         }
     }, [currentQuestion])
-    // useEffect(() => {
+    useEffect(() => {
 
-    //     synth.speak(utterThis)
-    // }, [currentQuestion]) //this should only run if the index number changes
+        synth.speak(utterThis)
+    }, [currentQuestion]) //this should only run if the index number changes
 
-    // useEffect(() => {
-    //     synth.speak(utterThis)
-    // }, [readFirstQ])
+    useEffect(() => {
+        synth.speak(utterThis)
+    }, [readFirstQ])
 
     const questionNodes = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
     const finalTextNode = []
@@ -327,19 +326,21 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
         })
     }
     const handleSubmit = async (event) => {
-        try {
-            const { data } = await saveAns({
-                variables: {
-                    userId: userId,
-                    ...formState
-                }
-            });
-        } catch (error) {
-            console.log(error)
-        };
+        await fetch(`http://localhost:3001/api/results`, {
+            method: 'POST',
+            body: JSON.stringify({
+                userId,
+                formState
+            }
+            ),
+            headers: {
+                'content-type': 'application/json'
+            }
+        })
+
         setAssessmentDisplay("none")
         setEndDisplay("block")
-        // setCamStatus(true)
+        setCamStatus(true)
     }
     const handleRegression = () => {
         const prevQuestion = currentQuestion - 1

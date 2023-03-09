@@ -23,41 +23,42 @@ var lessWorriedField
 var greatestWorryField
 var talentField
 function popFields(data) {
-    var tempLiveWith = data.liveWith;
-    var liveWithStr = tempLiveWith.join(" ");
+    var tempLiveWith = data.formState.liveWith;
+    var liveWithStr = tempLiveWith.toString().replace(',', ' ')
 
-    var tempRelyFam = data.familyHelpDetails;
-    var relyFamStr = tempRelyFam.join(" ");
+    var tempRelyFam = data.formState.familyHelpDetails;
+    var relyFamStr = tempRelyFam.toString().replace(',', ' ')
 
-    ageField = `${data.userId},Age,${data.age}`
-    gradeField = `${data.userId},Grade,${data.grade}`
+    ageField = `${data.userId},Age,${data.formState.age}`
+    gradeField = `${data.userId},Grade,${data.formState.grade}`
     liveWithField = `${data.userId},Live With who,${liveWithStr}`
     familyField = `${data.userId},Family they can rely on,${relyFamStr}`;
-    outsideHelpField = `${data.userId},People outside of family they can rely on,${data.outsideDetails}`;
-    outsideFamilyField = `${data.userId},How do you know these people,${data.outsideDetails2}`
-    recentDeathField = `${data.userId},Recent Death,${data.whoDeath}`;
-    familySickField = `${data.userId},Serious illness in family,${data.whoSick}`;
-    happySadField = `${data.userId},Are they more happy sad or somehwere in between,${data.happyOrSad}`;
-    whySadField = `${data.userId},What makes you sad,${data.whySad}`;
-    whyHappyField = `${data.userId},What makes you happy,${data.whyHappy}`;
-    beHappierField = `${data.userId},What could make you happier,${data.beHappier}`;
-    academicField = `${data.userId},Are you making good grades in school,${data.academics}`;
-    schoolTroubleField = `${data.userId},Are you getting in trouble in school,${data.schoolTrouble}`
-    friendsField = `${data.userId},Do you have friends at school,${data.schoolFriends}`;
-    madeFunOfField = `${data.userId},Have any of your friends or classmates ever said or done anything that hurt you or make you feel bad,${data.madeFunOf}`
-    hobbyField = `${data.userId},What do you really like to do,${data.hobbies}`;
-    stopHobbyField = `${data.userId},What stops you from doing that,${data.hobbiesStop}`;
-    worriedField = `${data.userId},What makes you worried,${data.areWorried}`;
-    whyWorriedField = `${data.userId},What makes you worried,${data.whyWorried}`;
-    lessWorriedField = `${data.userId},What could make you less worried,${data.makeLessWorry}`;
-    greatestWorryField = `${data.userId},What is your greatest worry,${data.greatestWorry}`;
-    talentField = `${data.userId},What are you really good at,${data.talents}`
+    outsideHelpField = `${data.userId},People outside of family they can rely on,${data.formState.outsideDetails}`;
+    outsideFamilyField = `${data.userId},How do you know these people,${data.formState.outsideDetails2}`
+    recentDeathField = `${data.userId},Recent Death,${data.formState.whoDeath}`;
+    familySickField = `${data.userId},Serious illness in family,${data.formState.whoSick}`;
+    happySadField = `${data.userId},Are they more happy sad or somehwere in between,${data.formState.happyOrSad}`;
+    whySadField = `${data.userId},What makes you sad,${data.formState.whySad}`;
+    whyHappyField = `${data.userId},What makes you happy,${data.formState.whyHappy}`;
+    beHappierField = `${data.userId},What could make you happier,${data.formState.beHappier}`;
+    academicField = `${data.userId},Are you making good grades in school,${data.formState.academics}`;
+    schoolTroubleField = `${data.userId},Are you getting in trouble in school,${data.formState.schoolTrouble}`
+    friendsField = `${data.userId},Do you have friends at school,${data.formState.schoolFriends}`;
+    madeFunOfField = `${data.userId},Have any of your friends or classmates ever said or done anything that hurt you or make you feel bad,${data.formState.madeFunOf}`
+    hobbyField = `${data.userId},What do you really like to do,${data.formState.hobbies}`;
+    stopHobbyField = `${data.userId},What stops you from doing that,${data.formState.hobbiesStop}`;
+    worriedField = `${data.userId},What makes you worried,${data.formState.areWorried}`;
+    whyWorriedField = `${data.userId},What makes you worried,${data.formState.whyWorried}`;
+    lessWorriedField = `${data.userId},What could make you less worried,${data.formState.makeLessWorry}`;
+    greatestWorryField = `${data.userId},What is your greatest worry,${data.formState.greatestWorry}`;
+    talentField = `${data.userId},What are you really good at,${data.formState.talents}`
 
 }
 
 
 function generateCSV(data) {
     console.log(data)
+    var responses = data.formState
     popFields(data)
     const myCSV = `
     userId,question,response

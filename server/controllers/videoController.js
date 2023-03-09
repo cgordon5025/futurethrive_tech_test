@@ -23,60 +23,49 @@ module.exports = {
         } else {
             fs.mkdir(fileName, (err) => console.log(err))
         }
-        if (fs.existsSync(`./videos/finaltest.mp4`) && fs.existsSync(`./${fileName}`)) {
-            console.log("the file have already been processed")
-            res.status(200).json('testing')
+        //in reality we will not be doing multiple files under the same exact name so this should not be an issue
+        //kept here just in case, but this should not be an issue
+        // if (fs.existsSync(`./videos/${fileName}.mp4`) && fs.existsSync(`./${fileName}`)) {
+        //     console.log("the file have already been processed")
+        //     res.status(200).json('testing')
 
-        } else {
-            req.on('data', chunk => {
+        // } else {
+        req.on('data', chunk => {
 
-                // // console.log(chunk.length)
-                fs.appendFileSync(`${fileName}/${videoID}`, chunk); // append to a file on the disk
-                //needs to be append file or else it will continually save over what i have already
-                fs.appendFile(`./videos/${fileName}.mp4`, chunk, function (err) {
-                    if (err) throw err;
-                })
-
-                chunkData = chunkData + chunk
-                // pushToAzure(chunk)
-                // const containerClient = blobServiceClient.getContainerClient(containerName)
-                // const blockBlobClient = containerClient.getAppendBlobClient("finaltest.mp4")
-
-                // // const blockBlobClient = containerClient.getBlockBlobClient(fileName)
-                // blockBlobClient.appendBlock(chunk, chunk.length)
-
-                // blockBlobClient.upload(chunk, chunk.length)
-
-                // fs.appendFile(`./videos/${fileName}.mp4`, chunk, function (err) {
-                //     if (err) throw err;
-                // })
+            // // console.log(chunk.length)
+            fs.appendFileSync(`${fileName}/${videoID}`, chunk); // append to a file on the disk
+            //needs to be append file or else it will continually save over what i have already
+            fs.appendFile(`./videos/${fileName}.mp4`, chunk, function (err) {
+                if (err) throw err;
             })
-            res.status(200).json('testing')
-        }
+        })
+        res.status(200).json('testing')
+        // }
     },
 
     async uploadVideo(req, res) {
-        const videoName = req.body.encryptedId
+        const videoName = `${req.body.vidUserId}.mp4`
+
+        console.log(videoName)
         const contentLength = req.body.fileSize
         //test path
-        const videoPath = `./videos/${videoName}.mp4`
+        const videoPath = `./videos/${videoName}`
 
 
         const containerClient = blobServiceClient.getContainerClient(containerName)
         // const blockBlobClient = containerClient.getAppendBlobClient("finaltest.mp4")
-        const data = Buffer.from(chunkData, "base64")
-        const blockBlobClient = containerClient.getBlockBlobClient('finaltest.mp4')
-        // await blockBlobClient.uploadFile(videoPath, {
-        //     blockSize: contentLength,
-        //     concurrency: 20
-        // })
-        // await fs.unlink(videoPath, (err) => {
-        //     if (err) {
-        //         throw err
-        //     }
-        //     console.log("deletedFile")
-        // })
-        await fs.rmSync(`./${videoName}`, { recursive: true, force: true }, (err) => {
+        const blockBlobClient = containerClient.getBlockBlobClient(videoName)
+        await blockBlobClient.uploadFile(videoPath, {
+            blockSize: contentLength,
+            concurrency: 20
+        })
+        await fs.unlink(videoPath, (err) => {
+            if (err) {
+                throw err
+            }
+            console.log("deletedFile")
+        })
+        await fs.rmSync(`./${req.body.vidUserId}`, { recursive: true, force: true }, (err) => {
             if (err) {
                 throw err
             }

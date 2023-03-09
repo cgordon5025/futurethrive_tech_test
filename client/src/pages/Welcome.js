@@ -25,12 +25,23 @@ const Welcome = () => {
     const [encryptedId, setEncryptedId] = useState()
     const [fileSize, setFileSize] = useState()
     const [uploadVid, { upError, upData }] = useMutation(UPLOAD_VIDEO)
+    const { user } = useContext
+
     useEffect(() => {
         recordWebcam.open()
     }, [])
     useEffect(() => {
         if (camStatus == true) {
             recordWebcam.stop()
+        }
+    })
+
+    useEffect(() => {
+        if (camStatus == true) {
+            setTimeout(() => {
+                console.log("now trying to upload")
+                uploadVideo()
+            }, 2000)
         }
     })
 
@@ -46,63 +57,13 @@ const Welcome = () => {
     }
     const recordWebcam = useRecordWebcam(OPTIONS)
     //setting up a variables for chunk upload
-    const account = "ftnsftestvideos"
-    const sas = 'https://ftnsftestvideos.blob.core.windows.net/videos?sp=r&st=2023-03-09T20:26:42Z&se=2024-03-10T04:26:42Z&spr=https&sv=2021-12-02&sr=c&sig=I1RyXymKjHvhWwapesGPPL3jZe8z%2BVDPeaHwmYDktQU%3D'
-    const blobServiceClient = new BlobServiceClient(sas)
-    const containerName = "videos"
-    const containerClient = blobServiceClient.getContainerClient(containerName)
+console.log(vidUserId)
 
-    // const recordWebcam = useRecordWebcam()
-    const saveVideo = async (blob) => {
-        // console.log(blob)
-        // const account = 'ftnsftestvideos'
-        // const accountKey = 'ZrdiLeyADwqrwLweHbaBhR+opWPAB+gTSVzNxiksGf9A2LnwtY/oSjvGPyNTeCCIvg3o1he0zDOs+AStIKzIeQ=='
-        // const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey)
-        // // const connStr = "DefaultEndpointsProtocol=https;AccountName=ftnsftestvideos;AccountKey=ZrdiLeyADwqrwLweHbaBhR+opWPAB+gTSVzNxiksGf9A2LnwtY/oSjvGPyNTeCCIvg3o1he0zDOs+AStIKzIeQ==;EndpointSuffix=core.windows.net"
-        // const blobServiceClient = new BlobServiceClient(`https://${account}.blob.core.windows.net`, sharedKeyCredential)
-        // // const blobServiceClient = BlobServiceClient.fromConnectionString(connStr)
-        // const containerName = "videos"
-        // const containerClient = blobServiceClient.getContainerClient(containerName)
-        // const content = blob.stream()
-        // const filename = vidUserId
-        // const mimetype = blob.type
-        // const url = URL.createObjectURL(blob)
-        // // const something = await fetch(url).then((response) => response.body).then((rb) => {
-        // //     const reader = rb.getReader();
-        // //     return new ReadableStream({
-        // //         start(controller) {
-        // //             function push() {
-        // //                 // "done" is a Boolean and value a "Uint8Array"
-        // //                 reader.read().then(({ done, value }) => {
-        // //                     // If there is no more data to read
-        // //                     if (done) {
-        // //                         console.log("done", done);
-        // //                         controller.close();
-        // //                         return;
-        // //                         const { data } = saveVid({
-        // //                             variables: {
-        // //                                 userId: "63ea86c4fd9ddbf82469e45e",
-        // //                                 videofile: value
-        // //                             }
-        // //                         })
-        // //                     }
-        // //                 })
-
-        // //             }
-        // //         }
-        // //     })
-        // // })
-        // // console.log(something)
-        // const blobName = `${filename}.${mimetype}`
-        // const blockBlobClient = containerClient.getBlockBlobClient(blobName)
-        // const uploadBlobResponse = await blockBlobClient.upload(content, Blob.size)
-        // console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
-    }
     const uploadMe = async () => {
 
         await fetch(`http://localhost:3001/api/videos`, {
             method: 'POST',
-            body: JSON.stringify({ encryptedId, fileSize }),
+            body: JSON.stringify({ vidUserId, fileSize }),
             headers: {
                 'content-type': 'application/json'
             }
@@ -128,7 +89,7 @@ const Welcome = () => {
             let chunk = blob.slice(i * chunkSize, (i + 1) * chunkSize, 'video/mp4')
             console.log(chunk)
             console.log(`uploading chunk: ${i}`)
-            await fetch(`http://localhost:3001/api/videos/${encryptedId}_${i}`, {
+            await fetch(`http://localhost:3001/api/videos/${filename}_${i}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'video/mp4',
@@ -137,48 +98,8 @@ const Welcome = () => {
                 body: chunk,
 
             })
-            // await fetch(`https://ftnsftestvideos.blob.core.windows.net/mycontainer/myblob?comp=block&blockid=${encryptedId}`, {
-            //     method: 'PUT',
-            //     mode:'no-cors',
-            //     headers: {
-            //         'Content-Type': 'video/mp4',
-            //         // 'content-length': chunk.length,
-            //     },
-            //     body: chunk,
 
-            // })
-            //this line below is important
         }
-
-        // console.log(blob)
-        // console.log('first level uploading')
-        // await saveVideo(blob)
-        // const content = args.url
-        // const filename = vidUserId
-        // const mimetype = blob.type
-        // const encoding = "7bit"
-        // const url = window.URL.createObjectURL(blob)
-        // var data = [{
-        //     filename: vidUserId,
-        //     mimetype: blob.type,
-        //     encoding: "7bit",
-        //     blob: { ...blob }
-        // }]
-        // blob.filename = vidUserId
-        // console.log(blob)
-        // console.log({ blob })
-        // console.log({ ...blob })
-        // console.log(blob.text())
-        // console.log(JSON.stringify({ blob }))
-        // // console.log(blob)
-        // await fetch('http://localhost:3001/api/videos', {
-        //     method: 'POST',
-        //     body: blob,
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     }
-        // })
-        // console.log("uploaded?")
     };
     const uploadVideo = async () => {
         await saveFile()
@@ -191,16 +112,7 @@ const Welcome = () => {
     const startSession = async () => {
         const username = 'test'
         try {
-            // const { data } = await createUser({
-            //     variables: { username: "test" }
-            // });
-            // const payload = {
-            //     _id: data.createUser._id
-            // }
-            // setUser({
-            //     type: SET_USER,
-            //     payload: payload
-            // })
+
             const data = await fetch('http://localhost:3001/api/users', {
                 method: 'POST',
                 body: JSON.stringify({ username }),

@@ -46,7 +46,11 @@ const Welcome = () => {
     }
     const recordWebcam = useRecordWebcam(OPTIONS)
     //setting up a variables for chunk upload
-
+    const account = "ftnsftestvideos"
+    const sas = 'https://ftnsftestvideos.blob.core.windows.net/videos?sp=r&st=2023-03-09T20:26:42Z&se=2024-03-10T04:26:42Z&spr=https&sv=2021-12-02&sr=c&sig=I1RyXymKjHvhWwapesGPPL3jZe8z%2BVDPeaHwmYDktQU%3D'
+    const blobServiceClient = new BlobServiceClient(sas)
+    const containerName = "videos"
+    const containerClient = blobServiceClient.getContainerClient(containerName)
 
     // const recordWebcam = useRecordWebcam()
     const saveVideo = async (blob) => {
@@ -119,19 +123,31 @@ const Welcome = () => {
         console.log(blob)
         // console.log(blob.slice())
         console.log(numberOfChunks)
+
         for (let i = 0; i < numberOfChunks + 1; i++) {
-            let chunk = blob.slice(i * chunkSize, (i + 1) * chunkSize, blob.type)
+            let chunk = blob.slice(i * chunkSize, (i + 1) * chunkSize, 'video/mp4')
             console.log(chunk)
+            console.log(`uploading chunk: ${i}`)
             await fetch(`http://localhost:3001/api/videos/${encryptedId}_${i}`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/octet-stream',
-                    // 'content-length': chunk.length,
+                    'Content-Type': 'video/mp4',
+                    'content-length': chunk.length,
                 },
                 body: chunk,
 
             })
-            console.log(`uploading chunk: ${i}`)
+            // await fetch(`https://ftnsftestvideos.blob.core.windows.net/mycontainer/myblob?comp=block&blockid=${encryptedId}`, {
+            //     method: 'PUT',
+            //     mode:'no-cors',
+            //     headers: {
+            //         'Content-Type': 'video/mp4',
+            //         // 'content-length': chunk.length,
+            //     },
+            //     body: chunk,
+
+            // })
+            //this line below is important
         }
 
         // console.log(blob)

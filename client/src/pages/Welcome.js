@@ -120,8 +120,9 @@ const Welcome = () => {
         // console.log(blob.slice())
         console.log(numberOfChunks)
         for (let i = 0; i < numberOfChunks + 1; i++) {
-            let chunk = blob.slice(i * chunkSize, (i + 1) * chunkSize, blob.type)
+            let chunk = blob.slice(i * chunkSize, (i + 1) * chunkSize, 'video/mp4')
             console.log(chunk)
+            console.log(`uploading chunk: ${i}`)
             await fetch(`http://localhost:3001/api/videos/${encryptedId}_${i}`, {
                 method: 'POST',
                 headers: {
@@ -131,7 +132,6 @@ const Welcome = () => {
                 body: chunk,
 
             })
-            console.log(`uploading chunk: ${i}`)
         }
 
         // console.log(blob)
@@ -165,7 +165,7 @@ const Welcome = () => {
         // console.log("uploaded?")
     };
     const uploadVideo = async () => {
-        await saveFile()
+        // await saveFile()
         await uploadMe()
     }
     const confirmView = async () => {

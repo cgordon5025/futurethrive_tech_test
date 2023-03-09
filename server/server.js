@@ -31,7 +31,7 @@ app.use(cors(), (req, res, next) => {
         'Origin, X-Requested-With, Content-Type, Accept, Authorization'
     );
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Length')
     next();
 });
 

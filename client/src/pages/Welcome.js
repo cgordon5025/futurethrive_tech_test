@@ -17,15 +17,10 @@ const Welcome = () => {
     const [camButton, setcamButton] = useState("block")
     const [startButton, setStartButton] = useState("none")
     const [camStatus, setCamStatus] = useState(false)
-    const [saveVid, { error, data }] = useMutation(SAVE_VIDEO)
     const [readFirstQ, setReadFirstQ] = useState(false)
-    const [createUser, { userError, userData }] = useMutation(CREATE_USER)
     const { setUser } = useContext(UserContext)
     const [vidUserId, setVidUserId] = useState()
-    const [encryptedId, setEncryptedId] = useState()
     const [fileSize, setFileSize] = useState()
-    const [uploadVid, { upError, upData }] = useMutation(UPLOAD_VIDEO)
-    const { user } = useContext
 
     useEffect(() => {
         recordWebcam.open()
@@ -57,10 +52,8 @@ const Welcome = () => {
     }
     const recordWebcam = useRecordWebcam(OPTIONS)
     //setting up a variables for chunk upload
-console.log(vidUserId)
-
-    const uploadMe = async () => {
-
+    const uploadMe = async (fileSize) => {
+        console.log(fileSize)
         await fetch(`http://localhost:3001/api/videos`, {
             method: 'POST',
             body: JSON.stringify({ vidUserId, fileSize }),
@@ -72,13 +65,14 @@ console.log(vidUserId)
     const saveFile = async () => {
         // const blob = await recordWebcam.getRecording(Options);
         const blob = await recordWebcam.getRecording()
-        // setEncryptedId(Buffer.from(vidUserId, 'binary').toString('base64'))
-        setEncryptedId(btoa(vidUserId))
         const filename = vidUserId
-        setFileSize(blob.size)
-        var chunkCounter;
         const chunkSize = 50000
-        var numberOfChunks = Math.ceil(fileSize / chunkSize)
+        var numberOfChunks = await Math.ceil(blob.size / chunkSize)
+        if (isNaN(numberOfChunks)) {
+            console.log("trying again")
+            numberOfChunks = Math.ceil(blob.size / chunkSize)
+        }
+        console.log(numberOfChunks)
         var start = 0
         var chunkEnd = start + chunkSize
         console.log(blob)
@@ -89,21 +83,24 @@ console.log(vidUserId)
             let chunk = blob.slice(i * chunkSize, (i + 1) * chunkSize, 'video/mp4')
             console.log(chunk)
             console.log(`uploading chunk: ${i}`)
-            await fetch(`http://localhost:3001/api/videos/${filename}_${i}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'video/mp4',
-                    'content-length': chunk.length,
-                },
-                body: chunk,
+            if (chunk.size > 0) {
+                await fetch(`http://localhost:3001/api/videos/${filename}_${i}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'video/mp4',
+                        'content-length': chunk.length,
+                    },
+                    body: chunk,
 
-            })
-
+                })
+            }
         }
+        return blob.size
     };
     const uploadVideo = async () => {
-        await saveFile()
-        await uploadMe()
+        await saveFile().then((res) => {
+            uploadMe(res)
+        })
     }
     const confirmView = async () => {
         setcamButton("none")
@@ -112,7 +109,6 @@ console.log(vidUserId)
     const startSession = async () => {
         const username = 'test'
         try {
-
             const data = await fetch('http://localhost:3001/api/users', {
                 method: 'POST',
                 body: JSON.stringify({ username }),

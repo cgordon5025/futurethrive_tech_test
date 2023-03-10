@@ -1,18 +1,15 @@
-const { Video } = require('../models')
 const { BlobServiceClient } = require('@azure/storage-blob')
 const fs = require('fs')
-const { pipeline } = require('stream/promises')
-const Stream = require('stream')
-const https = require('https')
-const path = require('path')
+
 const connStr = "DefaultEndpointsProtocol=https;AccountName=ftnsftestvideos;AccountKey=ZrdiLeyADwqrwLweHbaBhR+opWPAB+gTSVzNxiksGf9A2LnwtY/oSjvGPyNTeCCIvg3o1he0zDOs+AStIKzIeQ==;EndpointSuffix=core.windows.net"
 const blobServiceClient = BlobServiceClient.fromConnectionString(connStr)
 const containerName = "videos"
-const pushToAzure = require('../template/pushToAzure')
 var chunkData;
 module.exports = {
     async saveVideo(req, res) {
         var videoID = req.params.filename
+        console.log(videoID)
+        console.log(typeof videoID)
         var fileName = videoID.split('_')[0]
         // console.log(req.headers)
         // var chunkLength = req.headers.get('content-length')
@@ -23,15 +20,13 @@ module.exports = {
         } else {
             fs.mkdir(fileName, (err) => console.log(err))
         }
-        //in reality we will not be doing multiple files under the same exact name so this should not be an issue
-        //kept here just in case, but this should not be an issue
-        // if (fs.existsSync(`./videos/${fileName}.mp4`) && fs.existsSync(`./${fileName}`)) {
-        //     console.log("the file have already been processed")
-        //     res.status(200).json('testing')
+        if (videoID.includes("_0") && (fs.existsSync(`./videos/${fileName}`))) {
+            console.log("first chunk and the video file has been made, lets drop it to avoid conflicts")
+            await fs.unlink(`./videos/${fileName}`)
+        }
 
-        // } else {
         req.on('data', chunk => {
-
+            console.log("runnig")
             // // console.log(chunk.length)
             fs.appendFileSync(`${fileName}/${videoID}`, chunk); // append to a file on the disk
             //needs to be append file or else it will continually save over what i have already
@@ -45,20 +40,22 @@ module.exports = {
 
     async uploadVideo(req, res) {
         const videoName = `${req.body.vidUserId}.mp4`
-
+        console.log(req.body)
         console.log(videoName)
         const contentLength = req.body.fileSize
-        //test path
         const videoPath = `./videos/${videoName}`
 
 
         const containerClient = blobServiceClient.getContainerClient(containerName)
-        // const blockBlobClient = containerClient.getAppendBlobClient("finaltest.mp4")
         const blockBlobClient = containerClient.getBlockBlobClient(videoName)
-        await blockBlobClient.uploadFile(videoPath, {
-            blockSize: contentLength,
-            concurrency: 20
-        })
+        if (fs.existsSync(videoPath)) {
+            await blockBlobClient.uploadFile(videoPath, {
+                blockSize: contentLength,
+                concurrency: 20
+            })
+        } else {
+            console.log("the video does not exist")
+        }
         await fs.unlink(videoPath, (err) => {
             if (err) {
                 throw err
@@ -72,7 +69,6 @@ module.exports = {
             console.log("deleted the holding file")
         })
 
-        // console.log(`Upload block blob ${videoName} successfully`, uploadBlobResponse.requestId);
 
         res.status(200).json('testing')
 

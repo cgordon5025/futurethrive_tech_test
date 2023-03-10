@@ -22,6 +22,7 @@ var whyWorriedField
 var lessWorriedField
 var greatestWorryField
 var talentField
+
 function popFields(data) {
     var tempLiveWith = data.formState.liveWith;
     var liveWithStr = tempLiveWith.toString().replace(',', ' ')
@@ -33,6 +34,7 @@ function popFields(data) {
     gradeField = `${data.userId},Grade,${data.formState.grade}`
     liveWithField = `${data.userId},Live With who,${liveWithStr}`
     familyField = `${data.userId},Family they can rely on,${relyFamStr}`;
+    //this one should be processed further in case they put in commas, to remove them and replace with semi colons or something, commas will mess with the csv
     outsideHelpField = `${data.userId},People outside of family they can rely on,${data.formState.outsideDetails}`;
     outsideFamilyField = `${data.userId},How do you know these people,${data.formState.outsideDetails2}`
     recentDeathField = `${data.userId},Recent Death,${data.formState.whoDeath}`;
@@ -58,7 +60,6 @@ function popFields(data) {
 
 function generateCSV(data) {
     console.log(data)
-    var responses = data.formState
     popFields(data)
     const myCSV = `
     userId,question,response

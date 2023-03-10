@@ -1,9 +1,8 @@
 const { User, Results, Video } = require('../models');
 
-const generateCSV = require('../template/generateCSV');
+const generateCSV = require('../utils/generateCSV');
 const writeToFile = require('../utils/writeToFile');
-const processVideo = require('../template/processVideo')
-const downloadVideo = require('../utils/downloadVideo')
+
 const fs = require('fs')
 const { BlobServiceClient } = require('@azure/storage-blob')
 const connStr = "DefaultEndpointsProtocol=https;AccountName=ftnsftestvideos;AccountKey=ZrdiLeyADwqrwLweHbaBhR+opWPAB+gTSVzNxiksGf9A2LnwtY/oSjvGPyNTeCCIvg3o1he0zDOs+AStIKzIeQ==;EndpointSuffix=core.windows.net"

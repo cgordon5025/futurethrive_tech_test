@@ -1,5 +1,5 @@
 const { User, Results } = require('../models')
-const generateCSV = require('../template/generateCSV')
+const generateCSV = require('../utils/generateCSV')
 const writeToFile = require('../utils/writeToFile');
 
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
         //     { new: true })
 
         await writeToFile(`./data/${req.body.userId}.csv`, generateCSV({ ...req.body }))
-res.status(200).json("tada")
+        res.status(200).json("tada")
 
     }
 }

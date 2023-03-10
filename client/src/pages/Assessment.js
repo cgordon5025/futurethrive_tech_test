@@ -255,9 +255,9 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
     const finalVoice = voices[0]
     const utterThis = new SpeechSynthesisUtterance(questions[currentQuestion].question);
     utterThis.rate = rate;
-    // console.log(finalVoice)
+    console.log("final voice", finalVoice)
     //weird load error
-    // utterThis.voice = finalVoice[0];
+    utterThis.voice = finalVoice;
     //this is the use effect that will enable the button timeout for the last question
     useEffect(() => {
         if (currentQuestion == 25) {

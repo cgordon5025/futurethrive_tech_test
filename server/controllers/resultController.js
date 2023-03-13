@@ -1,20 +1,18 @@
 const { User, Results } = require('../models')
-const generateCSV = require('../utils/generateCSV')
+const generateRawResults = require('../utils/generateRawResults')
 const writeToFile = require('../utils/writeToFile');
-
+const sentimentAnalysis = require('../utils/sentimentAnalysis')
+const writeJSON = require('../utils/writeJSON')
 module.exports = {
     async saveAnswers(req, res) {
-        console.log(req.body.formState)
-        const responses = req.body.formState
-        console.log(responses)
-        // const newResults = await Results.create({ ...req.body })
-        // const updatedUser = await User.findOneAndUpdate(
-        //     { _id: req.body.userId },
-        //     { $push: { results: newResults._id } },
-        //     { new: true })
+        // console.log(req.body.formState)
 
-        await writeToFile(`./data/${req.body.userId}.csv`, generateCSV({ ...req.body }))
-        res.status(200).json("tada")
+        // await writeToFile(`./JSON/${req.body.userId}.json`, writeJSON({ ...req.body }))
+        await sentimentAnalysis({ ...req.body }) // await writeJSON({ ...req.body })
+        // await sentimentAnalysis({ ...req.body })
+        // await writeToFile(`./data/${req.body.userId}.csv`, generateRawResults({ ...req.body }))
+        // // await sentimentAnalysis()
+        //     res.status(200).json("tada")
 
     }
 }

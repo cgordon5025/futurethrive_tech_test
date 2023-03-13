@@ -58,7 +58,7 @@ function popFields(data) {
 }
 
 
-function generateCSV(data) {
+function generateRawResults(data) {
     console.log(data)
     popFields(data)
     const myCSV = `
@@ -90,4 +90,4 @@ function generateCSV(data) {
     return myCSV
 }
 
-module.exports = generateCSV
+module.exports = generateRawResults

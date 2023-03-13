@@ -338,9 +338,9 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             }
         })
 
-        setAssessmentDisplay("none")
-        setEndDisplay("block")
-        setCamStatus(true)
+        // setAssessmentDisplay("none")
+        // setEndDisplay("block")
+        // setCamStatus(true)
     }
     const handleRegression = () => {
         const prevQuestion = currentQuestion - 1

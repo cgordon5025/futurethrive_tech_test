@@ -1,22 +1,18 @@
 // const { TextAnalysisClient, AzureKeyCredential } = require("@azure/ai-language-text");
 const { TextAnalyticsClient, AzureKeyCredential } = require("@azure/ai-text-analytics");
-
+const writeToFile = require('../utils/writeToFile')
 
 // const { TextAnalysisClient }
 require("dotenv").config()
 const key = process.env.LANGUAGE_KEY;
 const endpoint = process.env.LANGUAGE_ENDPOINT;
+var confidenceString;
 // const client = new TextAnalysisClient(endpoint, new AzureKeyCredential(key));
 const client = new TextAnalyticsClient(endpoint, new AzureKeyCredential(key))
 var documents = [];
 var documents2 = [];
 var documents3 = [];
 var questions = [];
-// const documents = [
-//     "The food and service were unacceptable. The concierge was nice, however.",
-//     "I had the best day of my life.",
-//     "This was a waste of my time. The speaker put me to sleep.",
-// ]
 var userId;
 function createDocument(data) {
     // console.log(data)
@@ -39,16 +35,16 @@ function createDocument(data) {
         }
         else {
             if (i < 10) {
-                console.log(i)
+                // console.log(i)
                 documents.push(responses[values])
                 i++
             } else if (i > 9 && i < 20) {
-                console.log(i)
+                // console.log(i)
 
                 documents2.push(responses[values])
                 i++
             } else {
-                console.log(i)
+                // console.log(i)
 
                 documents3.push(responses[values])
             }
@@ -62,41 +58,36 @@ function createDocument(data) {
     // console.log(questions)
 
 }
-// function sentiment() {
-//     console.log(documents)
-//     const results = client.analyzeSentiment(documents, {
-//         includeOpinionMining: true
-//     })
-//     for (const result of results) {
-//         if (result.error === undefined) {
-//             console.log("Overall sentiment:", result.sentiment);
-//             console.log("Scores:", result.confidenceScores);
-//         } else {
-//             console.error("Encountered an error:", result.error);
-//         }
-//     }
-//     // const results = client.analyze("Sentiment Analysis", documents, {
-//     //     includeOpinionMining: true
-//     // })
-// }
+
+var myResults = `userId, sentence, sentiment Analysis, confidence Interval`
 async function sentimentAnalysis(data) {
     // console.log("here")
-
     await createDocument(data)
-    console.log(documents)
-    console.log(documents2)
-    console.log(documents3)
+    // console.log(documents)
+    // console.log(documents2)
+    // console.log(documents3)
     const results = await client.analyzeSentiment(documents)
     for (const result of results) {
-        console.log(result)
+        // console.log(result)
         if (result.error === undefined) {
-            console.log("Overall sentiment:", result.sentiment);
-            console.log("Scores:", result.confidenceScores);
+            confidenceString = `
+            Positive: ${result.confidenceScores.positive}; Neutral:${result.confidenceScores.neutral}; Negative:${result.confidenceScores.negative}`
+            // const confScores = result.confidenceScores
+            // for (const confidenceScore of confScores) {
+            //     console.log(confidenceScore, confScore(confidenceScore))
+            // }
+            var temp = `${userId},${result.sentences[0].text},${result.sentiment},${confidenceString}`
+            myResults = myResults + temp
+            // console.log(myResults)
+
+            // console.log("original sentence:", result.sentences[0].text)
+            // console.log("Overall sentiment:", result.sentiment);
+            // console.log("Scores:", result.confidenceScores);
         } else {
             console.error("Encountered an error:", result.error);
         }
     }
-
+    writeToFile(`./sentimentAnalysis/${userId}.csv`, myResults)
 }
 
 module.exports = sentimentAnalysis

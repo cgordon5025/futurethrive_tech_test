@@ -1,0 +1,12 @@
+
+    {
+        "kind":"SentimentAnalysis",
+        "parameters":{
+            "modelVersion":"latest",
+            "opinionMining":"True"
+        },
+        "analysisInput":{
+            "documents":[{"id":"0","language": "en-us","text": "12"},{"id":"1","language": "en-us","text": "6"},{"id":"2","language": "en-us","text": "mother,father"},{"id":"3","language": "en-us","text": "mother,father"},{"id":"4","language": "en-us","text": "true"},{"id":"5","language": "en-us","text": "pop pop"},{"id":"6","language": "en-us","text": "family friend"},{"id":"7","language": "en-us","text": "true"},{"id":"8","language": "en-us","text": "my cat"},{"id":"9","language": "en-us","text": "true"},{"id":"10","language": "en-us","text": "mom"},{"id":"11","language": "en-us","text": "mostly happy"},{"id":"12","language": "en-us","text": "things"},{"id":"13","language": "en-us","text": "flowers"},{"id":"14","language": "en-us","text": "stuff"},{"id":"15","language": "en-us","text": "true"},{"id":"16","language": "en-us","text": "false"},{"id":"17","language": "en-us","text": "true"},{"id":"18","language": "en-us","text": "false"},{"id":"19","language": "en-us","text": "play soccer"},{"id":"20","language": "en-us","text": "the rain sometimes"},{"id":"21","language": "en-us","text": "true"},{"id":"22","language": "en-us","text": "rain"},{"id":"23","language": "en-us","text": "no more rain"},{"id":"24","language": "en-us","text": "dogs"},{"id":"25","language": "en-us","text": "soccer"}]
+        }
+    }
+    

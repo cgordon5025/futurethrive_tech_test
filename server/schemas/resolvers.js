@@ -1,6 +1,6 @@
 const { User, Results, Video } = require('../models');
 
-const generateCSV = require('../utils/generateCSV');
+const generateRawResults = require('../utils/generateRawResults');
 const writeToFile = require('../utils/writeToFile');
 
 const fs = require('fs')

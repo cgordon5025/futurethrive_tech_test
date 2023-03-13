@@ -33,10 +33,11 @@ const Welcome = () => {
 
     useEffect(() => {
         if (camStatus == true) {
-            setTimeout(() => {
-                console.log("now trying to upload")
-                uploadVideo()
-            }, 2000)
+            console.log("i commented this out so i can test something else out")
+            // setTimeout(() => {
+            //     console.log("now trying to upload")
+            //     uploadVideo()
+            // }, 2000)
         }
     })
 

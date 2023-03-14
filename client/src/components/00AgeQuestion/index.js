@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react'
-
+import Modal from 'react-bootstrap/Modal'
 const AgeQuestion = ({ readFirstQ, showButton, formState, setFormState, setCurrentQuestion, currentQuestion }) => {
     const [buttonDisplay, setButtonDisplay] = useState("none")
+    const [showModal, setShowModal] = useState(false)
     useEffect(() => {
         if (readFirstQ == true) {
             setTimeout(() => {
@@ -54,11 +55,19 @@ const AgeQuestion = ({ readFirstQ, showButton, formState, setFormState, setCurre
             }
         }, 200);
     }
-    useEffect(() => {
-        console.log("highlight the text")
-        highLight()
-    }, [readFirstQ])
+    // useEffect(() => {
+    //     console.log("highlight the text")
+    //     highLight()
+    // }, [readFirstQ])
 
+    useEffect(() => {
+        if (readFirstQ == true) {
+            setTimeout(() => {
+                console.log("showing the timeout modal")
+                setShowModal(true)
+            }, 60000)
+        }
+    },)
 
     const handleChange = (event) => {
         const name = event.target.name
@@ -74,45 +83,31 @@ const AgeQuestion = ({ readFirstQ, showButton, formState, setFormState, setCurre
         setCurrentQuestion(nextQuestion)
     }
 
-    const rate = .9;
-    const synth = window.speechSynthesis;
-    const voice = synth.getVoices().filter((voice) => voice.voiceURI == 'Google UK English Male')
-    const utterThis = new SpeechSynthesisUtterance("How old are you");
-    utterThis.rate = rate;
-    utterThis.voice = voice[0];
 
     return (
-
-        < div className='questionContainer' >
-            <div className="formContainer">
-                {/* <TextToSpeech
-                    markTextAsSpoken
-                    rate={".9"}
-                    lang="en-GB"
-                    autoPlay>
-                    <p>How old are you?</p>
-                </TextToSpeech>
-                {readFirstQ ?
-                    (
-                    <TextToSpeech
-                        markTextAsSpoken
-                        rate={.9}
-                        lang="en-GB"
-                        autoPlay>
-                        <p>Lets see why the highlighting mark of the text is not working with qa rteally long sentence maybes it just delayed i don't know what do celebs know do they know things lets find out</p>
-                    </TextToSpeech>) : (
-                        <></>
-                    )} */}
-                <p className="ageQuestion">How old are you?</p>
-                <input
-                    name='age'
-                    value={formState.age}
-                    onChange={handleChange}
-                />
+        <div>
+            <div className='questionContainer' >
+                <div className="formContainer">
+                    <p className="ageQuestion">How old are you?</p>
+                    <input
+                        name='age'
+                        value={formState.age}
+                        onChange={handleChange}
+                    />
+                </div>
+                <button style={{ display: buttonDisplay }} className='progressBtn' onClick={handleProgression}>Next</button>
+                <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
             </div>
-            <button style={{ display: buttonDisplay }} className='progressBtn' onClick={handleProgression}>Next</button>
-            <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
-        </div >
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title></Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>Are you still there?</p>
+                    <p>If you are please, wrap up what you are talking and/or writing about, and goto the next question</p>
+                </Modal.Body>
+            </Modal>
+        </div>
     )
 }
 

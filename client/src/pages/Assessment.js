@@ -4,6 +4,7 @@ import { SAVE_ANSWERS } from "../utils/mutations";
 import { useMutation } from "@apollo/client";
 import { useTts } from 'tts-react';
 import { TextToSpeech } from "tts-react";
+import Modal from 'react-bootstrap/Modal'
 import UserContext from "../utils/UserContext";
 //lets import all of the components for the questions
 import AgeQuestion from "../components/00AgeQuestion";
@@ -37,6 +38,7 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const showButton = readFirstQ
     const [buttonDisplay, setButtonDisplay] = useState("none")
+    const [showModal, setShowModal] = useState(true)
     const [saveLiveWith, setSaveLiveWith] = useState({
         mother: false,
         father: false,
@@ -127,6 +129,7 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             talents: null
         }
     );
+
     //here are the questions and data associated with it
     const questions = [
         {
@@ -313,9 +316,11 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             }
         }, 200);
     }
-    useEffect(() => {
-        highLight()
-    }, [currentQuestion])
+
+    //removing highlight temporarily
+    // useEffect(() => {
+    //     highLight()
+    // }, [currentQuestion])
 
     const handleChange = (event) => {
         const name = event.target.name
@@ -324,6 +329,10 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             ...formState,
             [name]: value
         })
+    }
+
+    const handleClose = () => {
+        setShowModal(false)
     }
     const handleSubmit = async (event) => {
         await fetch(`http://localhost:3001/api/results`, {
@@ -453,18 +462,20 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
         //     )
         default:
             return (
-                <div className='questionContainer'>
-                    <div className='formContainer'>
-                        <p>What are you really good at?</p>
-                        <input
-                            name='talents'
-                            value={formState.talents}
-                            onChange={handleChange}
-                        />
-                        <button style={{ display: buttonDisplay, marginTop: "2%" }} className='submitBtn' onClick={handleSubmit}>Complete</button>
-                        <button style={{ display: buttonDisplay }} className='regressBtn' onClick={handleRegression}>Back</button>
+                <div>
+                    <div className='questionContainer'>
+                        <div className='formContainer'>
+                            <p>What are you really good at?</p>
+                            <input
+                                name='talents'
+                                value={formState.talents}
+                                onChange={handleChange}
+                            />
+                            <button style={{ display: buttonDisplay, marginTop: "2%" }} className='submitBtn' onClick={handleSubmit}>Complete</button>
+                            <button style={{ display: buttonDisplay }} className='regressBtn' onClick={handleRegression}>Back</button>
+                        </div>
+                        <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
                     </div>
-                    <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
                 </div>
             )
     }

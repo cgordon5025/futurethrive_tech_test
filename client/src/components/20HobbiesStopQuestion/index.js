@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-
+import Modal from 'react-bootstrap/Modal'
 const HobbiesStopQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
     const [buttonDisplay, setButtonDisplay] = useState("none")
-
+const [showModal, setShowModal] = useState(false)
     useEffect(() => {
         setTimeout(() => {
             setButtonDisplay("block")
@@ -50,11 +50,16 @@ const HobbiesStopQuestion = ({ formState, setFormState, setCurrentQuestion, curr
             }
         }, 200);
     }
+    // useEffect(() => {
+    //     console.log("highlight the text")
+    //     highLight()
+    // }, [currentQuestion])
     useEffect(() => {
-        console.log("highlight the text")
-        highLight()
+        setTimeout(() => {
+            console.log("showing the timeout modal")
+            setShowModal(true)
+        }, 60000)
     }, [currentQuestion])
-
     const handleChange = (event) => {
         const name = event.target.name
         const value = event.target.value
@@ -81,7 +86,7 @@ const HobbiesStopQuestion = ({ formState, setFormState, setCurrentQuestion, curr
                     onChange={handleChange}
                 />
             </div>
-            <button style={{display:buttonDisplay}} className='progressBtn' onClick={handleProgression}>Next</button>
+            <button style={{ display: buttonDisplay }} className='progressBtn' onClick={handleProgression}>Next</button>
             <button style={{ display: buttonDisplay }} className='regressBtn' onClick={handleRegression}>Back</button>
             <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
         </div>

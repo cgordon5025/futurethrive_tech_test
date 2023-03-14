@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-
+import Modal from 'react-bootstrap/Modal'
 const MakeLessWorriedQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
     const [buttonDisplay, setButtonDisplay] = useState("none")
-
+const [showModal, setShowModal] = useState(false)
     useEffect(() => {
         setTimeout(() => {
             setButtonDisplay("block")
@@ -50,11 +50,16 @@ const MakeLessWorriedQuestion = ({ formState, setFormState, setCurrentQuestion, 
             }
         }, 200);
     }
+    // useEffect(() => {
+    //     console.log("highlight the text")
+    //     highLight()
+    // }, [currentQuestion])
     useEffect(() => {
-        console.log("highlight the text")
-        highLight()
+        setTimeout(() => {
+            console.log("showing the timeout modal")
+            setShowModal(true)
+        }, 60000)
     }, [currentQuestion])
-
     const handleChange = (event) => {
         const name = event.target.name
         const value = event.target.value

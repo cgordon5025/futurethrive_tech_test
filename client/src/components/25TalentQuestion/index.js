@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import Modal from 'react-bootstrap/Modal'
 const TalentsQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
     const handleChange = (event) => {
         const name = event.target.name

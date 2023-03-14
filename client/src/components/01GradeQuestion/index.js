@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-
+import Modal from 'react-bootstrap/Modal'
 const GradeQuestion = ({ formState, setFormState, setCurrentQuestion, currentQuestion }) => {
     const [buttonDisplay, setButtonDisplay] = useState("none")
+    const [showModal, setShowModal] = useState(false)
 
     useEffect(() => {
         setTimeout(() => {
@@ -50,11 +51,16 @@ const GradeQuestion = ({ formState, setFormState, setCurrentQuestion, currentQue
             }
         }, 200);
     }
+    // useEffect(() => {
+    //     console.log("highlight the text")
+    //     highLight()
+    // }, [currentQuestion])
     useEffect(() => {
-        console.log("highlight the text")
-        highLight()
+        setTimeout(() => {
+            console.log("showing the timeout modal")
+            setShowModal(true)
+        }, 60000)
     }, [currentQuestion])
-
     const handleChange = (event) => {
         const name = event.target.name
         const value = event.target.value
@@ -74,18 +80,29 @@ const GradeQuestion = ({ formState, setFormState, setCurrentQuestion, currentQue
     }
 
     return (
-        <div className='questionContainer'>
-            <div className='formContainer'>
-                <p>What grade are you in?</p>
-                <input
-                    name='grade'
-                    value={formState.grade}
-                    onChange={handleChange}
-                />
+        <div>
+            <div className='questionContainer'>
+                <div className='formContainer'>
+                    <p>What grade are you in?</p>
+                    <input
+                        name='grade'
+                        value={formState.grade}
+                        onChange={handleChange}
+                    />
+                </div>
+                <button style={{ display: buttonDisplay }} className='progressBtn' onClick={handleProgression}>Next</button>
+                <button style={{ display: buttonDisplay }} className='regressBtn' onClick={handleRegression}>Back</button>
+                <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
             </div>
-            <button style={{ display: buttonDisplay }} className='progressBtn' onClick={handleProgression}>Next</button>
-            <button style={{ display: buttonDisplay }} className='regressBtn' onClick={handleRegression}>Back</button>
-            <img id="helper" src="./images/NEW_dog.png" alt="dog"></img>
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title></Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>Are you still there?</p>
+                    <p>If you are please, wrap up what you are talking and/or writing about, and goto the next question</p>
+                </Modal.Body>
+            </Modal>
         </div>
     )
 }

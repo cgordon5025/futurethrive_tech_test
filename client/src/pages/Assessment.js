@@ -237,6 +237,37 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
             question: "What are you really good at?",
         }
     ]
+
+    const [timeStamps, setTimeStamps] = useState(
+        {
+            age: null,
+            grade: null,
+            liveWith: [],
+            familyHelpDetails: [],
+            outsideHelp: null,
+            outsideDetails: null,
+            outsideDetails2: null,
+            recentDeath: null,
+            whoDeath: null,
+            sickFamily: null,
+            whoSick: null,
+            happyOrSad: null,
+            whySad: null,
+            whyHappy: null,
+            beHappier: null,
+            academics: null,
+            schoolTrouble: null,
+            schoolFriends: null,
+            madeFunOf: null,
+            hobbies: null,
+            hobbiesStop: null,
+            areWorried: null,
+            whyWorried: null,
+            makeLessWorry: null,
+            greatestWorry: null,
+            talents: null
+        }
+    )
     //userContext
     const { user } = useContext(UserContext)
     const userId = user._id
@@ -270,7 +301,6 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
         }
     }, [currentQuestion])
     useEffect(() => {
-
         synth.speak(utterThis)
     }, [currentQuestion]) //this should only run if the index number changes
 
@@ -321,7 +351,12 @@ function Assessment({ readFirstQ, setCamStatus, setEndDisplay, setAssessmentDisp
     // useEffect(() => {
     //     highLight()
     // }, [currentQuestion])
-
+    useEffect(() => {
+        setTimeout(() => {
+            console.log("showing the timeout modal")
+            setShowModal(true)
+        }, 60000)
+    }, [currentQuestion])
     const handleChange = (event) => {
         const name = event.target.name
         const value = event.target.value

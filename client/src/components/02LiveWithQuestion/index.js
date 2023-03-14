@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-
+import Modal from 'react-bootstrap/Modal'
 const LiveWithQuestion = ({ setSaveLiveWith, saveLiveWith, formState, setFormState, setCurrentQuestion, currentQuestion }) => {
     const [buttonDisplay, setButtonDisplay] = useState("none")
-
+    const [showModal, setShowModal] = useState(false)
     useEffect(() => {
         setTimeout(() => {
             setButtonDisplay("block")
@@ -50,11 +50,16 @@ const LiveWithQuestion = ({ setSaveLiveWith, saveLiveWith, formState, setFormSta
             }
         }, 200);
     }
+    // useEffect(() => {
+    //     console.log("highlight the text")
+    //     highLight()
+    // }, [currentQuestion])
     useEffect(() => {
-        console.log("highlight the text")
-        highLight()
+        setTimeout(() => {
+            console.log("showing the timeout modal")
+            setShowModal(true)
+        }, 60000)
     }, [currentQuestion])
-
     const handleChange = async (event) => {
         if (event.target.checked) {
             console.log("you checked me")
